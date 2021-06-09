@@ -1,5 +1,9 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: A_R_T
+=======
+Built-By: thoma
+>>>>>>> 2a2d638ab4e6bada150bd09d0992a1e34bf18ceb
 Build-Jdk: 15.0.2
 Created-By: Maven Integration for Eclipse
 
