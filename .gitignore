@@ -1,5 +1,6 @@
 // Ignore application properties
 *.properties
+
 # Eclipse
 .classpath
 .project
