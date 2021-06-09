@@ -1,4 +1,4 @@
-package twORM_p1;
+package com.revature;
 
 public class test {
 
