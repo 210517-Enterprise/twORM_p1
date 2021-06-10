@@ -9,6 +9,7 @@
 # Maven
 log/
 target/*
+MANIFEST.MF
 target/classes/META-INF/*
 pom.xml.tag
 pom.xml.releaseBackup
