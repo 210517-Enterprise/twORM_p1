@@ -8,4 +8,5 @@
 
 # Maven
 log/
-target/
+target/*
+target/classes/META-INF/*
