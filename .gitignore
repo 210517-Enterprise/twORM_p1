@@ -1,10 +1,11 @@
 // Ignore application properties
-*.properties
+application.properties
 
 # Eclipse
 .classpath
 .project
 .settings/
+bin/
 
 # Maven
 log/
