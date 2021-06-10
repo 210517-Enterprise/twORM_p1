@@ -10,21 +10,25 @@ public class Loss {
 	private Product product;
 	
 	private long amount;
+	// true indicates theft, false indicates waste
+	private boolean isTheft;
 	
 	private LocalDateTime dateLost;
 
-	public Loss(long lossId, Product product, long amount, LocalDateTime dateLost) {
+	public Loss(long lossId, Product product, long amount, boolean isTheft, LocalDateTime dateLost) {
 		super();
 		this.lossId = lossId;
 		this.product = product;
 		this.amount = amount;
+		this.isTheft = isTheft;
 		this.dateLost = dateLost;
 	}
 
-	public Loss(Product product, long amount, LocalDateTime dateLost) {
+	public Loss(Product product, long amount, boolean isTheft, LocalDateTime dateLost) {
 		super();
 		this.product = product;
 		this.amount = amount;
+		this.isTheft = isTheft;
 		this.dateLost = dateLost;
 	}
 
@@ -50,6 +54,14 @@ public class Loss {
 
 	public void setAmount(long amount) {
 		this.amount = amount;
+	}
+
+	public boolean isTheft() {
+		return isTheft;
+	}
+
+	public void setTheft(boolean isTheft) {
+		this.isTheft = isTheft;
 	}
 
 	public LocalDateTime getDateLost() {
@@ -99,8 +111,8 @@ public class Loss {
 
 	@Override
 	public String toString() {
-		return "Loss [id=" + lossId + ", product=" + product + ", amount=" + amount + ", dateLost=" + dateLost
-				+ "]";
+		return "Loss [lossId=" + lossId + ", product=" + product + ", amount=" + amount + ", isTheft=" + isTheft
+				+ ", dateLost=" + dateLost + "]";
 	}
 
 }
