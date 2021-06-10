@@ -17,12 +17,11 @@ public class ConnectionFactory {
     static {
         try {
             Class.forName("org.postgresql.Driver");
-        }catch (ClassNotFoundException e) {
-            // TODO add logging
-        	e.printStackTrace();
+        }catch (ClassNotFoundException cnfe) {
+            cnfe.printStackTrace();
         }
     }
-    
+	
     private ConnectionFactory() {
         try {
             Properties props = new Properties();
