@@ -2,17 +2,32 @@ package com.revature.demo;
 
 import java.math.BigDecimal;
 
+import com.revature.annotations.Column;
+import com.revature.annotations.Entity;
+import com.revature.annotations.PrimaryKey;
+import com.revature.annotations.SerialPK;
+
+@Entity(name = "Product")
 public class Product {
 	
+	@SerialPK(name = "PID")
 	private long id;
 	
+	@Column(name = "product_name")
 	private String name;
 	
+	@Column(name = "cost")
 	private BigDecimal cost;
 	
+	@Column(name = "price")
 	private BigDecimal price;
 	
+	@Column(name = "stock")
 	private long stock;
+	
+	public Product() {
+		super();
+	}
 
 	public Product(long id, String name, BigDecimal cost, BigDecimal price, long stock) {
 		super();
