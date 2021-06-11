@@ -2,50 +2,50 @@ package com.revature.demo;
 
 import java.time.LocalDateTime;
 
-//Class for a record of a unit or units of product that are lost to waste or theft.
+// Class for a record of product that is lost to waste or theft.
 public class Loss {
 	
-	private long lossId;
+	private long id;
 	
-	private Product product;
+	private long productId;
 	
 	private long amount;
-	// true indicates theft, false indicates waste
-	private boolean isTheft;
+	
+	private boolean isTheft; // true indicates theft, false indicates waste
 	
 	private LocalDateTime dateLost;
 
-	public Loss(long lossId, Product product, long amount, boolean isTheft, LocalDateTime dateLost) {
+	public Loss(long id, long productId, long amount, boolean isTheft, LocalDateTime dateLost) {
 		super();
-		this.lossId = lossId;
-		this.product = product;
+		this.id = id;
+		this.productId = productId;
 		this.amount = amount;
 		this.isTheft = isTheft;
 		this.dateLost = dateLost;
 	}
 
-	public Loss(Product product, long amount, boolean isTheft, LocalDateTime dateLost) {
+	public Loss(long productId, long amount, boolean isTheft, LocalDateTime dateLost) {
 		super();
-		this.product = product;
+		this.productId = productId;
 		this.amount = amount;
 		this.isTheft = isTheft;
 		this.dateLost = dateLost;
 	}
 
 	public long getLossId() {
-		return lossId;
+		return id;
 	}
 
-	public void setLossId(long lossId) {
-		this.lossId = lossId;
+	public void setLossId(long id) {
+		this.id = id;
 	}
 
-	public Product getProduct() {
-		return product;
+	public long getProductId() {
+		return productId;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProductId(long productId) {
+		this.productId = productId;
 	}
 
 	public long getAmount() {
@@ -78,8 +78,9 @@ public class Loss {
 		int result = 1;
 		result = prime * result + (int) (amount ^ (amount >>> 32));
 		result = prime * result + ((dateLost == null) ? 0 : dateLost.hashCode());
-		result = prime * result + (int) (lossId ^ (lossId >>> 32));
-		result = prime * result + ((product == null) ? 0 : product.hashCode());
+		result = prime * result + (isTheft ? 1231 : 1237);
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + (int) (productId ^ (productId >>> 32));
 		return result;
 	}
 
@@ -99,20 +100,19 @@ public class Loss {
 				return false;
 		} else if (!dateLost.equals(other.dateLost))
 			return false;
-		if (lossId != other.lossId)
+		if (isTheft != other.isTheft)
 			return false;
-		if (product == null) {
-			if (other.product != null)
-				return false;
-		} else if (!product.equals(other.product))
+		if (id != other.id)
+			return false;
+		if (productId != other.productId)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Loss [lossId=" + lossId + ", product=" + product + ", amount=" + amount + ", isTheft=" + isTheft
+		return "Loss [id=" + id + ", productId=" + productId + ", amount=" + amount + ", isTheft=" + isTheft
 				+ ", dateLost=" + dateLost + "]";
 	}
-
+	
 }

@@ -1,45 +1,55 @@
 package com.revature.demo;
 
 import java.time.LocalDateTime;
-import java.util.Hashtable;
 
 //Class for a record of each sale in the store
 public class Sale {
 
-	private long saleId;
+	private long id;
 
-	// the Long represents the # of units of the Product
-	private Hashtable<Product, Long> order;
+	private long productId;
+	
+	private long amount;
 	
 	private LocalDateTime dateSold;
 
-	public Sale(long saleId, Hashtable<Product, Long> order, LocalDateTime dateSold) {
+	public Sale(long id, long productId, long amount, LocalDateTime dateSold) {
 		super();
-		this.saleId = saleId;
-		this.order = order;
+		this.id = id;
+		this.productId = productId;
+		this.amount = amount;
 		this.dateSold = dateSold;
 	}
 
-	public Sale(Hashtable<Product, Long> order, LocalDateTime dateSold) {
+	public Sale(long productId, long amount, LocalDateTime dateSold) {
 		super();
-		this.order = order;
+		this.productId = productId;
+		this.amount = amount;
 		this.dateSold = dateSold;
 	}
 
-	public long getSaleId() {
-		return saleId;
+	public long getId() {
+		return id;
 	}
 
-	public void setSaleId(long saleId) {
-		this.saleId = saleId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public Hashtable<Product, Long> getOrder() {
-		return order;
+	public long getProductId() {
+		return productId;
 	}
 
-	public void setOrder(Hashtable<Product, Long> order) {
-		this.order = order;
+	public void setProductId(long productId) {
+		this.productId = productId;
+	}
+
+	public long getAmount() {
+		return amount;
+	}
+
+	public void setAmount(long amount) {
+		this.amount = amount;
 	}
 
 	public LocalDateTime getDateSold() {
@@ -54,9 +64,10 @@ public class Sale {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (int) (amount ^ (amount >>> 32));
 		result = prime * result + ((dateSold == null) ? 0 : dateSold.hashCode());
-		result = prime * result + (int) (saleId ^ (saleId >>> 32));
-		result = prime * result + ((order == null) ? 0 : order.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + (int) (productId ^ (productId >>> 32));
 		return result;
 	}
 
@@ -69,24 +80,23 @@ public class Sale {
 		if (getClass() != obj.getClass())
 			return false;
 		Sale other = (Sale) obj;
+		if (amount != other.amount)
+			return false;
 		if (dateSold == null) {
 			if (other.dateSold != null)
 				return false;
 		} else if (!dateSold.equals(other.dateSold))
 			return false;
-		if (saleId != other.saleId)
+		if (id != other.id)
 			return false;
-		if (order == null) {
-			if (other.order != null)
-				return false;
-		} else if (!order.equals(other.order))
+		if (productId != other.productId)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Sale [id=" + saleId + ", order=" + order + ", dateSold=" + dateSold + "]";
+		return "Sale [id=" + id + ", productId=" + productId + ", amount=" + amount + ", dateSold=" + dateSold + "]";
 	}
 
 }

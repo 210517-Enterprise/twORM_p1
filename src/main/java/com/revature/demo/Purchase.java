@@ -1,61 +1,65 @@
 package com.revature.demo;
 
 import java.time.LocalDateTime;
-import java.util.Hashtable;
 
 // Class for a record of each purchase order of inventory for the store
 public class Purchase {
 	
-	private long purchaseId;
+	private long id;
 	
-	// the Long represents the # of units of the product
-	private Hashtable<Product, Long> order;
+	private long productId;
+	
+	private long amount;
 	
 	private LocalDateTime dateOrdered;
 	
 	private boolean isDelivered;
 	
 	private LocalDateTime dateDelivered;
-	
-	public Purchase(long purchaseId, Hashtable<Product, Long> order, LocalDateTime dateOrdered, boolean isDelivered,
+
+	public Purchase(long id, long productId, long amount, LocalDateTime dateOrdered, boolean isDelivered,
 			LocalDateTime dateDelivered) {
 		super();
-		this.purchaseId = purchaseId;
-		this.order = order;
+		this.id = id;
+		this.productId = productId;
+		this.amount = amount;
 		this.dateOrdered = dateOrdered;
 		this.isDelivered = isDelivered;
 		this.dateDelivered = dateDelivered;
 	}
 
-	public Purchase(Hashtable<Product, Long> order, LocalDateTime dateOrdered, boolean isDelivered,
+	public Purchase(long productId, long amount, LocalDateTime dateOrdered, boolean isDelivered,
 			LocalDateTime dateDelivered) {
 		super();
-		this.order = order;
+		this.productId = productId;
+		this.amount = amount;
 		this.dateOrdered = dateOrdered;
 		this.isDelivered = isDelivered;
 		this.dateDelivered = dateDelivered;
-	}
-
-	public Purchase(Hashtable<Product, Long> order, LocalDateTime dateOrdered) {
-		super();
-		this.order = order;
-		this.dateOrdered = dateOrdered;
 	}
 
 	public long getId() {
-		return purchaseId;
+		return id;
 	}
 
-	public void setId(long purchaseId) {
-		this.purchaseId = purchaseId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public Hashtable<Product, Long> getOrder() {
-		return order;
+	public long getProductId() {
+		return productId;
 	}
 
-	public void setOrder(Hashtable<Product, Long> order) {
-		this.order = order;
+	public void setProductId(long productId) {
+		this.productId = productId;
+	}
+
+	public long getAmount() {
+		return amount;
+	}
+
+	public void setAmount(long amount) {
+		this.amount = amount;
 	}
 
 	public LocalDateTime getDateOrdered() {
@@ -86,11 +90,12 @@ public class Purchase {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + (int) (amount ^ (amount >>> 32));
 		result = prime * result + ((dateDelivered == null) ? 0 : dateDelivered.hashCode());
 		result = prime * result + ((dateOrdered == null) ? 0 : dateOrdered.hashCode());
-		result = prime * result + (int) (purchaseId ^ (purchaseId >>> 32));
+		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + (isDelivered ? 1231 : 1237);
-		result = prime * result + ((order == null) ? 0 : order.hashCode());
+		result = prime * result + (int) (productId ^ (productId >>> 32));
 		return result;
 	}
 
@@ -103,6 +108,8 @@ public class Purchase {
 		if (getClass() != obj.getClass())
 			return false;
 		Purchase other = (Purchase) obj;
+		if (amount != other.amount)
+			return false;
 		if (dateDelivered == null) {
 			if (other.dateDelivered != null)
 				return false;
@@ -113,22 +120,19 @@ public class Purchase {
 				return false;
 		} else if (!dateOrdered.equals(other.dateOrdered))
 			return false;
-		if (purchaseId != other.purchaseId)
+		if (id != other.id)
 			return false;
 		if (isDelivered != other.isDelivered)
 			return false;
-		if (order == null) {
-			if (other.order != null)
-				return false;
-		} else if (!order.equals(other.order))
+		if (productId != other.productId)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Purchase [id=" + purchaseId + ", order=" + order + ", dateOrdered=" + dateOrdered + ", isDelivered="
-				+ isDelivered + ", dateDelivered=" + dateDelivered + "]";
+		return "Purchase [id=" + id + ", productId=" + productId + ", amount=" + amount + ", dateOrdered=" + dateOrdered
+				+ ", isDelivered=" + isDelivered + ", dateDelivered=" + dateDelivered + "]";
 	}
-
+	
 }
