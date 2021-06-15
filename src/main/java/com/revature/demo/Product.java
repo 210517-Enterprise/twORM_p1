@@ -10,7 +10,7 @@ import com.revature.annotations.SerialPK;
 @Entity(name = "Product")
 public class Product {
 	
-	@SerialPK(name = "PID")
+	@PrimaryKey(name = "PID", isSerial = true)
 	private long id;
 	
 	@Column(name = "product_name")
