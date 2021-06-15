@@ -16,7 +16,7 @@ public class MetaConstructor {
 	
 	private MetaConstructor() {
 		super();
-		models = new HashMap();
+		models = new HashMap<String, MetaModel<?>>();
 	}
 	
 	public static MetaConstructor getInstance() {
