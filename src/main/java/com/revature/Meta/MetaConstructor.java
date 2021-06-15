@@ -78,13 +78,13 @@ public class MetaConstructor {
     }
     
     public void addModel(final Class<?> clazz) {
-        final String class_name                 = getClassName(clazz);
+        final String clazzName                  = getClassName(clazz);
         final HashMap<String,Method> getters    = makeGetterMap(getGetters(clazz));
         final HashMap<Method,String[]> setters  = makeSetterMap(getSetters(clazz));
         final Constructor<?> constructor        = getConstructor(clazz);
-        final String table_name                 = getEntityName(clazz);
-        final String pk                         = getPrimaryKeyName(clazz);
-        models.put(class_name,new MetaModel<>(clazz,getters,setters,constructor,table_name,pk));
+        final String entity		                = getEntityName(clazz);
+        final String primary_key_name           = getPrimaryKeyName(clazz);
+        models.put(clazzName,new MetaModel<>(clazz,getters,setters,constructor,entity,primary_key_name));
     }
 	
 	
