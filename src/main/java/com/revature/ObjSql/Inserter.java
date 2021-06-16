@@ -104,7 +104,7 @@ public class Inserter {
     }
 	
 
-	public boolean makeObject(final Object obj, final Connection conn) {
+	public boolean makeEntity(final Object obj, final Connection conn) {
 		final MetaModel<?> model = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());
 		final HashMap<String,Method> getters = model.getGetters();
 		final Optional<String> serial_name = getSerialName(obj.getClass());
@@ -112,7 +112,7 @@ public class Inserter {
 		
 		String sql = "CREATE TABLE " + model.getEntity() + " (";
 		if(serial_name.isPresent()) {
-			sql += serial_name.get() + ", ";
+			sql += serial_name.get() + " SERIAL PRIMARY KEY, ";
 		}
 		for (int i = 0; i < columns.length; i++) {
 			if (i < columns.length-1) {
@@ -128,8 +128,7 @@ public class Inserter {
 			return true;
 		}
 		return false;
-		
-		
+				
 	}
 	
 	
