@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
 
-public class Deleter {
+public class Deleter extends Genericer {
 	private static final Deleter ObjDel = new Deleter();
 	
 	private static Logger log = Logger.getLogger(Deleter.class);
