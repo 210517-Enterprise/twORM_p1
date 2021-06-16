@@ -7,12 +7,13 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.log4j.Logger;
 
 public class ConnectionFactory {
 
     private static final ConnectionFactory cf = new ConnectionFactory();
     private BasicDataSource ds;
-	
+	private Logger log = Logger.getLogger(ConnectionFactory.class);
 
     static {
         try {
@@ -36,9 +37,7 @@ public class ConnectionFactory {
             ds.setMaxIdle(10);
             ds.setMaxOpenPreparedStatements(100);
         }catch(IOException e) {
-        	// TODO add logging
-        	System.out.println("sorry, no application properties file found.");
-        	e.printStackTrace();
+        	log.error("Could not find application.properties");
         }
     }
     
@@ -50,8 +49,7 @@ public class ConnectionFactory {
         try {
             return ds.getConnection();
         }catch (SQLException e) {
-            // TODO add logging
-        	e.printStackTrace();
+        	log.warn("Error in getting connection" + e);
         }
         return null;
     }
