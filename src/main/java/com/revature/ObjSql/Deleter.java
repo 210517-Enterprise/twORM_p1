@@ -13,7 +13,7 @@ import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
 
 public class Deleter {
-	private static final Deleter deleter = new Deleter();
+	private static final Deleter ObjDel = new Deleter();
 	
 	private static Logger log = Logger.getLogger(Deleter.class);
 
@@ -22,7 +22,7 @@ public class Deleter {
     }
 
     public static Deleter getInstance() {
-        return deleter;
+        return ObjDel;
     }
 
     /**
