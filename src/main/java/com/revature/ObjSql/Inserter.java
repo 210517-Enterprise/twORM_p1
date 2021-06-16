@@ -120,7 +120,7 @@ public class Inserter {
 		}
 		for (int i = 0; i < columns.length; i++) {
 			if (i < columns.length-1) {
-				sql += columns[i] + " varchar(50), ";
+				sql += columns[i] + " " + typeJavaToSql(obj.getClass().getDeclaredField(columns[i]).getType()) +", ";
 			} else {
 				sql += columns[i] + " varchar(50));";
 			}
@@ -132,10 +132,12 @@ public class Inserter {
 			return true;
 		}
 		return false;
-		
-		
+
 	}
 	
+	public String typeJavaToSql(Class type) {
+		
+	}
 	
 	
 	
