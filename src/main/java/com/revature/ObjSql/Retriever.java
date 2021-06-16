@@ -2,7 +2,7 @@ package com.revature.ObjSql;
 
 import org.apache.log4j.Logger;
 
-public class Retriever {
+public class Retriever extends Genericer {
 
 	private static final Retriever ObjRet = new Retriever();
 	

@@ -2,7 +2,7 @@ package com.revature.ObjSql;
 
 import org.apache.log4j.Logger;
 
-public class Updater {
+public class Updater extends Genericer {
 	
 	private static final Updater ObjUpd = new Updater();
 	
