@@ -4,8 +4,9 @@ import java.math.BigDecimal;
 
 import com.revature.annotations.Column;
 import com.revature.annotations.Entity;
+import com.revature.annotations.Getter;
 import com.revature.annotations.PrimaryKey;
-import com.revature.annotations.SerialPK;
+import com.revature.annotations.Setter;
 
 @Entity(name = "Product")
 public class Product {
@@ -53,42 +54,52 @@ public class Product {
 		this.price = price;
 	}
 
+	@Getter(name = "getID")
 	public long getId() {
 		return id;
 	}
 
+	@Setter(name = "setId")
 	public void setId(long id) {
 		this.id = id;
 	}
 
+	@Getter(name = "getName")
 	public String getName() {
 		return name;
 	}
 
+	@Setter(name = "setName")
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Getter(name = "getCost")
 	public BigDecimal getCost() {
 		return cost;
 	}
 
+	@Setter(name = "setCost")
 	public void setCost(BigDecimal cost) {
 		this.cost = cost;
 	}
 
+	@Getter(name = "getPrice")
 	public BigDecimal getPrice() {
 		return price;
 	}
 
+	@Setter(name = "setPrice")
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
+	@Getter(name = "getStock")
 	public long getStock() {
 		return stock;
 	}
 
+	@Setter(name = "setStock")
 	public void setStock(long stock) {
 		this.stock = stock;
 	}

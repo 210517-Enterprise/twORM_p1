@@ -2,20 +2,36 @@ package com.revature.demo;
 
 import java.time.LocalDateTime;
 
+import com.revature.annotations.Column;
+import com.revature.annotations.Getter;
+import com.revature.annotations.PrimaryKey;
+import com.revature.annotations.Setter;
+
+
 // Class for a record of each purchase order of inventory for the store
 public class Purchase {
 	
+	@PrimaryKey(name = "sale_id", isSerial = true)
 	private long id;
 	
+	@Column(name = "product_id")
 	private long productId;
 	
+	@Column(name = "amount")
 	private long amount;
 	
+	@Column(name = "ordered_date")
 	private LocalDateTime dateOrdered;
 	
+	@Column(name = "delivery_status")
 	private boolean isDelivered;
 	
+	@Column(name = "delivered_date")
 	private LocalDateTime dateDelivered;
+	
+	public Purchase() {
+		super();
+	}
 
 	public Purchase(long id, long productId, long amount, LocalDateTime dateOrdered, boolean isDelivered,
 			LocalDateTime dateDelivered) {
@@ -37,51 +53,64 @@ public class Purchase {
 		this.isDelivered = isDelivered;
 		this.dateDelivered = dateDelivered;
 	}
-
+	
+	@Getter(name = "getId")
 	public long getId() {
 		return id;
 	}
 
+	@Setter(name = "setId")
 	public void setId(long id) {
 		this.id = id;
 	}
 
+	@Getter(name = "getProductId")
 	public long getProductId() {
 		return productId;
 	}
 
+	@Setter(name = "setProductId")
 	public void setProductId(long productId) {
 		this.productId = productId;
 	}
 
+	@Getter(name = "getAmount")
 	public long getAmount() {
 		return amount;
 	}
 
+	@Setter(name = "setAmount")
 	public void setAmount(long amount) {
 		this.amount = amount;
 	}
 
+	@Getter(name = "getDateOrdered")
 	public LocalDateTime getDateOrdered() {
 		return dateOrdered;
 	}
 
+	@Setter(name = "setDateOrdered")
 	public void setDateOrdered(LocalDateTime dateOrdered) {
 		this.dateOrdered = dateOrdered;
 	}
 
+	@Getter(name = "isDelivered")
 	public boolean isDelivered() {
 		return isDelivered;
 	}
 
+	@Setter(name = "setDelivered")
 	public void setDelivered(boolean isDelivered) {
 		this.isDelivered = isDelivered;
 	}
 
+	
+	@Getter(name = "getDateDelivered")
 	public LocalDateTime getDateDelivered() {
 		return dateDelivered;
 	}
 
+	@Setter(name = "setDateDelivered")
 	public void setDateDelivered(LocalDateTime dateDelivered) {
 		this.dateDelivered = dateDelivered;
 	}
