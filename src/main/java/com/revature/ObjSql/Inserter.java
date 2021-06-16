@@ -15,12 +15,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.log4j.Logger;
+
 import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
 
 public class Inserter {
 
 	public static final Inserter ObjIns = new Inserter();
+	
+	private static Logger log = Logger.getLogger(Inserter.class);
 	
 	private Inserter() {
 		super();
