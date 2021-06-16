@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 
 import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
-import com.revature.repositories.EmployeeDAO;
 
 public class Deleter {
 	private static final Deleter deleter = new Deleter();
