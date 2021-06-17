@@ -85,7 +85,7 @@ public class Cacher extends Genericer {
      * Compare object inside of cache with the conditions provided to determine if that object already exists in cache.
      * @param obj Object from cache to check if it matches given conditions.
      * @param getters HashMap of getters inside of object.
-     * @param columns String[] of columns to check for comparision.
+     * @param columns String[] of columns to check for comparison.
      * @param conditions String[] values which the checked columns should match.
      * @param operators String[] operators to apply to the columns.
      * @return boolean to indicate a match or not.
