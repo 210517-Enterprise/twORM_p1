@@ -12,7 +12,9 @@ public class testDriver {
 
 	public static void main(String[] args) {
 		
-		Person p = new Person("Billy", 10);
+		Person p1 = new Person("Billy", 10);
+		Person p2 = new Person("Jan", 24);
+		Person p3 = new Person("Quincy", 177);
 		
 		Inserter i = Inserter.getInstance();
 		
@@ -20,9 +22,10 @@ public class testDriver {
 		mc.addModel(Person.class);
 		
 		Connection c = ConnectionFactory.getInstance().getConnection();
-		
-		System.out.println(i.makeObject(p, c));
-		System.out.println(i.saveObject(p, c));
+
+		i.saveObject(p1, c);
+		i.saveObject(p2, c);
+		i.saveObject(p3, c);
 	}
 		
 }

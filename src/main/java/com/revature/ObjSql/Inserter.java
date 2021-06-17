@@ -57,55 +57,61 @@ public class Inserter extends Genericer {
     
     }
 
-	public boolean confirmTable(String entityName, final Connection conn) {
+	public boolean confirmTable(final Object obj, final Connection conn) {
 		ArrayList<String> tables = new ArrayList<String>();
 		try {
-			DatabaseMetaData meta = conn.getMetaData();
-			ResultSet rs = meta.getTables(null, null, null, new String[] {"Table"});
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT table_name"
+					+ " FROM information_schema.TABLES"
+					+ " WHERE table_schema = 'public'");
 			
 			while (rs.next()) {
-				tables.add(rs.getString("TABLE_NAME"));
+				tables.add(rs.getString("table_name"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		if (tables.contains(entityName)) {
-			return true;
+		
+		if (!tables.contains(obj.getClass().getSimpleName().toLowerCase())) {
+			log.info("Creating table for entity " + obj.getClass().getSimpleName());
+			return makeObject(obj, conn);
 		} 
-		return false;
+		return true;
 	}
 	
 	
 	public boolean saveObject(final Object obj,final Connection conn) {
         
+		if(confirmTable(obj, conn)) {
+			try {
+	            final MetaModel<?> model                           = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());
+	            final HashMap<String,Method> getters               = model.getGetters();
+	            final Optional<String> serial_name                 = getSerialName(obj.getClass());
+	            final Optional<Map.Entry<Method, String[]>> setter = getSerialKeyEntry(serial_name, model.getSetters());
+	            final String args                                  = getArgs((serial_name.isPresent()) ? getters.keySet().size() - 2 : getters.keySet().size() - 1);
+	            final String columns                               = getColumns(getters.keySet(), serial_name);
+	            final String sql                                   = "INSERT INTO " + model.getEntity() + " ( " + columns + " ) VALUES( " + args + " )";
+	            final PreparedStatement pstmt                      = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+	            final ParameterMetaData pd                         = pstmt.getParameterMetaData();
+	            int index = 1;
+	                      
+	            for (Map.Entry<String,Method> getter : getters.entrySet()) {
+	                if (!serial_name.isPresent() || !getter.getKey().equals(setter.get().getValue()[0])) {
+	                    setStatement(pstmt, pd, getter.getValue(), obj, index++);
+	                }
+	            }
+	            if (pstmt.executeUpdate() != 0) {
+	                setSerialID(obj,setter,pstmt);
+	            }
+	            //also place object inside of cache eventually.
+	          ;
+	            return true;
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+		}
 		
-		try {
-            final MetaModel<?> model                           = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());
-            final HashMap<String,Method> getters               = model.getGetters();
-            final Optional<String> serial_name                 = getSerialName(obj.getClass());
-            final Optional<Map.Entry<Method, String[]>> setter = getSerialKeyEntry(serial_name, model.getSetters());
-            final String args                                  = getArgs((serial_name.isPresent()) ? getters.keySet().size() - 2 : getters.keySet().size() - 1);
-            final String columns                               = getColumns(getters.keySet(), serial_name);
-            final String sql                                   = "INSERT INTO " + model.getEntity() + " ( " + columns + " ) VALUES( " + args + " )";
-            final PreparedStatement pstmt                      = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-            final ParameterMetaData pd                         = pstmt.getParameterMetaData();
-            int index = 1;
-                      
-            for (Map.Entry<String,Method> getter : getters.entrySet()) {
-                if (!serial_name.isPresent() || !getter.getKey().equals(setter.get().getValue()[0])) {
-                    setStatement(pstmt, pd, getter.getValue(), obj, index++);
-                }
-            }
-            if (pstmt.executeUpdate() != 0) {
-                setSerialID(obj,setter,pstmt);
-            }
-            //also place object inside of cache eventually.
-          ;
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+		return false;
     }
 	
 
@@ -124,7 +130,6 @@ public class Inserter extends Genericer {
 		
 		try {
 			for (int i = 0; i < columns.length; i++) {
-				System.out.println(columns[i] + " " + typeJavaToSql(obj.getClass().getDeclaredField(columns[i]).getType()));
 				if (i < columns.length-1) {
 					sql += columns[i] + " " + typeJavaToSql(obj.getClass().getDeclaredField(columns[i]).getType()) + ", ";
 				} else {
@@ -137,7 +142,6 @@ public class Inserter extends Genericer {
 			
 		try {
 			final PreparedStatement pstmt = conn.prepareStatement(sql);
-			System.out.println(pstmt);
 			pstmt.execute();
 			return true;
 		} catch (SQLException e){
