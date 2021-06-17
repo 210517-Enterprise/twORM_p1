@@ -21,7 +21,8 @@ public class testDriver {
 		
 		Connection c = ConnectionFactory.getInstance().getConnection();
 		
-		i.makeObject(p, c);
+		System.out.println(i.makeObject(p, c));
+		System.out.println(i.saveObject(p, c));
 	}
 		
 }

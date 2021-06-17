@@ -8,10 +8,10 @@ public class Person {
 	@PrimaryKey(name = "id", isSerial = true)
 	@SerialPK(name = "id")
 	private int id;
-	@Column(name = "name")
-	private String name;
-	@Column(name = "age")
-	private int age;
+	@Column(name = "user_name")
+	private String user_name;
+	@Column(name = "user_age")
+	private int user_age;
 	
 	public Person() {
 		super();
@@ -19,15 +19,15 @@ public class Person {
 
 	public Person(String name, int age) {
 		super();
-		this.name = name;
-		this.age = age;
+		this.user_name = name;
+		this.user_age = age;
 	}
 	
 	public Person(int id, String name, int age) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.age = age;
+		this.user_name = name;
+		this.user_age = age;
 	}
 	
 	@Getter(name = "id")
@@ -40,24 +40,24 @@ public class Person {
 		this.id = id;
 	}
 
-	@Getter(name = "name")
+	@Getter(name = "user_name")
 	public String getName() {
-		return name;
+		return user_name;
 	}
 
-	@Setter(name = "name")
+	@Setter(name = "user_name")
 	public void setName(String name) {
-		this.name = name;
+		this.user_name = name;
 	}
 
-	@Getter(name = "age")
+	@Getter(name = "user_age")
 	public int getAge() {
-		return age;
+		return user_age;
 	}
 
-	@Setter(name = "age")
+	@Setter(name = "user_age")
 	public void setAge(int age) {
-		this.age = age;
+		this.user_age = age;
 	}
 	
 }

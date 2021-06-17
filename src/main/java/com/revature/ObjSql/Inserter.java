@@ -71,7 +71,7 @@ public class Inserter extends Genericer {
 		}
 		if (tables.contains(entityName)) {
 			return true;
-		}
+		} 
 		return false;
 	}
 	
@@ -117,8 +117,9 @@ public class Inserter extends Genericer {
 		
 		String sql = "CREATE TABLE " + model.getEntity() + " (";
 		
+		
 		if(serial_name.isPresent()) {
-			sql += serial_name.get() + ", ";
+			sql += serial_name.get() + " SERIAL PRIMARY KEY, ";
 		}
 		
 		try {
@@ -136,7 +137,7 @@ public class Inserter extends Genericer {
 			
 		try {
 			final PreparedStatement pstmt = conn.prepareStatement(sql);
-			
+			System.out.println(pstmt);
 			pstmt.execute();
 			return true;
 		} catch (SQLException e){

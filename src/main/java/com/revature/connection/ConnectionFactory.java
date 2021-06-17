@@ -33,7 +33,7 @@ public class ConnectionFactory {
             ds.setPassword(props.getProperty("DB_PASSWORD"));
             // Connection pooling
             ds.setMinIdle(5);
-            ds.setDefaultAutoCommit(false);
+            ds.setDefaultAutoCommit(true);
             ds.setMaxIdle(10);
             ds.setMaxOpenPreparedStatements(100);
         }catch(IOException e) {
