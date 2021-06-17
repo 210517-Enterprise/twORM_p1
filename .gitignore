@@ -8,6 +8,7 @@ application.properties
 bin/
 
 # Maven
+logs/
 log/
 target/*
 MANIFEST.MF
