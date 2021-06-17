@@ -2,6 +2,7 @@ package com.revature.ObjSql;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ParameterMetaData;
@@ -20,7 +21,7 @@ import org.apache.log4j.Logger;
 import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
 
-public class Inserter {
+public class Inserter extends Genericer {
 
 	public static final Inserter ObjIns = new Inserter();
 	
@@ -112,33 +113,50 @@ public class Inserter {
 		final MetaModel<?> model = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());
 		final HashMap<String,Method> getters = model.getGetters();
 		final Optional<String> serial_name = getSerialName(obj.getClass());
-		final String columns[] = getColumns(getters.keySet(), serial_name).split(" ");
+		final String columns[] = getColumns(getters.keySet(), serial_name).split(",");
 		
 		String sql = "CREATE TABLE " + model.getEntity() + " (";
+		
 		if(serial_name.isPresent()) {
 			sql += serial_name.get() + ", ";
 		}
-		for (int i = 0; i < columns.length; i++) {
-			if (i < columns.length-1) {
-				sql += columns[i] + " " + typeJavaToSql(obj.getClass().getDeclaredField(columns[i]).getType()) + ", ";
-			} else {
-				sql += columns[i] + " " + typeJavaToSql(obj.getClass().getDeclaredField(columns[i]).getType()) + ");";
+		
+		try {
+			for (int i = 0; i < columns.length; i++) {
+				System.out.println(columns[i] + " " + typeJavaToSql(obj.getClass().getDeclaredField(columns[i]).getType()));
+				if (i < columns.length-1) {
+					sql += columns[i] + " " + typeJavaToSql(obj.getClass().getDeclaredField(columns[i]).getType()) + ", ";
+				} else {
+					sql += columns[i] + " " + typeJavaToSql(obj.getClass().getDeclaredField(columns[i]).getType()) + ");";
+				}
 			}
+		} catch (NoSuchFieldException e) {
+			log.warn("Error in parsing columns", e);
 		}
-		
-		final PreparedStatement pstmt = conn.prepareStatement(sql);
-		
-		System.out.println();
-		
-		if(pstmt.execute()) {
+			
+		try {
+			final PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.execute();
 			return true;
+		} catch (SQLException e){
+			log.warn("Error in makeObject", e);
+			return false;
 		}
-		return false;
-
 	}
 	
 	public String typeJavaToSql(Class type) {
-		return type.toString();
+		
+		if(type.equals(int.class)) {
+			return "INTEGER";
+		} else if(type.equals(String.class)) {
+			return "VARCHAR(50)";
+		} else if (type.equals(double.class) || type.equals(BigDecimal.class)) {
+			return "NUMERIC(50, 2)";
+		} else {
+			return null;
+		}
+	
 	}
 
 }

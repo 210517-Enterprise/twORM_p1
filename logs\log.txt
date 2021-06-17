@@ -1,0 +1,33 @@
+2021-06-16 20:01:38 WARN  revature.ObjSql.Inserter:133 - 
+otEmpty{userId= } - 
+otEmpty{event= } - Error in parsing columns
+java.lang.NoSuchFieldException: get_name,get_age
+	at java.base/java.lang.Class.getDeclaredField(Class.java:2411)
+	at com.revature.ObjSql.Inserter.makeObject(Inserter.java:129)
+	at com.revature.testDriver.main(testDriver.java:19)
+2021-06-16 20:04:59 WARN  revature.ObjSql.Inserter:133 - 
+otEmpty{userId= } - 
+otEmpty{event= } - Error in parsing columns
+java.lang.NoSuchFieldException: get_name
+	at java.base/java.lang.Class.getDeclaredField(Class.java:2411)
+	at com.revature.ObjSql.Inserter.makeObject(Inserter.java:127)
+	at com.revature.testDriver.main(testDriver.java:19)
+2021-06-16 20:21:29 ERROR revature.connection.ConnectionFactory:40 - 
+otEmpty{userId= } - 
+otEmpty{event= } - Could not find application.properties
+2021-06-16 20:22:11 WARN  revature.ObjSql.Inserter:143 - 
+otEmpty{userId= } - 
+otEmpty{event= } - Error in makeObject
+org.postgresql.util.PSQLException: ERROR: syntax error at or near "VARCHAR"
+  Position: 31
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:164)
+	at org.postgresql.jdbc.PgPreparedStatement.execute(PgPreparedStatement.java:153)
+	at org.apache.commons.dbcp2.DelegatingPreparedStatement.execute(DelegatingPreparedStatement.java:94)
+	at org.apache.commons.dbcp2.DelegatingPreparedStatement.execute(DelegatingPreparedStatement.java:94)
+	at com.revature.ObjSql.Inserter.makeObject(Inserter.java:140)
+	at com.revature.testDriver.main(testDriver.java:24)
