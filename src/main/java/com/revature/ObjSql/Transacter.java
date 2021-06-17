@@ -33,7 +33,7 @@ public class Transacter {
 		try {
 			conn.setAutoCommit(true);
 		} catch (SQLException sqle) {
-			log.warn(sqle);
+			log.error(sqle);
 		}
 	}
 
@@ -46,7 +46,7 @@ public class Transacter {
 		try {
 			conn.commit();
 		} catch (SQLException sqle) {
-			log.warn(sqle);
+			log.error(sqle);
 		}
 	}
 
@@ -59,7 +59,7 @@ public class Transacter {
 		try {
 			conn.rollback();
 		} catch (SQLException sqle) {
-			log.warn(sqle);
+			log.error(sqle);
 		}
 	}
 
@@ -77,7 +77,7 @@ public class Transacter {
 				log.warn("Trying to access a non-existent savepoint");
 			}
 		} catch (SQLException sqle) {
-			log.warn(sqle);
+			log.error(sqle);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class Transacter {
 			final Savepoint save = conn.setSavepoint(name);
 			savepoints.put(name, save);
 		} catch (SQLException sqle) {
-			log.warn(sqle);
+			log.error(sqle);
 		}
 	}
 
@@ -110,7 +110,7 @@ public class Transacter {
 				log.warn("Trying to access a non-existent savepoint");
 			}
 		} catch (SQLException sqle) {
-			log.warn(sqle);
+			log.error(sqle);
 		}
 	}
 
@@ -123,7 +123,7 @@ public class Transacter {
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 		} catch (SQLException sqle) {
-			log.warn(sqle);
+			log.error(sqle);
 		}
 	}
 
