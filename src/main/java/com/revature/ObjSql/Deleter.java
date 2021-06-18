@@ -13,6 +13,7 @@ import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
 
 public class Deleter extends Genericer {
+	
 	private static final Deleter ObjDel = new Deleter();
 	
 	private static Logger log = Logger.getLogger(Deleter.class);
@@ -53,10 +54,10 @@ public class Deleter extends Genericer {
             setStatement(pstmt, pd, getter, obj, 1);
             pstmt.executeUpdate();
             //also remove object from cache.
-            ObjectCache.getInstance().removeObjFromCache(obj);
+            Cacher.getInstance().removeObjFromCache(obj);
             return true;
         }catch(SQLException sqle) {
-            GSQLogger.getInstance().writeError(sqle);
+            log.error(sqle);
         }
         return false;
     }
