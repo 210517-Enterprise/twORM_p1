@@ -103,7 +103,8 @@ public class Inserter extends Genericer {
 	            if (pstmt.executeUpdate() != 0) {
 	                setSerialID(obj,setter,pstmt);
 	            }
-	            //also place object inside of cache eventually.
+	            //also place object inside of cache
+	            Cacher.getInstance().putObjInCache(obj);
 	          ;
 	            return true;
 	        } catch (SQLException e) {
