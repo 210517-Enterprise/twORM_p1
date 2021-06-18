@@ -146,7 +146,7 @@ public class Inserter extends Genericer {
 			pstmt.execute();
 			return true;
 		} catch (SQLException e){
-			log.warn("Error in makeObject", e);
+			log.warn("Error in makeEntity", e);
 			return false;
 		}
 	}
