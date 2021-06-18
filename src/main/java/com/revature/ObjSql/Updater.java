@@ -31,9 +31,7 @@ public class Updater extends Genericer {
 		for (Map.Entry<String, Method> getter : getters.entrySet()) {
 			sb.append(getter.getKey() + " = " + getter.getValue().invoke(obj).toString() + " , ");
 		}
-		sb.deleteCharAt(sb.length() - 1);
-		sb.deleteCharAt(sb.length() - 1);
-		return sb.toString();
+		return sb.substring(0, sb.length()-3);
 	}
 
     public boolean updateObject(final Object obj, final Connection conn) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -45,7 +43,7 @@ public class Updater extends Genericer {
             final String sql                                   = "UPDATE " + model.getEntity() + " SET " + columns + " WHERE " + model.getPrimary_key_name() + " = " + pkValue + ";";
             System.out.println(sql);
 //          final PreparedStatement pstmt                      = conn.prepareStatement(sql);
-//			pstmt.execute();
+//			pstmt.executeUpdate();
 			return true;
 //			
 //			/*
