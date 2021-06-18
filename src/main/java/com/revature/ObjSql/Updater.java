@@ -26,33 +26,43 @@ public class Updater extends Genericer {
         return ObjUpd;
     }
 
-	protected String getColumnsAndValues(final HashMap<String, Method> getters, Object obj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	protected String getColumns(final HashMap<String, Method> getters) {
 		StringBuilder sb = new StringBuilder();
 		for (Map.Entry<String, Method> getter : getters.entrySet()) {
-			sb.append(getter.getKey() + " = " + getter.getValue().invoke(obj).toString() + " , ");
+			sb.append(getter.getKey() + " = ? , ");
 		}
-		return sb.substring(0, sb.length()-3);
+		return sb.substring(0, sb.length()-2);
 	}
 
     public boolean updateObject(final Object obj, final Connection conn) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-//		try {
+		try {
             final MetaModel<?> model                           = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());
             final HashMap<String,Method> getters               = model.getGetters();
-            final String pkValue							   = getters.get(model.getPrimary_key_name()).invoke(obj).toString();
-            final String columns                               = getColumnsAndValues(getters, obj);
-            final String sql                                   = "UPDATE " + model.getEntity() + " SET " + columns + " WHERE " + model.getPrimary_key_name() + " = " + pkValue + ";";
-            System.out.println(sql);
-//          final PreparedStatement pstmt                      = conn.prepareStatement(sql);
-//			pstmt.executeUpdate();
+            final String columns                               = getColumns(getters);
+            final String sql                                   = "UPDATE " + model.getEntity() + " SET " + columns + " WHERE " + model.getPrimary_key_name() + " = ? ;";
+            final PreparedStatement pstmt                      = conn.prepareStatement(sql);
+            int index = 1;
+			for (Map.Entry<String, Method> getter : getters.entrySet()) {
+				if (getter.getValue().invoke(obj) != null) {
+					pstmt.setObject(index, getter.getValue().invoke(obj));
+					index++;
+				} else {
+					pstmt.setNull(index, java.sql.Types.NULL);
+					index++;
+				}
+			}
+			pstmt.setObject(index, getters.get(model.getPrimary_key_name()).invoke(obj));
+        
+            pstmt.executeUpdate();
 			return true;
-//			
-//			/*
-//			 * UPDATE THE CACHE SOMEHOW
-//			 */
-//			
-//		} catch (SQLException e) {
-//			log.error("Failed to update DB",e);
-//			return false;
-//		}
+			
+			/*
+			 * UPDATE THE CACHE SOMEHOW
+			 */
+			
+		} catch (SQLException e) {
+			log.error("Failed to update DB",e);
+			return false;
+		}
     }
 }
