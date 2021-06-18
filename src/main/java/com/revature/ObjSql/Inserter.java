@@ -74,7 +74,7 @@ public class Inserter extends Genericer {
 		
 		if (!tables.contains(obj.getClass().getSimpleName().toLowerCase())) {
 			log.info("Creating table for entity " + obj.getClass().getSimpleName());
-			return makeObject(obj, conn);
+			return makeEntity(obj, conn);
 		} 
 		return true;
 	}
@@ -116,7 +116,7 @@ public class Inserter extends Genericer {
     }
 	
 
-	public boolean makeObject(final Object obj, final Connection conn) {
+	public boolean makeEntity(final Object obj, final Connection conn) {
 		final MetaModel<?> model = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());
 		final HashMap<String,Method> getters = model.getGetters();
 		final Optional<String> serial_name = getSerialName(obj.getClass());
