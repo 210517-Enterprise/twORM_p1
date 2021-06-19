@@ -87,11 +87,12 @@ public class TwORM {
 		return rover.getListObjectFromDB(clazz, columns, conditions, operators, conn);
 	}
 	
+        */
 	
 	public Optional<List<Object>> getListObjectFromDB(final Class<?> clazz) {
-        return rover.queryAllFromDB(clazz,conn);
+        return rover.getAllEntity(clazz,conn);
         }
-        */
+
 	
 	public void commitChanges() {
 		transacter.Commit(conn);
@@ -113,10 +114,10 @@ public class TwORM {
 		transacter.enableAutoCommit(conn);
 	}
 	
-	/* This doesn't exist yet, but perhaps it should
-	 * public void disableAutoCommit() {
-	 * 		transacter.disableAutoCommit(conn);
-	 */
+	
+	public void disableAutoCommit() {
+	 		transacter.disableAutoCommit(conn);
+	}
 	
 	public void beginTransaction() {
 		transacter.setTransaction(conn);

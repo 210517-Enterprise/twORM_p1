@@ -36,6 +36,15 @@ public class Transacter {
 			log.error(sqle);
 		}
 	}
+	
+	public void disableAutoCommit(final Connection conn) {
+		try {
+			conn.setAutoCommit(false);
+		} catch (SQLException e) {
+			log.warn("Failed to disable autocommit");
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Commit all uncommitted SQL transactions for this connection.
