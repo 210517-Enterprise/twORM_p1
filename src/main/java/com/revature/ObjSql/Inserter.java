@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
+import com.revature.annotations.PrimaryKey;
 
 public class Inserter extends Genericer {
 
@@ -125,9 +125,12 @@ public class Inserter extends Genericer {
 		
 		String sql = "CREATE TABLE " + model.getEntity() + " (";
 		
+		PrimaryKey pk = obj.getClass().getAnnotation(PrimaryKey.class);
 		
-		if(serial_name.isPresent()) {
-			sql += serial_name.get() + " SERIAL PRIMARY KEY, ";
+		if(pk.isSerial()==true) {
+			sql += pk.name() + " SERIAL PRIMARY KEY, ";
+		} else {
+			sql += pk.name() + " " + typeJavaToSql(obj.getClass().getDeclaredField(pk.name()).getType()) +" PRIMARY KEY, ";
 		}
 		
 		try {
@@ -152,21 +155,21 @@ public class Inserter extends Genericer {
 		}
 	}
 	
-	public String typeJavaToSql(Class type) {
+	public String typeJavaToSql(Class<?> type) {
 		
-		if(type.equals(byte.class) || type.equals(Byte.class) || type.equals(int.class) || type.equals(Integer.class) || type.equals(short.class)||type.equals(Short.class) || type.equals(long.class) || type.equals(Long.class) || type.equals(BigInteger.class)) {
+		if(type.equals(byte.class) || type.equals(Byte.class) || type.equals(int.class) || type.equals(Integer.class) || type.equals(short.class)||type.equals(Short.class)) {
 			return "INTEGER";
+		} else if(type.equals(long.class) || type.equals(Long.class) || type.equals(BigInteger.class) ) {
+			return "BIGINT";
 		} else if(type.equals(boolean.class) || type.equals(Boolean.class)) {
 			return "BOOLEAN";
-		} else if(type.equals(char.class) || type.equals(Character.class) || type.equals(String.class) || type.equals(StringBuilder.class) || type.equals(StringBuffer.class)) {
-			return "VARCHAR(50)";
+		} else if(type.equals(char.class) || type.equals(Character.class) || type.equals(String.class)) {
+			return "LONGVARCHAR";
 		} else if (type.equals(double.class) || type.equals(Double.class) || type.equals(float.class) || type.equals(Float.class) || type.equals(BigDecimal.class))  {
-			return "NUMERIC(50, 2)";
+			return "NUMERIC";
 		} else {
-			return null;
+			return "TEXT";
 		}
-	
 	}
-
 }
 ;
