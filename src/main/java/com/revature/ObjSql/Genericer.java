@@ -35,16 +35,16 @@ public abstract class Genericer {
         }
     }
 	
-	protected Optional<String> getSerialName(final Class<?> clazz) {
-	       return Arrays.stream(clazz.getDeclaredFields())
-	                    .filter(f -> f.getDeclaredAnnotation(SerialPK.class) != null)
-	                    .map(f -> f.getDeclaredAnnotation(SerialPK.class).name())
-	                    .findFirst();
-	    }
+//	protected Optional<String> getSerialName(final Class<?> clazz) {
+//	       return Arrays.stream(clazz.getDeclaredFields())
+//	                    .filter(f -> f.getDeclaredAnnotation(SerialPK.class) != null)
+//	                    .map(f -> f.getDeclaredAnnotation(SerialPK.class).name())
+//	                    .findFirst();
+//	    }
 	
-	protected Optional<Map.Entry<Method,String[]>> getSerialKeyEntry(final Optional<String> name,final HashMap<Method,String[]> setters) {
+	protected Optional<Map.Entry<Method,String[]>> getSerialKeyEntry(final String name,final HashMap<Method,String[]> setters) {
         return setters.entrySet().stream()
-                .filter(e -> e.getValue()[0].equals(name.orElse("null")))
+                .filter(e -> e.getValue()[0].equals(name))
                 .findFirst();
     }
 	
