@@ -6,7 +6,6 @@ import com.revature.annotations.*;
 public class Person {
 	
 	@PrimaryKey(name = "id", isSerial = true)
-	@SerialPK(name = "id")
 	private int id;
 	@Column(name = "user_name")
 	private String user_name;

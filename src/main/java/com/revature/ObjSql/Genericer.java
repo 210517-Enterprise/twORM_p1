@@ -14,8 +14,6 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.revature.annotations.SerialPK;
-
 public abstract class Genericer {
 
 	protected final Pattern regex = Pattern.compile("[^\\d]+");
@@ -34,13 +32,6 @@ public abstract class Genericer {
             e.getStackTrace();
         }
     }
-	
-//	protected Optional<String> getSerialName(final Class<?> clazz) {
-//	       return Arrays.stream(clazz.getDeclaredFields())
-//	                    .filter(f -> f.getDeclaredAnnotation(SerialPK.class) != null)
-//	                    .map(f -> f.getDeclaredAnnotation(SerialPK.class).name())
-//	                    .findFirst();
-//	    }
 	
 	protected Optional<Map.Entry<Method,String[]>> getSerialKeyEntry(final String name,final HashMap<Method,String[]> setters) {
         return setters.entrySet().stream()
