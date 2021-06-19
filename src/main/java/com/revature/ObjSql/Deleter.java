@@ -47,17 +47,18 @@ public class Deleter extends Genericer {
         try {
             final MetaModel<?> model                = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());
             final String primary_key                = model.getPrimary_key_name();
-            final Method getter                     = getGetter(primary_key,model.getGetters());
+            final Method getter                     = getGetter(primary_key, model.getGetters());
             final String sql                        = "DELETE from " + model.getEntity() + " WHERE "+ primary_key + " = ? ";
             final PreparedStatement pstmt           = conn.prepareStatement(sql);
             final ParameterMetaData pd              = pstmt.getParameterMetaData();
             setStatement(pstmt, pd, getter, obj, 1);
             pstmt.executeUpdate();
-            //also remove object from cache.
+            // TODO double check caching
             Cacher.getInstance().removeObjFromCache(obj);
+
             return true;
-        }catch(SQLException sqle) {
-            log.error(sqle);
+        }catch(SQLException e) {
+            log.error("Error in removing object", e);
         }
         return false;
     }
