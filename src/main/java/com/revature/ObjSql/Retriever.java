@@ -2,13 +2,14 @@ package com.revature.ObjSql;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 
@@ -46,7 +47,45 @@ public class Retriever extends Genericer {
     	
     	return Optional.empty();
     }
+    
+    public Optional<List<Object>> retrieveObject(Object obj, Connection c) {
+    	
+    	String sql = "SELECT * FROM " + obj.getClass().getSimpleName();
+    	
+    	try {
+    		MetaModel<?> model = MetaConstructor.getInstance().getModel(obj);
+    		
+    		// Get columns and strip the primary key
+    		HashMap<String, Method> getters = model.getGetters();
+    		getters.remove(model.getPrimary_key_name());
+    		
+    		for(int i = 0; i < getters.keySet().size(); i++) {
+    			if (i == 0) {
+    				sql += " WHERE ";
+    			} else {
+    				sql += " AND ";
+    			}
+    			
+    			sql += "? = ?";
+    		}
+    		
+    		PreparedStatement stmt = c.prepareStatement(sql);
+    		
+    		
+    		
+    	} catch (Exception e) {
+    		log.error("Error in finding object of Entity" + obj.getClass().getSimpleName(), e);
+    	}
+    	
+    	return Optional.empty();
+    }
 
+    public Optional<Object> retrieveObjectByPK(String entity, Object primaryKey, Connection c){
+    	// TODO
+    	
+    	return Optional.empty();
+    }
+    
     private Optional<List<Object>> resultSetToList(ResultSet rs, Class<?> clazz) {
     	
     	try {
@@ -83,9 +122,8 @@ public class Retriever extends Genericer {
     }
 
     // Takes in the object it is acting on, the setter being invoked, the rs queried
-    // and a String array from the MetaModel Setters
+    // and the column name 
     private void setField(Object obj, Method setMethod, ResultSet rs, String column) {
-    	// fields contains {<column name>, <simple type name>}
     	try {
 	    	setMethod.invoke(obj, rs.getObject(column));
 	    } catch (Exception e) {
