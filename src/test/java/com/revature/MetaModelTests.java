@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
-import com.revature.model.Person;
+import com.revature.model.Person_Two;
 import com.revature.twORM.TwORM;
 
 public class MetaModelTests {
@@ -18,7 +18,7 @@ public class MetaModelTests {
 	
 	@Test
 	public void testAddModel() {
-		boolean result = t.addClass(Person.class);
+		boolean result = t.addClass(Person_Two.class);
 		assertTrue(result);
 	}
 	

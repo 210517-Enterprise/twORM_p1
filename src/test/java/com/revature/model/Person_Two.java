@@ -7,8 +7,8 @@ import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.SerialPK;
 import com.revature.annotations.Setter;
 
-@Entity(name = "person")
-public class Person {
+@Entity(name = "person_two")
+public class Person_Two {
 	
 	@PrimaryKey(name = "id", isSerial = true)
 	@SerialPK(name = "id")
@@ -18,17 +18,17 @@ public class Person {
 	@Column(name = "user_age")
 	private int user_age;
 	
-	public Person() {
+	public Person_Two() {
 		super();
 	}
 
-	public Person(String name, int age) {
+	public Person_Two(String name, int age) {
 		super();
 		this.user_name = name;
 		this.user_age = age;
 	}
 	
-	public Person(int id, String name, int age) {
+	public Person_Two(int id, String name, int age) {
 		super();
 		this.id = id;
 		this.user_name = name;

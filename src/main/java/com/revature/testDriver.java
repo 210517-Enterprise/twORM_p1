@@ -1,32 +1,31 @@
 package com.revature;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.util.List;
+import java.util.Optional;
 
 import com.revature.Meta.MetaConstructor;
 import com.revature.ObjSql.Retriever;
+import com.revature.ObjSql.Transacter;
+import com.revature.ObjSql.Updater;
 import com.revature.connection.ConnectionFactory;
 import com.revature.demo.Person;
+import com.revature.twORM.TwORM;
 
 public class testDriver {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		
-//		Person p1 = new Person("Billy", 10);
-//		Person p2 = new Person("Jan", 24);
-//		Person p3 = new Person("Quincy", 177);
-//		
-//		Inserter i = Inserter.getInstance();
+		Person p1 = new Person (1, "Billy", 10);
 		
-		Connection c = ConnectionFactory.getInstance().getConnection();
+		TwORM tworm = TwORM.getInstance();
 		
-		MetaConstructor mc = MetaConstructor.getInstance();
-		mc.addModel(Person.class);
+		Optional<List<Object>> rs = tworm.getListObjectFromDB(Person.class);
+		System.out.println(rs);
 		
-		Retriever r = Retriever.getInstance();
-		List<Object> l = r.getAllEntity(Person.class, c).get();
 		
-		l.forEach(i -> System.out.println(i));
+		
 		
 	}
 		
