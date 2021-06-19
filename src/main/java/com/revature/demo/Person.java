@@ -59,5 +59,10 @@ public class Person {
 	public void setAge(int age) {
 		this.user_age = age;
 	}
+
+	@Override
+	public String toString() {
+		return "Person [id=" + id + ", user_name=" + user_name + ", user_age=" + user_age + "]";
+	}
 	
 }
