@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -47,7 +48,7 @@ public class Updater extends Genericer {
 					pstmt.setObject(index, getter.getValue().invoke(obj));
 					index++;
 				} else {
-					pstmt.setNull(index, java.sql.Types.NULL);
+					pstmt.setNull(index, Types.NULL);
 					index++;
 				}
 			}
