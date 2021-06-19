@@ -52,16 +52,15 @@ public class Updater extends Genericer {
 				}
 			}
 			pstmt.setObject(index, getters.get(model.getPrimary_key_name()).invoke(obj));
-        
-            pstmt.executeUpdate();
+			pstmt.executeUpdate();
 			return true;
-			
+
 			/*
 			 * UPDATE THE CACHE SOMEHOW
 			 */
-			
+
 		} catch (SQLException e) {
-			log.error("Failed to update DB",e);
+			log.error("Failed to update DB", e);
 			return false;
 		}
     }

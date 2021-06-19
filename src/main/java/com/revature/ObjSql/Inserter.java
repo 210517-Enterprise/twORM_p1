@@ -3,6 +3,7 @@ package com.revature.ObjSql;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ParameterMetaData;
@@ -153,11 +154,13 @@ public class Inserter extends Genericer {
 	
 	public String typeJavaToSql(Class type) {
 		
-		if(type.equals(int.class)) {
+		if(type.equals(byte.class) || type.equals(Byte.class) || type.equals(int.class) || type.equals(Integer.class) || type.equals(short.class)||type.equals(Short.class) || type.equals(long.class) || type.equals(Long.class) || type.equals(BigInteger.class)) {
 			return "INTEGER";
-		} else if(type.equals(String.class)) {
+		} else if(type.equals(boolean.class) || type.equals(Boolean.class)) {
+			return "BOOLEAN";
+		} else if(type.equals(char.class) || type.equals(Character.class) || type.equals(String.class) || type.equals(StringBuilder.class) || type.equals(StringBuffer.class)) {
 			return "VARCHAR(50)";
-		} else if (type.equals(double.class) || type.equals(BigDecimal.class)) {
+		} else if (type.equals(double.class) || type.equals(Double.class) || type.equals(float.class) || type.equals(Float.class) || type.equals(BigDecimal.class))  {
 			return "NUMERIC(50, 2)";
 		} else {
 			return null;
