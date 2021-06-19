@@ -53,19 +53,19 @@ public class Retriever extends Genericer {
     		List<Object> res = new ArrayList<>();
     		MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
     		
-    		// Iterate over all results
+    		// Iterate over all results passed and add an object from the row
     		while(rs.next()) {
     			Object obj = model.getConstructor().newInstance();
     			
     			// Get Setters of the model
     			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
     			
-    			// For each setter convert the SQL type to Java
+    			// Use each setter to set the field using ResultSet
     			for(Map.Entry<Method, String[]> s : setters) {
     				setField(obj, s.getKey(), rs, s.getValue());
     			}
     			
-    			// Add object
+    			// Add object to result array
     			res.add(obj);
     		}
     		
@@ -81,20 +81,22 @@ public class Retriever extends Genericer {
     	
     	return Optional.empty();
     }
- 
-    private void setField(Object obj, Method method, ResultSet rs, String[] fields) {
+
+    // Takes in the object it is acting on, the setter being invoked, the rs queried
+    // and a String array from the MetaModel Setters
+    private void setField(Object obj, Method setMethod, ResultSet rs, String[] fields) {
     	String type = fields[1];
-	    // fields contains {<column name>, <simple type name>}
+    	// fields contains {<column name>, <simple type name>}
     	// TODO add more types
     	try {
     		if(type.equals("String")) {
-	    		method.invoke(obj, rs.getString(fields[0]));
+	    		setMethod.invoke(obj, rs.getString(fields[0]));
 	    	} else if (type.equals("int")){
-	    		method.invoke(obj, rs.getInt(fields[0]));
+	    		setMethod.invoke(obj, rs.getInt(fields[0]));
 	    	} else if (type.equals("double")) {
-	    		method.invoke(obj, rs.getDouble(fields[0]));
+	    		setMethod.invoke(obj, rs.getDouble(fields[0]));
 	    	} else if (type.equals("BigDecimal")) {
-	    		method.invoke(obj, rs.getBigDecimal(fields[0]));
+	    		setMethod.invoke(obj, rs.getBigDecimal(fields[0]));
 	    	}
 	    } catch (Exception e) {
 	    	log.error("Error in setting fields when retrieving", e);
