@@ -81,6 +81,13 @@ public class MetaConstructor {
                         .findFirst().get();
     }
     
+    private boolean getPkIsSerial(final Class<?> clazz) {
+        return Arrays.stream(clazz.getDeclaredFields())
+                .filter(f -> f.getDeclaredAnnotation(PrimaryKey.class) != null)
+                .map(f -> f.getDeclaredAnnotation(PrimaryKey.class).isSerial())
+                .findFirst().get();
+    }
+    
     public void addModel(final Class<?> clazz) {
         final String clazzName                  = getClassName(clazz);
         final HashMap<String,Method> getters    = makeGetterMap(getGetters(clazz));
@@ -88,7 +95,8 @@ public class MetaConstructor {
         final Constructor<?> constructor        = getConstructor(clazz);
         final String entity		                = getEntityName(clazz);
         final String primary_key_name           = getPrimaryKeyName(clazz);
-        models.put(clazzName,new MetaModel<>(clazz,getters,setters,constructor,entity,primary_key_name));
+        final boolean isPkSerial				= getPkIsSerial(clazz);
+        models.put(clazzName,new MetaModel<>(clazz,getters,setters,constructor,entity,primary_key_name,isPkSerial));
     }
 	
 	

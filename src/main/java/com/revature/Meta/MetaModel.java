@@ -12,14 +12,16 @@ public class MetaModel<T> {
 	private final Constructor<?> constructor;
 	private final String entity;
 	private final String primary_key_name;
+	private final boolean pkIsSerial;
 	
-	public MetaModel(Class<T> clazz, HashMap<String, Method> getters, HashMap<Method,String[]> setters, Constructor<?> constructor, String entity, String primary_key_name) {
+	public MetaModel(Class<T> clazz, HashMap<String, Method> getters, HashMap<Method,String[]> setters, Constructor<?> constructor, String entity, String primary_key_name, boolean pkIsSerial) {
 		this.clazz = clazz;
 		this.getters = getters;
 		this.setters = setters;
 		this.constructor = constructor;
 		this.entity = entity;
 		this.primary_key_name = primary_key_name;
+		this.pkIsSerial = pkIsSerial;
 	}
 
 	public Class<T> getClazz() {
@@ -46,5 +48,8 @@ public class MetaModel<T> {
 		return primary_key_name;
 	}
 	
+	public boolean getPkIsSerial() {
+		return pkIsSerial;
+	}
 	
 }
