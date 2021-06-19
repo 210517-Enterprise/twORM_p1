@@ -62,7 +62,7 @@ public class Retriever extends Genericer {
     			
     			// Use each setter to set the field using ResultSet
     			for(Map.Entry<Method, String[]> s : setters) {
-    				setField(obj, s.getKey(), rs, s.getValue());
+    				setField(obj, s.getKey(), rs, s.getValue()[0]);
     			}
     			
     			// Add object to result array
@@ -84,20 +84,10 @@ public class Retriever extends Genericer {
 
     // Takes in the object it is acting on, the setter being invoked, the rs queried
     // and a String array from the MetaModel Setters
-    private void setField(Object obj, Method setMethod, ResultSet rs, String[] fields) {
-    	String type = fields[1];
+    private void setField(Object obj, Method setMethod, ResultSet rs, String column) {
     	// fields contains {<column name>, <simple type name>}
-    	// TODO add more types
     	try {
-    		if(type.equals("String")) {
-	    		setMethod.invoke(obj, rs.getString(fields[0]));
-	    	} else if (type.equals("int")){
-	    		setMethod.invoke(obj, rs.getInt(fields[0]));
-	    	} else if (type.equals("double")) {
-	    		setMethod.invoke(obj, rs.getDouble(fields[0]));
-	    	} else if (type.equals("BigDecimal")) {
-	    		setMethod.invoke(obj, rs.getBigDecimal(fields[0]));
-	    	}
+	    	setMethod.invoke(obj, rs.getObject(column));
 	    } catch (Exception e) {
 	    	log.error("Error in setting fields when retrieving", e);
 	    }
