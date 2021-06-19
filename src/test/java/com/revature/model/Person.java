@@ -4,14 +4,12 @@ import com.revature.annotations.Column;
 import com.revature.annotations.Entity;
 import com.revature.annotations.Getter;
 import com.revature.annotations.PrimaryKey;
-import com.revature.annotations.SerialPK;
 import com.revature.annotations.Setter;
 
 @Entity(name = "person")
 public class Person {
 	
 	@PrimaryKey(name = "id", isSerial = true)
-	@SerialPK(name = "id")
 	private int id;
 	@Column(name = "user_name")
 	private String user_name;
