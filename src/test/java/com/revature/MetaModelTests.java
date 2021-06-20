@@ -1,10 +1,10 @@
 package com.revature;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
