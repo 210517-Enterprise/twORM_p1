@@ -1,5 +1,6 @@
 package com.revature.ObjSql;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,11 +41,11 @@ public class Retriever extends Genericer {
 			ResultSet rs = stmt.executeQuery(sql);
 
 			List<Object> res = resultSetToList(rs, clazz);
-			
+
 			if (!res.isEmpty()) {
 				return Optional.of(res);
 			}
-			
+
 		} catch (SQLException e) {
 			log.error("Failed to get all entities for " + clazz.getSimpleName(), e);
 		}
@@ -76,61 +77,77 @@ public class Retriever extends Genericer {
 			PreparedStatement stmt = c.prepareStatement(sql);
 
 		} catch (Exception e) {
-			log.error("Error in finding object of Entity" + obj.getClass().getSimpleName(), e);
+			log.error("Error in finding object of Entity " + obj.getClass().getSimpleName(), e);
 		}
 
 		return Optional.empty();
 	}
-	
+
 	public Optional<Object> retrieveObjectByPK(Class<?> clazz, Object primaryKey, Connection c) {
-		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
 		try {
-			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
-			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
+			Constructor<?> cons 					= clazz.getConstructor(clazz);
+			Optional<Object> obj 					= Optional.of(cons.newInstance(primaryKey));
+			final MetaModel<?> model 				= MetaConstructor.getInstance().getModel(obj);
+			final HashMap<String, Method> getters 	= model.getGetters();
+			final Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
 			
-			sql += model.getPrimary_key_name() + " = ?;";
-			
-			PreparedStatement stmt = c.prepareStatement(sql);
-			
-			stmt.setObject(1, primaryKey);
-			
-			ResultSet rs = stmt.executeQuery();
-			
-			List<Object> res = resultSetToList(rs, model.getClazz());
-			
-			if (!res.isEmpty()) {
-				return Optional.of(res.get(0));
+			String[] pkColumn = { model.getPrimary_key_name() };
+			String[] pk = { getters.get(model.getPrimary_key_name()).invoke(obj).toString() };
+			String[] conditions = {};
+			obj = Optional.of(Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk, conditions).get());
+			if (obj.isPresent())
+				return obj;
+			else {
+				String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
+
+				// MetaModel<?> model =
+				// MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
+
+				sql += model.getPrimary_key_name() + " = ?;";
+
+				PreparedStatement stmt = c.prepareStatement(sql);
+
+				stmt.setObject(1, primaryKey);
+
+				ResultSet rs = stmt.executeQuery();
+
+				List<Object> res = resultSetToList(rs, model.getClazz());
+
+				if (!res.isEmpty()) {
+					return Optional.of(res.get(0));
+				}
 			}
-			
+
 		} catch (Exception e) {
 			log.error("Error in retrieving by PK", e);
 		}
-		
+
 		return Optional.empty();
-    }
-	
-	public Optional<List<Object>> retrieveByColumn(Class<?> clazz, String column, Object value, Connection c){
+	}
+
+	public Optional<List<Object>> retrieveByColumn(Class<?> clazz, String column, Object value, Connection c) {
 		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
 		try {
 			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
 			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
-			
+
 			sql += column + " = ?;";
-			
+
 			PreparedStatement stmt = c.prepareStatement(sql);
-			
+
 			stmt.setObject(1, value);
-			
+
 			ResultSet rs = stmt.executeQuery();
-			
+
 			List<Object> res = resultSetToList(rs, model.getClazz());
-			
+
 			if (!res.isEmpty()) {
 				return Optional.of(res);
 			}
-			
+
 		} catch (Exception e) {
 			log.error("Error in retrieving by column", e);
+
 		}
 		
 		return Optional.empty();
@@ -164,15 +181,16 @@ public class Retriever extends Genericer {
 			
 		} catch (Exception e) {
 			log.error("Error in retrieving by multiple columns", e);
+
 		}
-		
+
 		return Optional.empty();
 	}
 
 	private List<Object> resultSetToList(ResultSet rs, Class<?> clazz) {
 
 		List<Object> res = new ArrayList<>();
-		
+
 		try {
 			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
 
