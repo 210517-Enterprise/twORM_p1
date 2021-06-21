@@ -81,8 +81,8 @@ public class Retriever extends Genericer {
 
 		return Optional.empty();
 	}
-
-	public Optional<Object> retrieveObjectByPK(Class<?> clazz, int primaryKey, Connection c) {
+	
+	public Optional<Object> retrieveObjectByPK(Class<?> clazz, Object primaryKey, Connection c) {
 		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
 		try {
 			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
@@ -109,34 +109,10 @@ public class Retriever extends Genericer {
 		return Optional.empty();
     }
 	
-	public Optional<Object> retrieveObjectByPK(Class<?> clazz, String primaryKey, Connection c) {
+	public Optional<List<Object>> retreiveByColumn(Class<?> clazz, String column, Object value, Connection c){
 		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
-		try {
-			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
-			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
-			
-			sql += model.getPrimary_key_name() + " = ?;";
-			
-			PreparedStatement stmt = c.prepareStatement(sql);
-			
-			stmt.setString(1, primaryKey);
-			
-			ResultSet rs = stmt.executeQuery();
-			
-			List<Object> res = resultSetToList(rs, model.getClazz());
-			
-			if (!res.isEmpty()) {
-				return Optional.of(res.get(0));
-			}
-			
-		} catch (Exception e) {
-			log.error("Error in retrieving by PK", e);
-		}
 		
-		return Optional.empty();
-    }
-	
-	public Optional<List<Object>> retreiveByColumn(String entity, String column, String value, Connection c){
+		
 		
 		return Optional.empty();
 	}
