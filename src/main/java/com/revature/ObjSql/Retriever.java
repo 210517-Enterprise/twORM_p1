@@ -109,7 +109,7 @@ public class Retriever extends Genericer {
 		return Optional.empty();
     }
 	
-	public Optional<List<Object>> retreiveByColumn(Class<?> clazz, String column, Object value, Connection c){
+	public Optional<List<Object>> retrieveByColumn(Class<?> clazz, String column, Object value, Connection c){
 		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
 		try {
 			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
