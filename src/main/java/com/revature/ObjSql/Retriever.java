@@ -130,7 +130,40 @@ public class Retriever extends Genericer {
 			}
 			
 		} catch (Exception e) {
-			log.error("Error in retrieving by PK", e);
+			log.error("Error in retrieving by column", e);
+		}
+		
+		return Optional.empty();
+	}
+	
+	public Optional<List<Object>> retrieveByColumns(Class<?> clazz, HashMap<String, Object> columns, Connection c){
+		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
+		try {
+			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
+			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
+			
+			List<Object> values = new ArrayList<>();
+			for(String column : columns.keySet()) {
+				sql += column + " = ? AND ";
+				values.add(columns.get(column));
+			}
+			
+			PreparedStatement stmt = c.prepareStatement(sql.substring(0, sql.length() - 5));
+			
+			for(int i = 1; i <= values.size(); i++) {
+				stmt.setObject(i, values.get(i - 1));
+			}
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			List<Object> res = resultSetToList(rs, model.getClazz());
+			
+			if (!res.isEmpty()) {
+				return Optional.of(res);
+			}
+			
+		} catch (Exception e) {
+			log.error("Error in retrieving by multiple columns", e);
 		}
 		
 		return Optional.empty();
