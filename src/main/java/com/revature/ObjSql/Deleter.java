@@ -47,6 +47,7 @@ public class Deleter extends Genericer {
             return true;
         }catch(SQLException e) {
             log.error("Error in removing object", e);
+            e.printStackTrace();
         }
         return false;
     }

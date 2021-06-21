@@ -29,6 +29,7 @@ public class Transacter {
 			conn.setAutoCommit(true);
 		} catch (SQLException sqle) {
 			log.error(sqle);
+			sqle.printStackTrace();
 		}
 	}
 	
@@ -46,6 +47,7 @@ public class Transacter {
 			conn.commit();
 		} catch (SQLException sqle) {
 			log.error(sqle);
+			sqle.printStackTrace();
 		}
 	}
 
@@ -54,6 +56,7 @@ public class Transacter {
 			conn.rollback();
 		} catch (SQLException sqle) {
 			log.error(sqle);
+			sqle.printStackTrace();
 		}
 	}
 
@@ -66,6 +69,7 @@ public class Transacter {
 			}
 		} catch (SQLException sqle) {
 			log.error(sqle);
+			sqle.printStackTrace();
 		}
 	}
 
@@ -87,6 +91,7 @@ public class Transacter {
 			}
 		} catch (SQLException sqle) {
 			log.error(sqle);
+			sqle.printStackTrace();
 		}
 	}
 
@@ -95,6 +100,7 @@ public class Transacter {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 		} catch (SQLException sqle) {
 			log.error(sqle);
+			sqle.printStackTrace();
 		}
 	}
 
