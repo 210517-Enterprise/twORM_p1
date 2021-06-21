@@ -130,7 +130,7 @@ public class Retriever extends Genericer {
 			}
 			
 		} catch (Exception e) {
-			log.error("Error in retrieving by PK", e);
+			log.error("Error in retrieving by column", e);
 		}
 		
 		return Optional.empty();
