@@ -62,6 +62,7 @@ public class Updater extends Genericer {
 
 		} catch (SQLException e) {
 			log.error("Failed to update DB", e);
+			e.printStackTrace();
 			return false;
 		}
     }
