@@ -26,23 +26,11 @@ public class Deleter extends Genericer {
         return ObjDel;
     }
 
-    /**
-     * Return the getter method for the primary key.
-     * @param pk name of primary key in a particular.
-     * @param getters HashMap of getters in a particular class.
-     * @return Getter method for primary key.
-     */
     private static Method getGetter(final String pk,final HashMap<String,Method> getters) {
         return getters.get(pk);
 
     }
 
-    /**
-     * Remove an object form the database.
-     * @param obj object to remove from database.
-     * @param conn connection to the database.
-     * @return boolean indicated success/failure of operation.
-     */
     public boolean removeObjectFromDB(final Object obj, final Connection conn) {
         try {
             final MetaModel<?> model                = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());

@@ -24,11 +24,6 @@ public class Transacter {
 		return trans;
 	}
 
-	/**
-	 * turns on auto commit for this connection
-	 * 
-	 * @param conn connection to turn auto commit on for.
-	 */
 	public void enableAutoCommit(final Connection conn) {
 		try {
 			conn.setAutoCommit(true);
@@ -46,11 +41,6 @@ public class Transacter {
 		}
 	}
 
-	/**
-	 * Commit all uncommitted SQL transactions for this connection.
-	 * 
-	 * @param conn connection to commit transactions on.
-	 */
 	public void Commit(final Connection conn) {
 		try {
 			conn.commit();
@@ -59,11 +49,6 @@ public class Transacter {
 		}
 	}
 
-	/**
-	 * Rollback all uncommitted SQL transactions.
-	 * 
-	 * @param conn connection to rollback on.
-	 */
 	public void Rollback(final Connection conn) {
 		try {
 			conn.rollback();
@@ -72,12 +57,6 @@ public class Transacter {
 		}
 	}
 
-	/**
-	 * Rollback to a previous savepoint.
-	 * 
-	 * @param name name of savepoint.
-	 * @param conn connection to rollback on.
-	 */
 	public void Rollback(final String name, final Connection conn) {
 		try {
 			if (savepoints.containsKey(name)) {
@@ -90,12 +69,6 @@ public class Transacter {
 		}
 	}
 
-	/**
-	 * Create a named savepoint.
-	 * 
-	 * @param name name of new savepoint
-	 * @param conn connection for savepoint.
-	 */
 	public void Savepoint(final String name, final Connection conn) {
 		try {
 			final Savepoint save = conn.setSavepoint(name);
@@ -105,12 +78,6 @@ public class Transacter {
 		}
 	}
 
-	/**
-	 * Release a previously made savepoint.
-	 * 
-	 * @param name name of savepoint.
-	 * @param conn connection.
-	 */
 	public void ReleaseSavepoint(final String name, final Connection conn) {
 		try {
 			if (savepoints.containsKey(name)) {
@@ -123,11 +90,6 @@ public class Transacter {
 		}
 	}
 
-	/**
-	 * Set a transaction in SQL.
-	 * 
-	 * @param conn connection.
-	 */
 	public void setTransaction(final Connection conn) {
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
