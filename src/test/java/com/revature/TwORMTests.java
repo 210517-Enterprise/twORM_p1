@@ -18,7 +18,6 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 
 import com.revature.connection.ConnectionFactory;
-import com.revature.demo.Person;
 import com.revature.model.Person_Two;
 import com.revature.twORM.TwORM;
 
@@ -26,7 +25,7 @@ import com.revature.twORM.TwORM;
 public class TwORMTests {
 
 	private final TwORM t = TwORM.getInstance();
-	private final Connection conn = ConnectionFactory.getInstance().getConnection();
+	//private final Connection conn = ConnectionFactory.getInstance().getConnection();
 	
 	
 	@Test
@@ -103,7 +102,23 @@ public class TwORMTests {
 		t.addClass(Person_Two.class);
 		Optional<List<Object>> results;
 		
-		results = t.getListObjectFromDB(Person.class);
+		results = t.getListObjectFromDB(Person_Two.class);
+		
+		assertFalse(results.isEmpty());
+	}
+	
+	@Test
+	public void getByPKTest() {
+		Optional<Object> result;
+		result = t.getByPK(Person_Two.class, 1);
+		
+		assertTrue(result != null);
+	}
+	
+	@Test
+	public void getByColumnTest() {
+		Optional<List<Object>> results;
+		results = t.getListByColumn(Person_Two.class, "user_name", "Tom");
 		
 		assertFalse(results.isEmpty());
 	}
