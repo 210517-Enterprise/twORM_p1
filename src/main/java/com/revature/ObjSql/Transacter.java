@@ -79,6 +79,7 @@ public class Transacter {
 			savepoints.put(name, save);
 		} catch (SQLException sqle) {
 			log.error(sqle);
+			sqle.printStackTrace();
 		}
 	}
 
