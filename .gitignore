@@ -1,5 +1,7 @@
 // Ignore application properties
 application.properties
+src/main/java/com/revature/testDriver
+
 
 # Eclipse
 .classpath

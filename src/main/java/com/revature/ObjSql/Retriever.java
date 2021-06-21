@@ -82,16 +82,17 @@ public class Retriever extends Genericer {
 		return Optional.empty();
 	}
 
-	public Optional<Object> retrieveObjectByPK(String entity, Object primaryKey, Connection c) {
-		String sql = "SELECT * FROM " + entity + " WHERE ? = ?;";
+	public Optional<Object> retrieveObjectByPK(Class<?> clazz, int primaryKey, Connection c) {
+		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
 		try {
-			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(entity);
+			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
 			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
+			
+			sql += model.getPrimary_key_name() + " = ?;";
 			
 			PreparedStatement stmt = c.prepareStatement(sql);
 			
-			stmt.setString(1, model.getPrimary_key_name());
-			stmt.setObject(2, primaryKey.toString());
+			stmt.setObject(1, primaryKey);
 			
 			ResultSet rs = stmt.executeQuery();
 			
@@ -99,10 +100,37 @@ public class Retriever extends Genericer {
 			
 			if (!res.isEmpty()) {
 				return Optional.of(res.get(0));
-			} 
+			}
 			
 		} catch (Exception e) {
-			log.error(e);
+			log.error("Error in retrieving by PK", e);
+		}
+		
+		return Optional.empty();
+    }
+	
+	public Optional<Object> retrieveObjectByPK(Class<?> clazz, String primaryKey, Connection c) {
+		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
+		try {
+			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
+			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
+			
+			sql += model.getPrimary_key_name() + " = ?;";
+			
+			PreparedStatement stmt = c.prepareStatement(sql);
+			
+			stmt.setString(1, primaryKey);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			List<Object> res = resultSetToList(rs, model.getClazz());
+			
+			if (!res.isEmpty()) {
+				return Optional.of(res.get(0));
+			}
+			
+		} catch (Exception e) {
+			log.error("Error in retrieving by PK", e);
 		}
 		
 		return Optional.empty();
