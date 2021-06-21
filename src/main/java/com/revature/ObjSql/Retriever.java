@@ -111,8 +111,27 @@ public class Retriever extends Genericer {
 	
 	public Optional<List<Object>> retreiveByColumn(Class<?> clazz, String column, Object value, Connection c){
 		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
-		
-		
+		try {
+			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
+			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
+			
+			sql += column + " = ?;";
+			
+			PreparedStatement stmt = c.prepareStatement(sql);
+			
+			stmt.setObject(1, value);
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			List<Object> res = resultSetToList(rs, model.getClazz());
+			
+			if (!res.isEmpty()) {
+				return Optional.of(res);
+			}
+			
+		} catch (Exception e) {
+			log.error("Error in retrieving by PK", e);
+		}
 		
 		return Optional.empty();
 	}
