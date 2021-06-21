@@ -39,8 +39,12 @@ public class Retriever extends Genericer {
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 
-			return resultSetToList(rs, clazz);
-
+			List<Object> res = resultSetToList(rs, clazz);
+			
+			if (!res.isEmpty()) {
+				return Optional.of(res);
+			}
+			
 		} catch (SQLException e) {
 			log.error("Failed to get all entities for " + clazz.getSimpleName(), e);
 		}
@@ -82,32 +86,38 @@ public class Retriever extends Genericer {
 		String sql = "SELECT * FROM " + entity + " WHERE ? = ?;";
 		try {
 			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(entity);
-			Optional<Object> obj = (Optional<Object>) model.getConstructor().newInstance();
 			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
 			
 			PreparedStatement stmt = c.prepareStatement(sql);
 			
 			stmt.setString(1, model.getPrimary_key_name());
-			stmt.setObject(2, primaryKey);
+			stmt.setObject(2, primaryKey.toString());
 			
 			ResultSet rs = stmt.executeQuery();
 			
-			for (Map.Entry<Method, String[]> s : setters) {
-				setField(obj, s.getKey(), rs, s.getValue()[0]);
-			}
+			List<Object> res = resultSetToList(rs, model.getClazz());
 			
-			return obj;
+			if (!res.isEmpty()) {
+				return Optional.of(res.get(0));
+			} 
 			
 		} catch (Exception e) {
 			log.error(e);
-			return Optional.empty();
 		}
+		
+		return Optional.empty();
     }
+	
+	public Optional<List<Object>> retreiveByColumn(String entity, String column, String value, Connection c){
+		
+		return Optional.empty();
+	}
 
-	private Optional<List<Object>> resultSetToList(ResultSet rs, Class<?> clazz) {
+	private List<Object> resultSetToList(ResultSet rs, Class<?> clazz) {
 
+		List<Object> res = new ArrayList<>();
+		
 		try {
-			List<Object> res = new ArrayList<>();
 			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
 
 			// Iterate over all results passed and add an object from the row
@@ -126,17 +136,11 @@ public class Retriever extends Genericer {
 				res.add(obj);
 			}
 
-			if (res.isEmpty()) {
-				return Optional.empty();
-			}
-
-			return Optional.of(res);
-
 		} catch (Exception e) {
 			log.error("Error in converting ResultSet to List", e);
 		}
 
-		return Optional.empty();
+		return res;
 	}
 
 	// Takes in the object it is acting on, the setter being invoked, the rs queried
