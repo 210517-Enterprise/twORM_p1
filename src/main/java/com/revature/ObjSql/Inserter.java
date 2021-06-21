@@ -106,7 +106,6 @@ public class Inserter extends Genericer {
 					
 					// also place object inside of cache
 					Cacher.getInstance().putObjInCache(obj);
-					;
 					return true;
 				} catch (Exception e) {
 					log.error(e);

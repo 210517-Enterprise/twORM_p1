@@ -54,12 +54,14 @@ public class Updater extends Genericer {
 			}
 			pstmt.setObject(index, getters.get(model.getPrimary_key_name()).invoke(obj));
 			pstmt.executeUpdate();
+			Class<? extends Object> clazz = obj.getClass();
+			String[] pkColumn = {model.getPrimary_key_name()};
+			String[] pk = {getters.get(model.getPrimary_key_name()).invoke(obj).toString()};
+			String[] conditions = {};
+			Object toBeRemoved = Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk, conditions);
+			Cacher.getInstance().removeObjFromCache(toBeRemoved);
+			Cacher.getInstance().putObjInCache(obj);
 			return true;
-
-			/*
-			 * UPDATE THE CACHE SOMEHOW
-			 */
-
 		} catch (SQLException e) {
 			log.error("Failed to update DB", e);
 			e.printStackTrace();
