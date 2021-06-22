@@ -2,10 +2,13 @@ package com.revature;
 
 
 
+
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,16 +20,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 
-import com.revature.connection.ConnectionFactory;
+import com.revature.model.NoAnnotations;
 import com.revature.model.Person_Two;
 import com.revature.twORM.TwORM;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class TwORMTests {
 
-	private final TwORM t = TwORM.getInstance();
-	//private final Connection conn = ConnectionFactory.getInstance().getConnection();
-	
+	final TwORM t = TwORM.getInstance();
 	
 	@Test
 	@Order(1)
@@ -35,9 +36,14 @@ public class TwORMTests {
 		assertTrue(result);
 	}
 	
+	@Test
+	public void addClassNoAnnotations() {
+		boolean result = t.addClass(NoAnnotations.class);
+		assertFalse(result);
+	}
+	
 	@Test 
 	@Order(2)
-
 	public void addObject () {
 		Person_Two p1 = new Person_Two("Tom", 18);
 		Person_Two p2 = new Person_Two("Dick", 18);
@@ -54,8 +60,14 @@ public class TwORMTests {
 		assertTrue(r1 && r2 && r3 && r4);
 	}
 	
+	@Test
+	public void addInvalidObject() {
+		NoAnnotations badObj = new NoAnnotations();
+		assertThrows(NullPointerException.class, () -> t.addObjectToDb(badObj));
+	}
 	
 	@Test
+	@Order(3)
 	public void updateAge() {
 		
 		t.addClass(Person_Two.class);
@@ -80,6 +92,22 @@ public class TwORMTests {
 		
 	}
 	
+	@Test
+	public void updatesPersistToDb () {
+		List<Object> rs = t.getListObjectFromDB(Person_Two.class).get();
+		assertTrue(rs.size() >=3);
+		Person_Two obj1 = (Person_Two) rs.get(0);
+		int age =obj1.getAge();
+		assertEquals(age, 26);
+		
+	}
+	
+	@Test
+	public void updateEntryDoesNotExist() {
+		Person_Two p = new Person_Two(9, "Pierre", 27);
+		assertFalse(t.updateObjectInDB(p));
+	}
+	
 	
 	@Test
 	public void deleteObject() {
@@ -91,10 +119,20 @@ public class TwORMTests {
 	}
 	
 	@Test
-	public void getCache() {
+	public void getCacheReturnsCacheOfObjects() {
+		
+		
 		HashMap<Class<?>, HashSet<Object>> cache = t.getCache();
+	
+		
+		
+//		for (int i = 0; i < contents.length; i++) {
+//			System.out.println(contents[i]);
+//		}
+		
 		assertFalse(cache.isEmpty());
 		assertTrue(cache.containsKey(Person_Two.class));
+//		assertEquals(contents.length, 3);
 	}
 	
 	@Test 

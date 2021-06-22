@@ -52,6 +52,9 @@ public class Retriever extends Genericer {
 		return Optional.empty();
 	}
 
+	/*
+	 * LOOK AT ME... This is an overly verbose way of doing exactly the above
+	 */
 	public Optional<List<Object>> retrieveObject(Object obj, Connection c) {
 
 		String sql = "SELECT * FROM " + obj.getClass().getSimpleName();
