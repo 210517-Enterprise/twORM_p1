@@ -89,15 +89,13 @@ public class Retriever extends Genericer {
 
 	public Optional<Object> retrieveObjectByPK(Class<?> clazz, Object primaryKey, Connection c) {
 		try {
-			Constructor<?> cons 					= clazz.getConstructor(clazz);
-			Optional<Object> obj 					= Optional.of(cons.newInstance(primaryKey));
-			final MetaModel<?> model 				= MetaConstructor.getInstance().getModel(obj);
-			final HashMap<String, Method> getters 	= model.getGetters();
+			final MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
+			final HashMap<String, Method> getters = model.getGetters();
 			final Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
-			
+
 			String[] pkColumn = { model.getPrimary_key_name() };
-			String[] pk = { getters.get(model.getPrimary_key_name()).invoke(obj).toString() };
-			obj = Optional.of(Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk).get());
+			String[] pk = { primaryKey.toString() };
+			Optional<Object> obj = Optional.of(Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk).get());
 			if (obj.isPresent())
 				return obj;
 			else {
@@ -152,36 +150,36 @@ public class Retriever extends Genericer {
 			log.error("Error in retrieving by column", e);
 
 		}
-		
+
 		return Optional.empty();
 	}
-	
-	public Optional<List<Object>> retrieveByColumns(Class<?> clazz, HashMap<String, Object> columns, Connection c){
-		
+
+	public Optional<List<Object>> retrieveByColumns(Class<?> clazz, HashMap<String, Object> columns, Connection c) {
+
 		try {
 			MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
 			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
 			String sql = "SELECT * FROM " + model.getEntity() + " WHERE ";
 			List<Object> values = new ArrayList<>();
-			for(String column : columns.keySet()) {
+			for (String column : columns.keySet()) {
 				sql += column + " = ? AND ";
 				values.add(columns.get(column));
 			}
-			
+
 			PreparedStatement stmt = c.prepareStatement(sql.substring(0, sql.length() - 5));
-			
-			for(int i = 1; i <= values.size(); i++) {
+
+			for (int i = 1; i <= values.size(); i++) {
 				stmt.setObject(i, values.get(i - 1));
 			}
-			
+
 			ResultSet rs = stmt.executeQuery();
-			
+
 			List<Object> res = resultSetToList(rs, model.getClazz());
-			
+
 			if (!res.isEmpty()) {
 				return Optional.of(res);
 			}
-			
+
 		} catch (Exception e) {
 			log.error("Error in retrieving by multiple columns", e);
 
@@ -193,27 +191,26 @@ public class Retriever extends Genericer {
 	public void databaseToCache(Connection c) {
 		HashMap<String, MetaModel<?>> models = MetaConstructor.getInstance().getModels();
 		Cacher cache = Cacher.getInstance();
-				
+
 		models.forEach((modelName, meta) -> {
 			String sql = "SELECT * FROM " + meta.getEntity();
-			
+
 			try {
 				Statement stmt = c.createStatement();
 				ResultSet rs = stmt.executeQuery(sql);
-							
+
 				List<Object> objs = resultSetToList(rs, meta.getClazz());
 
 				cache.putAllOfEntityInCache(meta.getClazz(), objs);
-				
+
 			} catch (SQLException e) {
 				log.warn("SQL error when attempting to cache DB", e);
 			}
-			
+
 		});
-		
-		
+
 	}
-	
+
 	private List<Object> resultSetToList(ResultSet rs, Class<?> clazz) {
 
 		List<Object> res = new ArrayList<>();
