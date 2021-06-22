@@ -27,6 +27,10 @@ public class MetaConstructor {
         return models;
     }
 	
+	public MetaModel<?> getModel(Class<?> clazz) {
+		return models.get(clazz.getSimpleName());
+	}
+	
 	public MetaModel<?> getModel(Object obj) {
 		return models.get(obj.getClass().getSimpleName());
 	}

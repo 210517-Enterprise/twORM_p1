@@ -59,8 +59,7 @@ public class Updater extends Genericer {
 			Class<? extends Object> clazz = obj.getClass();
 			String[] pkColumn = {model.getPrimary_key_name()};
 			String[] pk = {getters.get(model.getPrimary_key_name()).invoke(obj).toString()};
-			String[] conditions = {};
-			Object toBeRemoved = Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk, conditions);
+			Object toBeRemoved = Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk);
 			Cacher.getInstance().removeObjFromCache(toBeRemoved);
 			Cacher.getInstance().putObjInCache(obj);
 			return true;
