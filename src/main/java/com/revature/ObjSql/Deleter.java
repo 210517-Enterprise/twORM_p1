@@ -40,11 +40,17 @@ public class Deleter extends Genericer {
             final PreparedStatement pstmt           = conn.prepareStatement(sql);
             final ParameterMetaData pd              = pstmt.getParameterMetaData();
             setStatement(pstmt, pd, getter, obj, 1);
-            pstmt.executeUpdate();
-            // TODO double check caching
+            
+            int result = pstmt.executeUpdate();
+            
+            if (result > 0) {
             Cacher.getInstance().removeObjFromCache(obj);
-
+            log.info("Object " + obj.toString() + " has been removed from the DB");
             return true;
+            } else {
+            	log.warn("Object not deleted. Object does not exist or does not match DB");
+            	return false;
+            }
         }catch(SQLException e) {
             log.error("Error in removing object", e);
             e.printStackTrace();
