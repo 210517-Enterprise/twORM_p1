@@ -95,9 +95,9 @@ public class Retriever extends Genericer {
 
 			String[] pkColumn = { model.getPrimary_key_name() };
 			String[] pk = { primaryKey.toString() };
-			Object obj = Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk).get();
-			if (obj != null)
-				return Optional.of(obj);
+			Optional<List<Object>> obj = Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk);
+			if (obj.isPresent())
+				return Optional.of(obj.get().get(0));
 			else {
 				String sql = "SELECT * FROM " + model.getEntity() + " WHERE ";
 
