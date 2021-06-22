@@ -54,33 +54,22 @@ public class Cacher extends Genericer {
         return false;
     }
 
-    private boolean compareValuesOfOperators(final Queue<Boolean> values,final String[] operators) {
-        if (values.size() > 1) {
-            boolean value = false;
-            for (String o : operators) {
-                value = (o.equals("AND")) ? values.remove() && values.remove() : values.remove() || values.remove();
-            }
-            return value;
-        }
-        return values.remove();
-    }
-
-    private boolean compareObjects(final Object obj,final HashMap<String,Method> getters,final String[] columns,final String[] conditions,final String[] operators) {
+    private boolean compareObjects(final Object obj,final HashMap<String,Method> getters,final String[] columns,final String[] conditions) {
         final Queue<Boolean> values = new LinkedList<>();
         for(int i = 0; i < columns.length; i++) {
             values.add(compareColumnToConditional(obj,getters,columns[i],conditions[i]));
         }
-        return compareValuesOfOperators(values,operators);
+        return values.contains(false);
     }
 
-    public Optional<List<Object>> getObjFromCache(final Class<?> clazz,final HashMap<String,Method> getters,final String[] columns,final String[] conditions,final String[] operators) {
+    public Optional<List<Object>> getObjFromCache(final Class<?> clazz,final HashMap<String,Method> getters,final String[] columns,final String[] conditions) {
         if(!cache.containsKey(clazz)) {
             return Optional.empty();
         }
         try {
             final List<Object> list = new LinkedList<>();
             for(Object o: cache.get(clazz)){
-                if(compareObjects(o,getters,columns,conditions,operators)) {
+                if(compareObjects(o,getters,columns,conditions)) {
                     list.add(o);
                 }
             }

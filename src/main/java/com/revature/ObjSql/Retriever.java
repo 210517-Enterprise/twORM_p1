@@ -97,12 +97,11 @@ public class Retriever extends Genericer {
 			
 			String[] pkColumn = { model.getPrimary_key_name() };
 			String[] pk = { getters.get(model.getPrimary_key_name()).invoke(obj).toString() };
-			String[] conditions = {};
-			obj = Optional.of(Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk, conditions).get());
+			obj = Optional.of(Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk).get());
 			if (obj.isPresent())
 				return obj;
 			else {
-				String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
+				String sql = "SELECT * FROM " + model.getEntity() + " WHERE ";
 
 				// MetaModel<?> model =
 				// MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
@@ -132,7 +131,7 @@ public class Retriever extends Genericer {
 	public Optional<List<Object>> retrieveByColumn(Class<?> clazz, String column, Object value, Connection c) {
 		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
 		try {
-			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
+			MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
 			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
 
 			sql += column + " = ?;";
@@ -158,11 +157,11 @@ public class Retriever extends Genericer {
 	}
 	
 	public Optional<List<Object>> retrieveByColumns(Class<?> clazz, HashMap<String, Object> columns, Connection c){
-		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
+		
 		try {
-			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
+			MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
 			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
-			
+			String sql = "SELECT * FROM " + model.getEntity() + " WHERE ";
 			List<Object> values = new ArrayList<>();
 			for(String column : columns.keySet()) {
 				sql += column + " = ? AND ";
@@ -220,7 +219,7 @@ public class Retriever extends Genericer {
 		List<Object> res = new ArrayList<>();
 
 		try {
-			MetaModel<?> model = MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
+			MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
 
 			// Iterate over all results passed and add an object from the row
 			while (rs.next()) {
