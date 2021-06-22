@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -190,6 +191,30 @@ public class Retriever extends Genericer {
 		return Optional.empty();
 	}
 
+	public void databaseToCache(Connection c) {
+		HashMap<String, MetaModel<?>> models = MetaConstructor.getInstance().getModels();
+		Cacher cache = Cacher.getInstance();
+				
+		models.forEach((modelName, meta) -> {
+			String sql = "SELECT * FROM " + meta.getEntity();
+			
+			try {
+				Statement stmt = c.createStatement();
+				ResultSet rs = stmt.executeQuery(sql);
+							
+				List<Object> objs = resultSetToList(rs, meta.getClazz());
+
+				cache.putAllOfEntityInCache(meta.getClazz(), objs);
+				
+			} catch (SQLException e) {
+				log.warn("SQL error when attempting to cache DB", e);
+			}
+			
+		});
+		
+		
+	}
+	
 	private List<Object> resultSetToList(ResultSet rs, Class<?> clazz) {
 
 		List<Object> res = new ArrayList<>();

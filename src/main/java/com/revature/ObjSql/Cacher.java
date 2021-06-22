@@ -32,6 +32,12 @@ public class Cacher extends Genericer {
         return cache;
     }
 
+    public void putAllOfEntityInCache(Class<?> clazz, List<Object> objs) {
+    	HashSet<Object> set = new HashSet<>(objs);
+    	
+    	cache.put(clazz, set);
+    }
+    
     public void putObjInCache(final Object obj) {
         if(!cache.containsKey(obj.getClass())) {
             cache.put(obj.getClass(),new HashSet<>());
