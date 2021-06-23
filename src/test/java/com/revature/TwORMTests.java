@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,11 +16,14 @@ import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import com.revature.connection.ConnectionFactory;
 import com.revature.model.NoAnnotations;
 import com.revature.model.Person_Two;
 import com.revature.twORM.TwORM;
@@ -25,6 +31,28 @@ import com.revature.twORM.TwORM;
 @TestMethodOrder(OrderAnnotation.class)
 public class TwORMTests {
 
+	
+	@BeforeAll
+	public static void setup() {
+		System.out.println("Beginning tests of TwORM services");
+	}
+	
+	@AfterAll
+	public static void teardown() {
+		System.out.println("Yeet created table when done!");
+		ConnectionFactory cf = ConnectionFactory.getInstance();
+		Connection conn = cf.getConnection();
+		
+		String sql = "DROP TABLE IF EXISTS person_two;";
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.execute(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
 	@Test
 	@Order(1)

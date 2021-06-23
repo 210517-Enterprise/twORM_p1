@@ -88,13 +88,6 @@ public class TwORM {
 		}
 	}
 	
-	/*This might be more elegant:
-	 *This way would only update changed information instead of the entire object 
-	
-	public boolean UpdateObjectInDB(final Object obj,final String update_columns) {
-        return rover.updateObject(obj,update_columns,conn);
-    }
-	*/
 	
 	/**
 	 * <p>Removes the designated object from the database.</p>
