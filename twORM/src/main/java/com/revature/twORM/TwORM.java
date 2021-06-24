@@ -206,9 +206,8 @@ public class TwORM {
 		transacter.setTransaction(conn);
 	}
 	
-	/*not yet implemented in retriever
-	public void addAllFromDBToCache(final Class<?> clazz) {
-	       rover.queryAllFromDB(clazz,conn);
+
+	public void addAllFromDBToCache() {
+	       rover.databaseToCache(conn);
 	    }
-	*/
 }
