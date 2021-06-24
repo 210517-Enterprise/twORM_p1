@@ -49,32 +49,32 @@ Finally, inside your project structure you need a application.proprties file.
 ## Usage
 ### Annotating Classes
 All classes that are represented in the database must be annotated.
-- #### Entity(name = "table_name")
- - Indicates that the class is associated with the table named table_name.
+- #### @Entity(name = "table_name")
+   - Indicates that the class is associated with the table named table_name.
 - #### @Column(name = "column_name")  
- - Optional. Indicates that the Annotated field is a column in the table with the name column_name for future use with complex queries and static fields.
+   - Optional. Indicates that the Annotated field is a column in the table with the name column_name for future use with complex queries and static fields.
 - #### @Setter(name = "column_name")  
- - Indicates that the anotated method is a setter for 'column_name'.  
+   - Indicates that the anotated method is a setter for 'column_name'.  
 - #### @Getter(name = "column_name")  
- - Indicates that the anotated method is a getter for 'column_name'.  
+   - Indicates that the anotated method is a getter for 'column_name'.  
 - #### @PrimaryKey(name = "column_name" isSerial=true/false) 
- - Indicates that the annotated field is the primary key for a table. The isSerial value controls whether the value is serially generated or specified by the user.
+   - Indicates that the annotated field is the primary key for a table. The isSerial value controls whether the value is serially generated or specified by the user.
 
 ### UserAPI
 - #### `public static TwORM getInstance()`
- - Returns a Singleton instance of the class that will serve as the starting point for calling all other available methods.
+  - Returns a Singleton instance of the class that will serve as the starting point for calling all other available methods.
 - #### `public HashMap<Class<?>, HashSet<Object>> getCache()`  
- - returns the cache as a HashMap.  
+  - returns the cache as a HashMap.  
 - #### `public boolean addClass(final Class<?> clazz)`  
- - Adds a class to the ORM. This is the method to use to declare a Class is an object inside of the database.  
+  - Adds a class to the ORM. This is the method to use to declare a Class is an object inside of the database.  
 - #### `public boolean UpdateObjectInDB(final Object obj)`  
- - Updates the given object in the databse.
+  - Updates the given object in the databse.
 - #### `public boolean deleteObjectFromDB(final Object obj)`  
- - Removes the given object from the database.  
+  - Removes the given object from the database.  
 - #### `public boolean addObjectToDB(final Object obj)`  
- - Adds the given object to the database. If an appropriate table does not exist, one will be generated.
-- #### 'public Optional<List<Class>> getListObjectFromDB(final Class<?> clazz)`
- - Returns a list of all entries in the table that corresponds to clazz
+  - Adds the given object to the database. If an appropriate table does not exist, one will be generated.
+- #### `public Optional<List<Class>> getListObjectFromDB(final Class<?> clazz)`
+  - Returns a list of all entries in the table that corresponds to clazz
 - #### 'public Optional<Object> getByPK(Class<?> clazz, String pk)`
   - Returns the entry from the table that corresponds to clazz with the primary key PK
 - #### 'public Optional<Object> getByPK(Class<?> clazz, int pk)`
