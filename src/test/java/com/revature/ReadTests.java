@@ -89,6 +89,7 @@ public class ReadTests {
 		Optional<Object> rs;
 		rs = t.getByPK(Person_Two.class, 2);
 		Person_Two result = (Person_Two) rs.get();
+		System.out.println(result);
 		
 		assertTrue(rs != null && !rs.isEmpty());
 		assertTrue(result.getClass() == Person_Two.class);
