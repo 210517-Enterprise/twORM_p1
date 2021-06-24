@@ -170,10 +170,18 @@ public class TwORM {
 	}
 	
 	/**
+	 * A transaction control statement that will set a save point.
+	 * @param savePointName: a string with the name of the save point for other methods
+	 */
+	public void setSavePoint(String savePointName) {
+		transacter.Savepoint(savePointName, conn);
+	}
+	
+	/**
 	 * A transaction control statement that will roll back all database changes to the specified save point.
 	 * @param savePointName: the name of the save point that should be rolled back to
 	 */
-	private void returnToSavePoint(String savePointName) {
+	public void returnToSavePoint(String savePointName) {
 		transacter.Rollback(savePointName, conn);
 	}
 	
@@ -200,13 +208,15 @@ public class TwORM {
 	}
 	
 	/**
-	 * A transaction control statement that will set transaction isolation to TRANSACTION_READ_COMMITTED
+	 * A transaction control statement that will begin a transaction and set the transaction isolation to TRANSACTION_READ_COMMITTED
 	 */
-	public void setTransactionLevel() {
+	public void beginTransaction() {
 		transacter.setTransaction(conn);
 	}
 	
-
+	/**
+	 * A method that will pull the entire contents of the connected database and build a working cache.
+	 */
 	public void addAllFromDBToCache() {
 	       rover.databaseToCache(conn);
 	    }
