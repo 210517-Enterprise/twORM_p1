@@ -25,12 +25,11 @@ public class Driver {
 		
 		t.addObjectToDb(arson);
 		t.addObjectToDb(assault);
-		t.commitChanges();
 		t.addObjectToDb(battery);
+		t.commitChanges();
 		
 		HashMap<Class<?>, HashSet<Object>> cache = t.getCache();
 		System.out.println(cache.get(Crime.class));
-		System.out.println(t.getByPK(Person_Two.class, "Battery"));
 		
 		
 		}

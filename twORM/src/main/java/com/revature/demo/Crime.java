@@ -8,7 +8,7 @@ import com.revature.annotations.Setter;
 @Entity(name = "crime")
 public class Crime {
 	
-	@PrimaryKey(name="name", isSerial=false)
+	@PrimaryKey(name="offence", isSerial=false)
 	private String offence;
 	
 	private String description;

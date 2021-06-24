@@ -38,6 +38,10 @@ public class Inserter {
 	private String getColumns(final Collection<String> getters, String pkName) {
 		return String.join(",", getters.stream().filter(s -> (!s.equals(pkName))).toArray(String[]::new));
 	}
+	
+	private String getColumns(final Collection<String> getters) {
+		return String.join(",", getters.stream().toArray(String[]::new));
+	}
 
 	private void setSerialID(final Object obj, final Optional<Map.Entry<Method, String[]>> setter,
 			final PreparedStatement pstmt) {
@@ -86,7 +90,7 @@ public class Inserter {
 					final String pk_name = model.getPrimary_key_name();
 					final Optional<Map.Entry<Method, String[]>> setter = getSerialKeyEntry(pk_name, model.getSetters());
 					final String args = model.getPkIsSerial() ? getArgs(getters.keySet().size() - 2) : getArgs(getters.keySet().size() - 1);
-					final String columns = getColumns(getters.keySet(), pk_name);
+					final String columns = model.getPkIsSerial() ? getColumns(getters.keySet(), pk_name) : getColumns(getters.keySet());
 					final String sql = "INSERT INTO " + model.getEntity() + " ( " + columns + " ) VALUES( " + args
 							+ " )";
 					final PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -99,8 +103,8 @@ public class Inserter {
 							index++;
 						}
 					}
-
-					if (pstmt.executeUpdate() != 0) {
+					pstmt.executeUpdate();
+					if (model.getPkIsSerial()) {
 						setSerialID(obj, setter, pstmt);
 					}
 
