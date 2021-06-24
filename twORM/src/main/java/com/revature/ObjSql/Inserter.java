@@ -59,8 +59,8 @@ public class Inserter {
 		ArrayList<String> tables = new ArrayList<String>();
 		try {
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(
-					"SELECT table_name" + " FROM information_schema.TABLES" + " WHERE table_schema = '" + conn.getSchema() + "'");
+			ResultSet rs = stmt.executeQuery("SELECT table_name" + " FROM information_schema.TABLES"
+					+ " WHERE table_schema = '" + conn.getSchema() + "'");
 
 			while (rs.next()) {
 				tables.add(rs.getString("table_name"));
@@ -81,14 +81,15 @@ public class Inserter {
 		try {
 			if (confirmTable(obj, conn)) {
 				try {
-					final MetaModel<?> model							= MetaConstructor.getInstance().getModel(obj);
-					final HashMap<String, Method> getters				= model.getGetters();
-					final String pk_name								= model.getPrimary_key_name();
-					final Optional<Map.Entry<Method, String[]>> setter	= getSerialKeyEntry(pk_name, model.getSetters());
-					final String args									= model.getPkIsSerial()? getArgs(getters.keySet().size() - 2) : getArgs(getters.keySet().size() - 1);
-					final String columns								= getColumns(getters.keySet(), pk_name);
-					final String sql									= "INSERT INTO " + model.getEntity() + " ( " + columns + " ) VALUES( " + args + " )";
-					final PreparedStatement pstmt 						= conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+					final MetaModel<?> model = MetaConstructor.getInstance().getModel(obj);
+					final HashMap<String, Method> getters = model.getGetters();
+					final String pk_name = model.getPrimary_key_name();
+					final Optional<Map.Entry<Method, String[]>> setter = getSerialKeyEntry(pk_name, model.getSetters());
+					final String args = model.getPkIsSerial() ? getArgs(getters.keySet().size() - 2) : getArgs(getters.keySet().size() - 1);
+					final String columns = getColumns(getters.keySet(), pk_name);
+					final String sql = "INSERT INTO " + model.getEntity() + " ( " + columns + " ) VALUES( " + args
+							+ " )";
+					final PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 					int index = 1;
 
@@ -118,10 +119,10 @@ public class Inserter {
 	}
 
 	public boolean makeEntity(final Object obj, final Connection conn) {
-		
-		final MetaModel<?> model 				= MetaConstructor.getInstance().getModel(obj);
-		final HashMap<String, Method> getters	= model.getGetters();
-		final String columns[] 					= getColumns(getters.keySet(), model.getPrimary_key_name()).split(",");
+
+		final MetaModel<?> model = MetaConstructor.getInstance().getModel(obj);
+		final HashMap<String, Method> getters = model.getGetters();
+		final String columns[] = getColumns(getters.keySet(), model.getPrimary_key_name()).split(",");
 
 		String sql = "CREATE TABLE " + model.getEntity() + " (";
 
@@ -159,7 +160,8 @@ public class Inserter {
 
 	public String typeJavaToSql(Class<?> type) {
 
-		if (type.equals(byte.class) || type.equals(Byte.class) || type.equals(int.class) || type.equals(Integer.class) || type.equals(short.class) || type.equals(Short.class)) {
+		if (type.equals(byte.class) || type.equals(Byte.class) || type.equals(int.class) || type.equals(Integer.class)
+				|| type.equals(short.class) || type.equals(Short.class)) {
 			return "INTEGER";
 		} else if (type.equals(long.class) || type.equals(Long.class) || type.equals(BigInteger.class)) {
 			return "BIGINT";
@@ -167,7 +169,8 @@ public class Inserter {
 			return "BOOLEAN";
 		} else if (type.equals(char.class) || type.equals(Character.class) || type.equals(String.class)) {
 			return "VARCHAR(50)";
-		} else if (type.equals(double.class) || type.equals(Double.class) || type.equals(float.class) || type.equals(Float.class) || type.equals(BigDecimal.class)) {
+		} else if (type.equals(double.class) || type.equals(Double.class) || type.equals(float.class)
+				|| type.equals(Float.class) || type.equals(BigDecimal.class)) {
 			return "NUMERIC";
 		} else {
 			return "TEXT";
@@ -181,9 +184,10 @@ public class Inserter {
 		return String.join(",", Collections.nCopies(length, "?")) + ",? ";
 	}
 
-	protected Optional<Map.Entry<Method, String[]>> getSerialKeyEntry(final String name, final HashMap<Method, String[]> setters) {
-		
+	protected Optional<Map.Entry<Method, String[]>> getSerialKeyEntry(final String name,
+			final HashMap<Method, String[]> setters) {
+
 		return setters.entrySet().stream().filter(e -> e.getValue()[0].equals(name)).findFirst();
-		
+
 	}
 };

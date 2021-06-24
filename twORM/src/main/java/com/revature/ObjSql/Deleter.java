@@ -32,14 +32,14 @@ public class Deleter {
 	}
 
 	public boolean removeObjectFromDB(final Object obj, final Connection conn) {
-        try {
-        	
-            final MetaModel<?> model                = MetaConstructor.getInstance().getModel(obj);
-            final String primary_key                = model.getPrimary_key_name();
-            final Method getter                     = getGetter(primary_key, model.getGetters());
-            final String sql                        = "DELETE from " + model.getEntity() + " WHERE " + primary_key + " = ? ";
-            final PreparedStatement pstmt           = conn.prepareStatement(sql);
-            
+		try {
+
+			final MetaModel<?> model = MetaConstructor.getInstance().getModel(obj);
+			final String primary_key = model.getPrimary_key_name();
+			final Method getter = getGetter(primary_key, model.getGetters());
+			final String sql = "DELETE from " + model.getEntity() + " WHERE " + primary_key + " = ? ";
+			final PreparedStatement pstmt = conn.prepareStatement(sql);
+
 			pstmt.setObject(1, getter.invoke(obj, (Object[]) null));
 
 			int result = pstmt.executeUpdate();

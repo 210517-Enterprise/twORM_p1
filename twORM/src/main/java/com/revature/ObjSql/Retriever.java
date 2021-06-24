@@ -1,4 +1,4 @@
-  
+
 package com.revature.ObjSql;
 
 import java.lang.reflect.Method;
@@ -34,10 +34,10 @@ public class Retriever {
 	}
 
 	public Optional<List<Object>> getAllEntity(Class<?> clazz, Connection c) {
-		
+
 		final MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
 		String sql = "SELECT * FROM " + model.getEntity();
-		
+
 		try {
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -64,10 +64,8 @@ public class Retriever {
 			String[] pk = { primaryKey.toString() };
 			Optional<List<Object>> obj = Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk);
 			if (obj.isPresent()) {
-				System.out.println("Returning: " + obj.get());
 				return Optional.of(obj.get().get(0));
-			}
-			else {
+			} else {
 				String sql = "SELECT * FROM " + model.getEntity() + " WHERE ";
 
 				sql += model.getPrimary_key_name() + " = ?;";

@@ -35,17 +35,18 @@ public class Updater {
 		return sb.substring(0, sb.length() - 2);
 	}
 
-    public boolean updateObject(final Object obj, final Connection conn) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public boolean updateObject(final Object obj, final Connection conn)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		try {
-			
-            final MetaModel<?> model                = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());
-            final HashMap<String,Method> getters	= model.getGetters();
-            final String columns					= getColumns(getters);
-            final String sql						= "UPDATE " + model.getEntity() + " SET " + columns + " WHERE " + model.getPrimary_key_name() + " = ? ;";
-            final PreparedStatement pstmt     		= conn.prepareStatement(sql);
-            
-            int index = 1;
-            for (Map.Entry<String, Method> getter : getters.entrySet()) {
+
+			final MetaModel<?> model = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());
+			final HashMap<String, Method> getters = model.getGetters();
+			final String columns = getColumns(getters);
+			final String sql = "UPDATE " + model.getEntity() + " SET " + columns + " WHERE " + model.getPrimary_key_name() + " = ? ;";
+			final PreparedStatement pstmt = conn.prepareStatement(sql);
+
+			int index = 1;
+			for (Map.Entry<String, Method> getter : getters.entrySet()) {
 				if (getter.getValue().invoke(obj) != null) {
 					pstmt.setObject(index, getter.getValue().invoke(obj));
 					index++;
@@ -58,11 +59,11 @@ public class Updater {
 			int result = pstmt.executeUpdate();
 
 			if (result > 0) {
-				Class<? extends Object> clazz 	= obj.getClass();
-				String[] pkColumn 				= { model.getPrimary_key_name() };
-				String[] pk 					= { getters.get(model.getPrimary_key_name()).invoke(obj).toString() };
-				Object toBeRemoved 				= Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk);
-				
+				Class<? extends Object> clazz = obj.getClass();
+				String[] pkColumn = { model.getPrimary_key_name() };
+				String[] pk = { getters.get(model.getPrimary_key_name()).invoke(obj).toString() };
+				Object toBeRemoved = Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk);
+
 				Cacher.getInstance().removeObjFromCache(toBeRemoved);
 				Cacher.getInstance().putObjInCache(obj);
 				return true;

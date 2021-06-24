@@ -32,7 +32,7 @@ public class Transacter {
 			sqle.printStackTrace();
 		}
 	}
-	
+
 	public void disableAutoCommit(final Connection conn) {
 		try {
 			conn.setAutoCommit(false);
