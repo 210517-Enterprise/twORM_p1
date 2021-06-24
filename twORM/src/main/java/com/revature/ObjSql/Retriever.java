@@ -34,8 +34,10 @@ public class Retriever {
 	}
 
 	public Optional<List<Object>> getAllEntity(Class<?> clazz, Connection c) {
-
-		String sql = "SELECT * FROM " + clazz.getSimpleName();
+		
+		final MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
+		String sql = "SELECT * FROM " + model.getEntity();
+		
 		try {
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -91,9 +93,9 @@ public class Retriever {
 	}
 
 	public Optional<List<Object>> retrieveByColumn(Class<?> clazz, String column, Object value, Connection c) {
-		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
 		try {
 			MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
+			String sql = "SELECT * FROM " + model.getEntity() + " WHERE ";
 
 			sql += column + " = ?;";
 
