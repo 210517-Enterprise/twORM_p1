@@ -16,7 +16,7 @@ logs\log.txt
 logs\\log.txt
 target/*
 MANIFEST.MF
-target/classes/META-INF/*
+*/target/classes/META-INF/*
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
