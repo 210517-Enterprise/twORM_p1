@@ -54,44 +54,10 @@ public class Retriever extends Genericer {
 		return Optional.empty();
 	}
 
-	/*
-	 * LOOK AT ME... This is an overly verbose way of doing exactly the above
-	 */
-	public Optional<List<Object>> retrieveObject(Object obj, Connection c) {
-
-		String sql = "SELECT * FROM " + obj.getClass().getSimpleName();
-
-		try {
-			MetaModel<?> model = MetaConstructor.getInstance().getModel(obj);
-
-			// Get columns and strip the primary key
-			HashMap<String, Method> getters = model.getGetters();
-			getters.remove(model.getPrimary_key_name());
-
-			for (int i = 0; i < getters.keySet().size(); i++) {
-				if (i == 0) {
-					sql += " WHERE ";
-				} else {
-					sql += " AND ";
-				}
-
-				sql += "? = ?";
-			}
-
-			PreparedStatement stmt = c.prepareStatement(sql);
-
-		} catch (Exception e) {
-			log.error("Error in finding object of Entity " + obj.getClass().getSimpleName(), e);
-		}
-
-		return Optional.empty();
-	}
-
 	public Optional<Object> retrieveObjectByPK(Class<?> clazz, Object primaryKey, Connection c) {
 		try {
 			final MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
 			final HashMap<String, Method> getters = model.getGetters();
-			final Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
 
 			String[] pkColumn = { model.getPrimary_key_name() };
 			String[] pk = { primaryKey.toString() };
@@ -100,9 +66,6 @@ public class Retriever extends Genericer {
 				return Optional.of(obj.get().get(0));
 			else {
 				String sql = "SELECT * FROM " + model.getEntity() + " WHERE ";
-
-				// MetaModel<?> model =
-				// MetaConstructor.getInstance().getModels().get(clazz.getSimpleName());
 
 				sql += model.getPrimary_key_name() + " = ?;";
 
@@ -130,7 +93,6 @@ public class Retriever extends Genericer {
 		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
 		try {
 			MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
-			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
 
 			sql += column + " = ?;";
 
@@ -158,7 +120,6 @@ public class Retriever extends Genericer {
 
 		try {
 			MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
-			Set<Map.Entry<Method, String[]>> setters = model.getSetters().entrySet();
 			String sql = "SELECT * FROM " + model.getEntity() + " WHERE ";
 			List<Object> values = new ArrayList<>();
 			for (String column : columns.keySet()) {
