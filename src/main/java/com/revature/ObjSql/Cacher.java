@@ -47,6 +47,8 @@ public class Cacher extends Genericer {
 
     private boolean compareColumnToConditional(final Object obj,final HashMap<String,Method> getters,final String column,final String value) {
         try {
+        	System.out.println("Value check is: " + value);
+        	System.out.println("Result is: " + getters.get(column).invoke(obj).toString().equals(value));
             return getters.get(column).invoke(obj).toString().equals(value);
         }catch(InvocationTargetException | IllegalAccessException e) {
             log.warn(e);
@@ -57,7 +59,7 @@ public class Cacher extends Genericer {
     private boolean compareObjects(final Object obj,final HashMap<String,Method> getters,final String[] columns,final String[] conditions) {
         final Queue<Boolean> values = new LinkedList<>();
         for(int i = 0; i < columns.length; i++) {
-            values.add(compareColumnToConditional(obj,getters,columns[i],conditions[i]));
+            values.add(!compareColumnToConditional(obj,getters,columns[i],conditions[i]));
         }
         return values.contains(false);
     }
