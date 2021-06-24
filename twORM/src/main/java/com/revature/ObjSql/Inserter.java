@@ -61,7 +61,7 @@ public class Inserter extends Genericer {
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					"SELECT table_name" + " FROM information_schema.TABLES" + " WHERE table_schema = 'public'");
+					"SELECT table_name" + " FROM information_schema.TABLES" + " WHERE table_schema = '" + conn.getSchema() + "'");
 
 			while (rs.next()) {
 				tables.add(rs.getString("table_name"));
