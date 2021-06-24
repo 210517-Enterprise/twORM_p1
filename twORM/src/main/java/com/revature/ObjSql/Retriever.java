@@ -1,7 +1,6 @@
   
 package com.revature.ObjSql;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,7 +19,7 @@ import org.apache.log4j.Logger;
 import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
 
-public class Retriever extends Genericer {
+public class Retriever {
 
 	private static final Retriever ObjRet = new Retriever();
 
