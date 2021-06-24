@@ -53,7 +53,9 @@ public class Updater extends Genericer {
 				}
 			}
 			pstmt.setObject(index, getters.get(model.getPrimary_key_name()).invoke(obj));
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+			
+			if (result > 0) {
 			Class<? extends Object> clazz = obj.getClass();
 			String[] pkColumn = {model.getPrimary_key_name()};
 			String[] pk = {getters.get(model.getPrimary_key_name()).invoke(obj).toString()};
@@ -61,6 +63,10 @@ public class Updater extends Genericer {
 			Cacher.getInstance().removeObjFromCache(toBeRemoved);
 			Cacher.getInstance().putObjInCache(obj);
 			return true;
+			} else {
+				log.warn("Object not updated. Object does not exist or does not match DB");
+				return false;
+			}
 		} catch (SQLException e) {
 			log.error("Failed to update DB", e);
 			e.printStackTrace();

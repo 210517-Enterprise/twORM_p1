@@ -88,13 +88,6 @@ public class TwORM {
 		}
 	}
 	
-	/*This might be more elegant:
-	 *This way would only update changed information instead of the entire object 
-	
-	public boolean UpdateObjectInDB(final Object obj,final String update_columns) {
-        return rover.updateObject(obj,update_columns,conn);
-    }
-	*/
 	
 	/**
 	 * <p>Removes the designated object from the database.</p>
@@ -150,6 +143,16 @@ public class TwORM {
 	 */
 	public Optional<List<Object>> getListByColumn(Class<?> clazz, String column, Object value) {
 		return rover.retrieveByColumn(clazz, column, value, conn);
+	}
+	
+	/**
+	 * <p>Returns a list of objects selected by values in multiple columns.</p>
+	 * @param clazz: the class that represents the dable in the DB
+	 * @param columns: a hashmap where the <K,V> correspond to <column_name, value> to be selected against.
+	 * @return
+	 */
+	public Optional<List<Object>> getListByColumns(Class<?> clazz, HashMap<String, Object> columns) {
+		return rover.retrieveByColumns(clazz, columns, conn);
 	}
 
 	/**
