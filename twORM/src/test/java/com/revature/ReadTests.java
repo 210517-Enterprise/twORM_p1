@@ -69,14 +69,14 @@ public class ReadTests {
 		
 		results = t.getListObjectFromDB(Person_Two.class);
 		
-		if (!results.isEmpty()) {
+		if (results.isPresent()) {
 			middle = results.get();
 			middle.forEach((i) -> resultsList.add((Person_Two) i));
 		}
 		
 		
 		
-		assertFalse(results.isEmpty());
+		assertTrue(results.isPresent());
 		assertTrue(resultsList.size() == 5);
 		assertEquals(resultsList.get(3).getName(), "Harry");
 	}
@@ -91,7 +91,7 @@ public class ReadTests {
 		Person_Two result = (Person_Two) rs.get();
 		System.out.println(result);
 		
-		assertTrue(rs != null && !rs.isEmpty());
+		assertTrue(rs != null && rs.isPresent());
 		assertTrue(result.getClass() == Person_Two.class);
 		assertEquals(result.getId(),2);
 		assertEquals(result.getName(), "Dick");
@@ -105,7 +105,7 @@ public class ReadTests {
 		t.addClass(Person_Two.class);
 		Optional<Object> rs;
 		rs = t.getByPK(Person_Two.class, 11);
-		assertTrue(rs.isEmpty());
+		assertFalse(rs.isPresent());
 	}
 	
 	@Test
@@ -118,7 +118,7 @@ public class ReadTests {
 		List<Person_Two> resultList= new ArrayList<Person_Two>();
 		middle.forEach((i) -> resultList.add((Person_Two)i));
 		
-		assertFalse(results.isEmpty());
+		assertTrue(results.isPresent());
 		assertTrue(results.get().get(0).getClass() == Person_Two.class);
 		assertEquals(resultList.size(), 3);
 		assertTrue(resultList.get(0).getAge() == 18 && resultList.get(1).getAge() == 25 && resultList.get(2).getAge() == 36);
@@ -134,7 +134,7 @@ public class ReadTests {
 		List<Person_Two> resultList= new ArrayList<Person_Two>();
 		middle.forEach((i) -> resultList.add((Person_Two)i));
 		
-		assertFalse(results.isEmpty());
+		assertTrue(results.isPresent());
 		assertTrue(results.get().get(0).getClass() == Person_Two.class);
 		assertEquals(resultList.size(), 1);
 		assertEquals(resultList.get(0).getName(), "Tom");
@@ -146,7 +146,7 @@ public class ReadTests {
 		t.addClass(Person_Two.class);
 		Optional<List<Object>> results;
 		results = t.getListByColumn(Person_Two.class, "u_name", "Tom");
-		assertTrue(results.isEmpty());
+		assertFalse(results.isPresent());
 	}
 	
 	@Test
@@ -155,7 +155,7 @@ public class ReadTests {
 		t.addClass(Person_Two.class);
 		Optional<List<Object>> results;
 		results = t.getListByColumn(Person_Two.class, "user_name", "Bob");
-		assertTrue(results.isEmpty());
+		assertFalse(results.isPresent());
 	}
 	
 	
@@ -171,7 +171,7 @@ public class ReadTests {
 		List<Object> middle = results.get();
 		List<Person_Two> resultList= new ArrayList<Person_Two>();
 		middle.forEach((i) -> resultList.add((Person_Two)i));
-		assertFalse(results.isEmpty());
+		assertTrue(results.isPresent());
 		assertTrue(results.get().get(0).getClass() == Person_Two.class);
 		assertEquals(resultList.size(),1);
 		assertEquals(resultList.get(0).getId(), 5);
@@ -187,7 +187,7 @@ public class ReadTests {
 		columns.put("u_name", "Harry");
 		columns.put("user_age", 36);
 		results = t.getListByColumns(Person_Two.class, columns);
-		assertTrue(results.isEmpty());
+		assertFalse(results.isPresent());
 	}
 	
 	@Test
@@ -199,7 +199,7 @@ public class ReadTests {
 		columns.put("user_name", "Harry");
 		columns.put("user_age", 10);
 		results = t.getListByColumns(Person_Two.class, columns);
-		assertTrue(results.isEmpty());
+		assertFalse(results.isPresent());
 	}
 	
 	

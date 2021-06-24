@@ -1,7 +1,6 @@
   
 package com.revature.ObjSql;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,7 +19,7 @@ import org.apache.log4j.Logger;
 import com.revature.Meta.MetaConstructor;
 import com.revature.Meta.MetaModel;
 
-public class Retriever extends Genericer {
+public class Retriever {
 
 	private static final Retriever ObjRet = new Retriever();
 
@@ -36,8 +34,10 @@ public class Retriever extends Genericer {
 	}
 
 	public Optional<List<Object>> getAllEntity(Class<?> clazz, Connection c) {
-
-		String sql = "SELECT * FROM " + clazz.getSimpleName();
+		
+		final MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
+		String sql = "SELECT * FROM " + model.getEntity();
+		
 		try {
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
@@ -93,9 +93,9 @@ public class Retriever extends Genericer {
 	}
 
 	public Optional<List<Object>> retrieveByColumn(Class<?> clazz, String column, Object value, Connection c) {
-		String sql = "SELECT * FROM " + clazz.getSimpleName() + " WHERE ";
 		try {
 			MetaModel<?> model = MetaConstructor.getInstance().getModel(clazz);
+			String sql = "SELECT * FROM " + model.getEntity() + " WHERE ";
 
 			sql += column + " = ?;";
 
