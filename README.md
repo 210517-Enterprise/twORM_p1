@@ -75,11 +75,11 @@ All classes that are represented in the database must be annotated.
   - Adds the given object to the database. If an appropriate table does not exist, one will be generated.
 - #### `public Optional<List<Class>> getListObjectFromDB(final Class<?> clazz)`
   - Returns a list of all entries in the table that corresponds to clazz
-- #### 'public Optional<Object> getByPK(Class<?> clazz, String pk)`
+- #### `public Optional<Object> getByPK(Class<?> clazz, String pk)`
   - Returns the entry from the table that corresponds to clazz with the primary key PK
-- #### 'public Optional<Object> getByPK(Class<?> clazz, int pk)`
+- #### `public Optional<Object> getByPK(Class<?> clazz, int pk)`
   - Does the same as the prior method for an integer key (particularly useful for serial keys)
-- #### 'public Optional<List<Object>> getListByColumn(Class<?> clazz, String column, Object value)`
+- #### `public Optional<List<Object>> getListByColumn(Class<?> clazz, String column, Object value)`
   - Returns a list of objects selected by a value in a column. Column is the name of column and value is what will be selected against.
 - #### `public Optional<List<Object>> getListByColumns(Class<?> clazz, HashMap<String, Object> columns)`
   - Returns a list of objects selected by values in multiple columns. Each entry in the hashmap is a column name and value.
