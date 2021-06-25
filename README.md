@@ -76,9 +76,9 @@ All classes that are represented in the database must be annotated.
 - #### `public Optional<List<Class>> getListObjectFromDB(final Class<?> clazz)`
   - Returns a list of all entries in the table that corresponds to Class *clazz*.
 - #### `public Optional<Object> getByPK(Class<?> clazz, String pk)`
-  - Returns the entry from the table that corresponds to Class *clazz* with the primary key *pk*
+  - Returns the entry from the table that corresponds to Class *clazz* with the primary key *pk*.
 - #### `public Optional<Object> getByPK(Class<?> clazz, int pk)`
-  - Does the same as the prior method for an integer key (particularly useful for serial keys)
+  - Does the same as the prior method for an integer key (particularly useful for serial keys).
 - #### `public Optional<List<Object>> getListByColumn(Class<?> clazz, String column, Object value)`
   - Returns a list of objects selected by a value in a column. *column* is a 'column_name' and *value* is what will be selected against.
 - #### `public Optional<List<Object>> getListByColumns(Class<?> clazz, HashMap<String, Object> columns)`
@@ -90,7 +90,7 @@ All classes that are represented in the database must be annotated.
 - #### `public void beginTransaction()`
   - Begins a transaction.
 - #### `public void setSavePoint(String savePointName)`
-  - Creates a save point in the transaction. *savePointName* is the name of the save point that can be referenced in other methods
+  - Creates a save point in the transaction. *savePointName* is the name of the save point that can be referenced in other methods.
 - #### `public void returnToSavePoint(String savePointName)`
   - Rollsback to the save point indicated by *savePointName*.
 - #### `public void removeSavePoint(String savePointName)`
