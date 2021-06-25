@@ -5,7 +5,7 @@ import com.revature.annotations.*;
 @Entity(name="person")
 public class Person {
 
-	@PrimaryKey(name="id", isSerial=false)
+	@PrimaryKey(name="user_name", isSerial=false)
 	private String username;
 	@Column(name="first_name")
 	private String firstName;
@@ -41,12 +41,12 @@ public class Person {
 		this.salary = salary;
 	}
 
-	@Getter(name="id")
+	@Getter(name="user_name")
 	public String getId() {
 		return username;
 	}
 
-	@Setter(name="id")
+	@Setter(name="user_name")
 	public void setId(String id) {
 		this.username = id;
 	}
