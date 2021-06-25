@@ -10,7 +10,7 @@ public class Driver {
 		boolean exited = false;
 		
 		System.out.println("Welcome to the PHd");
-		
+		System.out.println("Enter find, insert, update, delete, or exit");
 		// MAIN LOOP
 		while(!exited) {
 			
@@ -27,8 +27,10 @@ public class Driver {
 				update();
 			} else if(input.equalsIgnoreCase("exit")) {
 				exited = true;
+				System.out.println("Goodbye");
 			} else {
 				System.out.println("Invalid command");
+				System.out.println("Enter find, insert, delete, update, or exit");
 			}
 		}
 		// END OF LOOP
