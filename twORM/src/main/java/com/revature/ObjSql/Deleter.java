@@ -58,7 +58,6 @@ public class Deleter {
 			}
 		} catch (SQLException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			log.error("Error in removing object", e);
-			e.printStackTrace();
 		}
 		return false;
 	}

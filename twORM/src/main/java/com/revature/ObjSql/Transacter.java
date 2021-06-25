@@ -27,17 +27,18 @@ public class Transacter {
 	public void enableAutoCommit(final Connection conn) {
 		try {
 			conn.setAutoCommit(true);
-		} catch (SQLException sqle) {
-			log.error(sqle);
-			sqle.printStackTrace();
+			log.info("Auto-commit enabled. DANGER MODE");
+		} catch (SQLException e) {
+			log.error("Unable to enable autocommit: " , e);
 		}
 	}
 
 	public void disableAutoCommit(final Connection conn) {
 		try {
 			conn.setAutoCommit(false);
+			log.info("Auto-commit disabled. SAFE MODE");
 		} catch (SQLException e) {
-			log.warn("Failed to disable autocommit");
+			log.error("Failed to disable autocommit");
 			e.printStackTrace();
 		}
 	}
@@ -45,18 +46,18 @@ public class Transacter {
 	public void Commit(final Connection conn) {
 		try {
 			conn.commit();
-		} catch (SQLException sqle) {
-			log.error(sqle);
-			sqle.printStackTrace();
+			log.info("Transaction committed.");
+		} catch (SQLException e) {
+			log.error("Failure in committing transactions: ", e);
 		}
 	}
 
 	public void Rollback(final Connection conn) {
 		try {
 			conn.rollback();
-		} catch (SQLException sqle) {
-			log.error(sqle);
-			sqle.printStackTrace();
+			log.info("Transaction not committed. Changes rolled back.");
+		} catch (SQLException e) {
+			log.error("Failed to roll back changes: ", e);
 		}
 	}
 
@@ -64,12 +65,12 @@ public class Transacter {
 		try {
 			if (savepoints.containsKey(name)) {
 				conn.rollback(savepoints.get(name));
+				log.info("Transaction rolled back to save point: " + name);
 			} else {
 				log.warn("Trying to access a non-existent savepoint");
 			}
-		} catch (SQLException sqle) {
-			log.error(sqle);
-			sqle.printStackTrace();
+		} catch (SQLException e) {
+			log.error("Error in rolling back transaction: ",e);
 		}
 	}
 
@@ -77,9 +78,9 @@ public class Transacter {
 		try {
 			final Savepoint save = conn.setSavepoint(name);
 			savepoints.put(name, save);
-		} catch (SQLException sqle) {
-			log.error(sqle);
-			sqle.printStackTrace();
+			log.info("Save point " + name + " set.");
+		} catch (SQLException e) {
+			log.error("Error in setting savepoint ", e);
 		}
 	}
 
@@ -87,21 +88,21 @@ public class Transacter {
 		try {
 			if (savepoints.containsKey(name)) {
 				conn.releaseSavepoint(savepoints.get(name));
+				log.info("Save point " + name + " removed.");
 			} else {
-				log.warn("Trying to access a non-existent savepoint");
+				log.warn("Trying to remove a non-existent savepoint");
 			}
-		} catch (SQLException sqle) {
-			log.error(sqle);
-			sqle.printStackTrace();
+		} catch (SQLException e) {
+			log.error("Failed to remove save point: ", e);
 		}
 	}
 
 	public void setTransaction(final Connection conn) {
 		try {
 			conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-		} catch (SQLException sqle) {
-			log.error(sqle);
-			sqle.printStackTrace();
+			log.info("Transaction initiated");
+		} catch (SQLException e) {
+			log.error("Failed to begin transaction: ", e);
 		}
 	}
 

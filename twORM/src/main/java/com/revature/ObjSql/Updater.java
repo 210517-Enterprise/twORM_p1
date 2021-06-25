@@ -71,14 +71,14 @@ public class Updater {
 					cache.removeObjFromCache(remove);
 				}
 				cache.putObjInCache(obj);
+				log.info("Object " + obj + "was updated in the database.");
 				return true;
 			} else {
 				log.warn("Object not updated. Object does not exist or does not match DB");
 				return false;
 			}
 		} catch (SQLException e) {
-			log.error("Failed to update DB", e);
-			e.printStackTrace();
+			log.warn("Failed to update DB", e);
 			return false;
 		}
 	}

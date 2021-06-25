@@ -45,13 +45,15 @@ public class Retriever {
 			List<Object> res = resultSetToList(rs, clazz);
 
 			if (!res.isEmpty()) {
+				log.info("Returning list of records that match " + clazz);
 				return Optional.of(res);
 			}
 
 		} catch (SQLException e) {
-			log.error("Failed to get all entities for " + clazz.getSimpleName(), e);
+			log.error("Failed to get all entities for " + clazz.getSimpleName() +" ", e);
 		}
 
+		log.warn("No entities found that match " + clazz);
 		return Optional.empty();
 	}
 
@@ -79,6 +81,7 @@ public class Retriever {
 				List<Object> res = resultSetToList(rs, model.getClazz());
 
 				if (!res.isEmpty()) {
+					log.info("Returning object with primary key of " + primaryKey);
 					return Optional.of(res.get(0));
 				}
 			}
@@ -87,6 +90,7 @@ public class Retriever {
 			log.error("Error in retrieving by PK", e);
 		}
 
+		log.warn("No object found with primary key of " + primaryKey);
 		return Optional.empty();
 	}
 
@@ -106,6 +110,7 @@ public class Retriever {
 			List<Object> res = resultSetToList(rs, model.getClazz());
 
 			if (!res.isEmpty()) {
+				log.info("Returning objects where column " + column + " equals " + value);
 				return Optional.of(res);
 			}
 
@@ -114,6 +119,7 @@ public class Retriever {
 
 		}
 
+		log.info("No object exists where column " + column + "is equal to" + value);
 		return Optional.empty();
 	}
 
@@ -139,6 +145,7 @@ public class Retriever {
 			List<Object> res = resultSetToList(rs, model.getClazz());
 
 			if (!res.isEmpty()) {
+				log.info("Return results found by values in multiple columns.");
 				return Optional.of(res);
 			}
 
@@ -146,7 +153,8 @@ public class Retriever {
 			log.error("Error in retrieving by multiple columns", e);
 
 		}
-
+		
+		log.warn("No object was found where the indicated columns have the indicated values");
 		return Optional.empty();
 	}
 
