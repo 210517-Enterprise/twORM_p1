@@ -2,12 +2,12 @@ package com.revature.Models;
 
 public class Person {
 
-	int id;
-	String firstName;
-	String lastName;
-	String Job;
-	int age;
-	double salary;
+	private int id;
+	private String firstName;
+	private String lastName;
+	private String Job;
+	private int age;
+	private double salary;
 	
 	public Person() {
 		super();
