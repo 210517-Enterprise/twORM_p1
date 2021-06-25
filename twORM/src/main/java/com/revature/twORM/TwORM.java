@@ -83,7 +83,6 @@ public class TwORM {
 		try {
 			return updater.updateObject(obj, conn);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
 			return false;
 		}
 	}
