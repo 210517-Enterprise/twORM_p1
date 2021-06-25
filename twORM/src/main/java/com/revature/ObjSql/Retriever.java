@@ -66,6 +66,7 @@ public class Retriever {
 			String[] pk = { primaryKey.toString() };
 			Optional<List<Object>> obj = Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk);
 			if (obj.isPresent()) {
+				log.info("Returning object from cache");
 				return Optional.of(obj.get().get(0));
 			} else {
 				String sql = "SELECT * FROM " + model.getEntity() + " WHERE ";
