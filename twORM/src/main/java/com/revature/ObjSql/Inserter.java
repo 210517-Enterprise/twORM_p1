@@ -135,27 +135,27 @@ public class Inserter {
 			if (model.getPkIsSerial()) {
 				sql += model.getPrimary_key_name() + " SERIAL PRIMARY KEY, ";
 			} else {
-				sql += model.getPrimary_key_name() + " "
-						+ typeJavaToSql(obj.getClass().getDeclaredField(model.getPrimary_key_name()).getType())
-						+ " PRIMARY KEY, ";
+				Class<?> clazz = getters.get(model.getPrimary_key_name()).invoke(obj).getClass();
+				sql += model.getPrimary_key_name() + " " + typeJavaToSql(clazz) + " PRIMARY KEY, ";
 			}
 
 			for (int i = 0; i < columns.length; i++) {
+				Class<?> clazz = getters.get(model.getPrimary_key_name()).invoke(obj).getClass();
+				sql += columns[i] + " " + typeJavaToSql(clazz);
 				if (i < columns.length - 1) {
-					sql += columns[i] + " " + typeJavaToSql(obj.getClass().getDeclaredField(columns[i]).getType())
-							+ ", ";
+					sql += ", ";
 				} else {
-					sql += columns[i] + " " + typeJavaToSql(obj.getClass().getDeclaredField(columns[i]).getType())
-							+ ");";
+					sql += ");";
 				}
 			}
-		} catch (NoSuchFieldException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			log.warn("Error in parsing columns", e);
 		}
 
 		try {
 			final PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.execute();
+			
 			log.info("Created table " + model.getEntity() + " in the database.");
 			return true;
 		} catch (SQLException e) {

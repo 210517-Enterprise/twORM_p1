@@ -18,13 +18,13 @@ public class Person {
 	@Column(name="user_age")
 	private int age;
 	@Column(name="salary")
-	private double salary;
+	private int salary;
 	
 	public Person() {
 		super();
 	}
 
-	public Person(String username, String firstName, String lastName, int jobid, int age, double salary) {
+	public Person(String username, String firstName, String lastName, int jobid, int age, int salary) {
 		super();
 		this.username = username;
 		this.firstName = firstName;
@@ -94,12 +94,12 @@ public class Person {
 	}
 
 	@Getter(name="salary")
-	public double getSalary() {
+	public int getSalary() {
 		return salary;
 	}
 
 	@Setter(name="salary")
-	public void setSalary(double salary) {
+	public void setSalary(int salary) {
 		this.salary = salary;
 	}
 

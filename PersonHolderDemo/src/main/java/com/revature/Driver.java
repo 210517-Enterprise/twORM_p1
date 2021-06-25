@@ -18,9 +18,9 @@ public class Driver {
 	static PersonDAO p = new PersonDAO();
 	
 	public static void main(String[] args) {
-//		Person billy = new Person("BillyBoy", "William", "Boulevard", 24, 10_000);
-//		Person jilly = new Person("Jillster", "Jillian", "Applewood", 45, 35_000);
-//		p.insertPerson(billy, jilly);
+//		Person billy = new Person("BillyBoy", "William", "Boulevard", 3, 24, 10_000);
+//        Person jilly = new Person("Jillster", "Jillian", "Applewood", 4, 45, 35_000);
+//        p.insertPerson(billy, jilly);
 		WelcomeScreen();
 	}
 
@@ -63,9 +63,9 @@ public class Driver {
 		if (input.equalsIgnoreCase("1")) {
 			List<Person> all = p.getAll();
 			System.out.println("--- All Users ---");
-			System.out.println("Username \tFirst Name\tLast Name\tJob ID  \tAge     \tSalary");
+			System.out.printf("%-15s %-15s %-15s %-15s %-15s %-15s%n", "User Name", "First Name", "Last Name", "Job ID", "User Age", "Salary");
 			for(Person p : all) {
-				System.out.println(p);
+				System.out.printf("%-15s %-15s %-15s %-15s %-15s %,-15d%n", p.getId(), p.getFirstName(), p.getLastName(), p.getJobId(), p.getAge(), p.getSalary());
 			}
 			
 		} else if (input.equalsIgnoreCase("2")) {

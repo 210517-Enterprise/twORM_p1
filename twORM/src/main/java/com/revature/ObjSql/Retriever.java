@@ -216,7 +216,9 @@ public class Retriever {
 	// and the column name
 	private void setField(Object obj, Method setMethod, ResultSet rs, String column) {
 		try {
-			setMethod.invoke(obj, rs.getObject(column));
+			Object o = rs.getObject(column);
+			System.out.println(o.getClass());
+			setMethod.invoke(obj, o);
 		} catch (Exception e) {
 			log.error("Error in setting fields when retrieving", e);
 		}
