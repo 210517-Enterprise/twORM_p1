@@ -7,7 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.apache.log4j.Logger;
 
 import com.revature.Meta.MetaConstructor;
@@ -38,7 +41,7 @@ public class Updater {
 	public boolean updateObject(final Object obj, final Connection conn)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		try {
-
+			Cacher cache = Cacher.getInstance();
 			final MetaModel<?> model = MetaConstructor.getInstance().getModels().get(obj.getClass().getSimpleName());
 			final HashMap<String, Method> getters = model.getGetters();
 			final String columns = getColumns(getters);
@@ -62,10 +65,12 @@ public class Updater {
 				Class<? extends Object> clazz = obj.getClass();
 				String[] pkColumn = { model.getPrimary_key_name() };
 				String[] pk = { getters.get(model.getPrimary_key_name()).invoke(obj).toString() };
-				Object toBeRemoved = Cacher.getInstance().getObjFromCache(clazz, getters, pkColumn, pk);
-
-				Cacher.getInstance().removeObjFromCache(toBeRemoved);
-				Cacher.getInstance().putObjInCache(obj);
+				Optional<List<Object>> op = cache.getObjFromCache(clazz, getters, pkColumn, pk);
+				if (op.isPresent()) {
+					Object remove = op.get().get(0);
+					cache.removeObjFromCache(remove);
+				}
+				cache.putObjInCache(obj);
 				return true;
 			} else {
 				log.warn("Object not updated. Object does not exist or does not match DB");
