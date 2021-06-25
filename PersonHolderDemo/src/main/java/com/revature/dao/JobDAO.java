@@ -7,10 +7,10 @@ import java.util.List;
 import com.revature.Models.Job;
 import com.revature.twORM.TwORM;
 
-public class PersonDAO {
+public class JobDAO {
 
 	private TwORM t;
-	public PersonDAO() {
+	public JobDAO() {
 		super();
 		t = TwORM.getInstance();
 		t.addClass(Job.class);
@@ -18,13 +18,13 @@ public class PersonDAO {
 	
 	
 	
-	public boolean insertPerson(Job... persons) {
-		if(persons.length <= 0) {
+	public boolean insertJob(Job... jobs) {
+		if(jobs.length <= 0) {
 			return false;
 		}
 		t.beginTransaction();
-		for (Job p : persons) {
-			if(t.addObjectToDb(p)) {
+		for (Job j : jobs) {
+			if(t.addObjectToDb(j)) {
 				continue;
 			} else {
 				t.abortChanges();
@@ -36,13 +36,13 @@ public class PersonDAO {
 		
 	}
 	
-	public boolean updatePerson(Job... persons) {
-		if (persons.length <= 0) {
+	public boolean updateJob(Job... jobs) {
+		if (jobs.length <= 0) {
 			return false;
 		}
 		t.beginTransaction();
-		for (Job p : persons) {
-			if (t.updateObjectInDB(p)) {
+		for (Job j : jobs) {
+			if (t.updateObjectInDB(j)) {
 				continue;
 			} else {
 				t.abortChanges();
@@ -53,13 +53,13 @@ public class PersonDAO {
 		return true;
 	}
 	
-	public boolean deletePerson(Job... persons) {
-		if (persons.length <= 0) {
+	public boolean deleteJob(Job... jobs) {
+		if (jobs.length <= 0) {
 			return false;
 		}
 		t.beginTransaction();
-		for (Job p: persons) {
-			if (t.deleteObjectFromDB(p)) {
+		for (Job j: jobs) {
+			if (t.deleteObjectFromDB(j)) {
 				continue;
 			} else {
 				t.abortChanges();
@@ -70,8 +70,8 @@ public class PersonDAO {
 		return true;
 	}
 	
-	public Job getPersonPK(String username) {
-		return (Job) t.getByPK(Job.class, username).get();
+	public Job getJobPK(int pk) {
+		return (Job) t.getByPK(Job.class, pk).get();
 	}
 	
 	public List<Job> getAll() {
@@ -85,7 +85,7 @@ public class PersonDAO {
 		return results;
 	}
 	
-	public List<Job> getPersonByColumn(String column, Object value) {
+	public List<Job> getJobByColumn(String column, Object value) {
 		List<Job> results = new ArrayList<Job>();
 		List<Object> rs = t.getListByColumn(Job.class, column, value).get();
 		
@@ -96,7 +96,7 @@ public class PersonDAO {
 		return results;	
 	}
 	
-	public List<Job> getPersonByColumns(HashMap<String, Object> columns) {
+	public List<Job> getJobByColumns(HashMap<String, Object> columns) {
 		List<Job> results = new ArrayList<Job>();
 		List<Object> rs = t.getListByColumns(Job.class, columns).get();
 		
