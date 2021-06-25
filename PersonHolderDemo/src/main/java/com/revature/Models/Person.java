@@ -5,15 +5,17 @@ import com.revature.annotations.*;
 @Entity(name="person")
 public class Person {
 
+	private String job;
+	
 	@PrimaryKey(name="user_name", isSerial=false)
 	private String username;
 	@Column(name="first_name")
 	private String firstName;
 	@Column(name="last_name")
 	private String lastName;
-	@Column(name="job")
-	private String Job;
-	@Column(name="age")
+	@Column(name="job_id")
+	private int jobId;
+	@Column(name="user_age")
 	private int age;
 	@Column(name="salary")
 	private double salary;
@@ -22,24 +24,16 @@ public class Person {
 		super();
 	}
 
-	public Person(String username, String firstName, String lastName, String job, int age, double salary) {
+	public Person(String username, String firstName, String lastName, int jobid, int age, double salary) {
 		super();
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		Job = job;
+		this.jobId = jobid;
 		this.age = age;
 		this.salary = salary;
 	}
 	
-	public Person(String firstName, String lastName, String job, int age, double salary) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		Job = job;
-		this.age = age;
-		this.salary = salary;
-	}
 
 	@Getter(name="user_name")
 	public String getId() {
@@ -71,28 +65,30 @@ public class Person {
 		this.lastName = lastName;
 	}
 
-	@Getter(name="job")
 	public String getJob() {
-		return Job;
+		return job;
 	}
 
-	@Override
-	public String toString() {
-		return username + "\t" + firstName + "\t" + lastName + "\t" + Job
-				+ "\t" + age + "\t" + salary;
-	}
-
-	@Setter(name="job")
 	public void setJob(String job) {
-		Job = job;
+		this.job = job;
+	}
+	
+	@Getter(name="job_id")
+	public int getJobId() {
+		return jobId;
+	}
+	
+	@Setter(name="job_id")
+	public void setJobId(int jobId) {
+		this.jobId = jobId;
 	}
 
-	@Getter(name="age")
+	@Getter(name="user_age")
 	public int getAge() {
 		return age;
 	}
 
-	@Setter(name="age")
+	@Setter(name="user_age")
 	public void setAge(int age) {
 		this.age = age;
 	}
@@ -106,8 +102,15 @@ public class Person {
 	public void setSalary(double salary) {
 		this.salary = salary;
 	}
+
+	@Override
+	public String toString() {
+		return "Person [username=" + username + ", firstName=" + firstName + ", lastName=" + lastName + ", jobId="
+				+ jobId + ", age=" + age + ", salary=" + salary + "]";
+	}
 	
 	
+
 	
 	
 }
