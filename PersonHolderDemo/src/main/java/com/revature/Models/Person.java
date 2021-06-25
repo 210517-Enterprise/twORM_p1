@@ -76,6 +76,12 @@ public class Person {
 		return Job;
 	}
 
+	@Override
+	public String toString() {
+		return username + "\t" + firstName + "\t" + lastName + "\t" + Job
+				+ "\t" + age + "\t" + salary;
+	}
+
 	@Setter(name="job")
 	public void setJob(String job) {
 		Job = job;
