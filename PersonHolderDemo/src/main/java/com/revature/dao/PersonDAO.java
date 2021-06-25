@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.revature.Models.Job;
+import com.revature.Models.Person;
 import com.revature.twORM.TwORM;
 
 public class PersonDAO {
@@ -13,17 +13,17 @@ public class PersonDAO {
 	public PersonDAO() {
 		super();
 		t = TwORM.getInstance();
-		t.addClass(Job.class);
+		t.addClass(Person.class);
 	}
 	
 	
 	
-	public boolean insertPerson(Job... persons) {
+	public boolean insertPerson(Person... persons) {
 		if(persons.length <= 0) {
 			return false;
 		}
 		t.beginTransaction();
-		for (Job p : persons) {
+		for (Person p : persons) {
 			if(t.addObjectToDb(p)) {
 				continue;
 			} else {
@@ -36,12 +36,12 @@ public class PersonDAO {
 		
 	}
 	
-	public boolean updatePerson(Job... persons) {
+	public boolean updatePerson(Person... persons) {
 		if (persons.length <= 0) {
 			return false;
 		}
 		t.beginTransaction();
-		for (Job p : persons) {
+		for (Person p : persons) {
 			if (t.updateObjectInDB(p)) {
 				continue;
 			} else {
@@ -53,12 +53,12 @@ public class PersonDAO {
 		return true;
 	}
 	
-	public boolean deletePerson(Job... persons) {
+	public boolean deletePerson(Person... persons) {
 		if (persons.length <= 0) {
 			return false;
 		}
 		t.beginTransaction();
-		for (Job p: persons) {
+		for (Person p: persons) {
 			if (t.deleteObjectFromDB(p)) {
 				continue;
 			} else {
@@ -70,40 +70,40 @@ public class PersonDAO {
 		return true;
 	}
 	
-	public Job getPersonPK(String username) {
-		return (Job) t.getByPK(Job.class, username).get();
+	public Person getPersonPK(String username) {
+		return (Person) t.getByPK(Person.class, username).get();
 	}
 	
-	public List<Job> getAll() {
-		List<Job> results = new ArrayList<Job>();
-		List<Object> rs = t.getListObjectFromDB(Job.class).get();
+	public List<Person> getAll() {
+		List<Person> results = new ArrayList<Person>();
+		List<Object> rs = t.getListObjectFromDB(Person.class).get();
 		
 		if (rs.isEmpty()) {
 			return null;
 		}
-		rs.forEach((o) -> results.add((Job) o));
+		rs.forEach((o) -> results.add((Person) o));
 		return results;
 	}
 	
-	public List<Job> getPersonByColumn(String column, Object value) {
-		List<Job> results = new ArrayList<Job>();
-		List<Object> rs = t.getListByColumn(Job.class, column, value).get();
+	public List<Person> getPersonByColumn(String column, Object value) {
+		List<Person> results = new ArrayList<Person>();
+		List<Object> rs = t.getListByColumn(Person.class, column, value).get();
 		
 		if (rs.isEmpty()) {
 			return null;
 		}
-		rs.forEach((o) -> results.add((Job) o));
+		rs.forEach((o) -> results.add((Person) o));
 		return results;	
 	}
 	
-	public List<Job> getPersonByColumns(HashMap<String, Object> columns) {
-		List<Job> results = new ArrayList<Job>();
-		List<Object> rs = t.getListByColumns(Job.class, columns).get();
+	public List<Person> getPersonByColumns(HashMap<String, Object> columns) {
+		List<Person> results = new ArrayList<Person>();
+		List<Object> rs = t.getListByColumns(Person.class, columns).get();
 		
 		if (rs.isEmpty()) {
 			return null;
 		}
-		rs.forEach((o) -> results.add((Job) o));
+		rs.forEach((o) -> results.add((Person) o));
 		return results;	
 	}
 	

@@ -3,7 +3,7 @@ package com.revature.Models;
 import com.revature.annotations.*;
 
 @Entity(name="person")
-public class Job {
+public class Person {
 
 	@PrimaryKey(name="id", isSerial=false)
 	private String username;
@@ -18,11 +18,11 @@ public class Job {
 	@Column(name="salary")
 	private double salary;
 	
-	public Job() {
+	public Person() {
 		super();
 	}
 
-	public Job(String username, String firstName, String lastName, String job, int age, double salary) {
+	public Person(String username, String firstName, String lastName, String job, int age, double salary) {
 		super();
 		this.username = username;
 		this.firstName = firstName;
@@ -32,7 +32,7 @@ public class Job {
 		this.salary = salary;
 	}
 	
-	public Job(String firstName, String lastName, String job, int age, double salary) {
+	public Person(String firstName, String lastName, String job, int age, double salary) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
