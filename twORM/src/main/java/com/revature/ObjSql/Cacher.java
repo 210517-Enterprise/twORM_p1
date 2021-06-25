@@ -48,6 +48,7 @@ public class Cacher {
 	private boolean compareColumnToConditional(final Object obj, final HashMap<String, Method> getters, final String column, final String value) {
 		try {
 			System.out.println("Value check is: " + value);
+			System.out.println("Invoked value is: " + getters.get(column).invoke(obj));
 			System.out.println("Result is: " + getters.get(column).invoke(obj).toString().equals(value));
 			return getters.get(column).invoke(obj).toString().equals(value);
 		} catch (InvocationTargetException | IllegalAccessException e) {
