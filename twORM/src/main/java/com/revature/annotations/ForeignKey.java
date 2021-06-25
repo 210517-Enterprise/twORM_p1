@@ -10,6 +10,13 @@ import java.lang.annotation.Target;
  * in a table in the database.
  * name is the name of the column inside the table.
  */
+
+/**
+ * An annotation used for future functionality not yet implemented. Do not use.
+ * @author A_R_T
+ * @Param String name(): .
+ *
+ */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ForeignKey {

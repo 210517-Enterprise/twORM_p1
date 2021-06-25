@@ -5,12 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/*
- * Annotation for a method that sets a value stored
- * in the database.
- * name is the name of the column inside the databse.
+/**
+ * An annotation for a method that sets the value of a field stored in a column in a database.
+ * @author A_R_T
+ * @Param String name(): a string that represents the name of the column inside the table.
+ *
  */
-
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Setter {
