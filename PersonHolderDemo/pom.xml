@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.revature</groupId>
+	<artifactId>PersonHolderDemo</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<repositories>
+		<!--other repositories if any -->
+		<repository>
+			<id>project.local</id>
+			<name>project</name>
+			<url>file:${../twORM/target/twORM_p1-0.0.1-SNAPSHOT.jar}</url>
+		</repository>
+	</repositories>
+
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.revature</groupId>
+			<artifactId>twORM_p1</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+	</dependencies>
+
+
+</project>
