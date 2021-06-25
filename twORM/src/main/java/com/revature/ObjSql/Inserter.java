@@ -54,7 +54,7 @@ public class Inserter {
 				setter.get().getKey().invoke(obj, rs.getInt(setter.get().getValue()[0]));
 			}
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SQLException e) {
-			log.error(e);
+			log.error("Encountered exception in setting serial ID: ", e);
 		}
 
 	}
@@ -70,18 +70,18 @@ public class Inserter {
 				tables.add(rs.getString("table_name"));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.error("Fatal error in confirming table: ", e);
 		}
 
 		if (!tables.contains(obj.getClass().getSimpleName().toLowerCase())) {
-			log.info("Creating table for entity " + obj.getClass().getSimpleName());
+			log.info("Entity is not in the database. Creating table for entity " + obj.getClass().getSimpleName());
 			return makeEntity(obj, conn);
 		}
 		return true;
 	}
 
 	public boolean saveObject(final Object obj, final Connection conn) {
-
+		log.info("Attempting to insert " + obj +". Confirming the table exists.");
 		try {
 			if (confirmTable(obj, conn)) {
 				try {
@@ -110,15 +110,16 @@ public class Inserter {
 
 					// also place object inside of cache
 					Cacher.getInstance().putObjInCache(obj);
+					log.info("Successfully inserted " + obj + " into the database.");
 					return true;
 				} catch (Exception e) {
-					log.error(e);
+					log.error("Unexpected critical error in adding record: ",e);
 				}
 			}
 		} catch (SecurityException e) {
-			log.error(e);
+			log.error("Unexpected Security Exception in adding record: ",e);
 		}
-
+		log.warn("Failed to insert " + obj + "into the databse.");
 		return false;
 	}
 
@@ -155,6 +156,7 @@ public class Inserter {
 		try {
 			final PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.execute();
+			log.info("Created table " + model.getEntity() + " in the database.");
 			return true;
 		} catch (SQLException e) {
 			log.warn("Error in makeEntity", e);
