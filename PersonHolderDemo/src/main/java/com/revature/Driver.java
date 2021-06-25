@@ -1,9 +1,11 @@
 package com.revature;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.revature.dao.JobDAO;
 import com.revature.dao.PersonDAO;
+import com.revature.Models.*;
 
 public class Driver {
 
@@ -11,9 +13,14 @@ public class Driver {
 	
 	static boolean exited;
 	
+	static JobDAO j = new JobDAO();
+	
+	static PersonDAO p = new PersonDAO();
+	
 	public static void main(String[] args) {
-		JobDAO j = new JobDAO();
-		PersonDAO p = new PersonDAO();
+//		Person billy = new Person("BillyBoy", "William", "Boulevard", 24, 10_000);
+//		Person jilly = new Person("Jillster", "Jillian", "Applewood", 45, 35_000);
+//		p.insertPerson(billy, jilly);
 		WelcomeScreen();
 	}
 
@@ -54,8 +61,13 @@ public class Driver {
 		s.nextLine();
 
 		if (input.equalsIgnoreCase("1")) {
+			List<Person> all = p.getAll();
 			System.out.println("--- All Users ---");
-			System.out.println("Username \tFirst Name\tLast Name\t Job ID \t   Age  \t Salary");
+			System.out.println("Username \tFirst Name\tLast Name\tJob ID  \tAge     \tSalary");
+			for(Person p : all) {
+				System.out.println(p);
+			}
+			
 		} else if (input.equalsIgnoreCase("2")) {
 			jobMenu();
 		} else if (input.equalsIgnoreCase("3")) {
