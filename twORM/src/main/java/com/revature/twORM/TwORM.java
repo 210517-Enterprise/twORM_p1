@@ -1,4 +1,4 @@
-git statpackage com.revature.twORM;
+package com.revature.twORM;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
