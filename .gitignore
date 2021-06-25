@@ -14,7 +14,7 @@ logs/
 log/
 logs\log.txt
 logs\\log.txt
-target/*
+*/target/*
 MANIFEST.MF
 */target/classes/META-INF/*
 pom.xml.tag
