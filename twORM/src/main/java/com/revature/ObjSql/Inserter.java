@@ -140,7 +140,7 @@ public class Inserter {
 			}
 
 			for (int i = 0; i < columns.length; i++) {
-				Class<?> clazz = getters.get(model.getPrimary_key_name()).invoke(obj).getClass();
+				Class<?> clazz = getters.get(columns[i]).invoke(obj).getClass();
 				sql += columns[i] + " " + typeJavaToSql(clazz);
 				if (i < columns.length - 1) {
 					sql += ", ";
