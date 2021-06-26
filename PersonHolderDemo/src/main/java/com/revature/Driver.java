@@ -1,5 +1,6 @@
 package com.revature;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,33 +10,31 @@ import com.revature.Models.*;
 
 public class Driver {
 
-	static Scanner s = new Scanner(System.in);
-	
-	static boolean exited;
-	
-	static JobDAO j = new JobDAO();
-	
-	static PersonDAO p = new PersonDAO();
-	
+	static Scanner scan = new Scanner(System.in);
+
+	static JobDAO jdao = new JobDAO();
+
+	static PersonDAO pdao = new PersonDAO();
+
 	public static void main(String[] args) {
 //		Person billy = new Person("BillyBoy", "William", "Boulevard", 3, 24, 10_000);
 //        Person jilly = new Person("Jillster", "Jillian", "Applewood", 4, 45, 35_000);
 //        pdao.insertPerson(billy, jilly);
 //		Job one = new Job("Assassin", "Killing People");
 //		jdao.insertJob(one);
-		WelcomeScreen();
+		welcomeScreen();
 	}
 
-	private static void WelcomeScreen() {
+	private static void welcomeScreen() {
 		System.out.println("--- Welcome to the Database ---");
 		System.out.println("Enter the number of your selection:");
 		System.out.println("1. Search and Edit User Records");
 		System.out.println("2. Search and Edit Job Records");
 		System.out.println("3. Exit the Program");
 
-		String input = s.next();
+		String input = scan.next();
 		input = input.trim();
-		s.nextLine();
+		scan.nextLine();
 
 		if (input.equalsIgnoreCase("1")) {
 			userMenu();
@@ -43,33 +42,28 @@ public class Driver {
 			jobMenu();
 		} else if (input.equalsIgnoreCase("3")) {
 			System.out.println("Goodbye");
+			scan.close();
 		} else {
-			System.out.println("Invalid command");
-			WelcomeScreen();
+			System.out.println("Invalid input");
+			welcomeScreen();
 		}
 	}
-
-
-
+	
+	// done
 	private static void userMenu() {
 		System.out.println("--- User Menu ---");
 		System.out.println("Enter the number of your selection:");
 		System.out.println("1. Display All User Records");
-		System.out.println("2. Search by Columns");
-		System.out.println("3. Return to the Welcome Screen");
+		System.out.println("2. Select User by Username");
+		System.out.println("3. Search Users by Columns");
+		System.out.println("4. Insert New User Record");
+		System.out.println("5. Return to the Welcome Screen");
 
-		String input = s.next();
+		String input = scan.next();
 		input = input.trim();
-		s.nextLine();
+		scan.nextLine();
 
 		if (input.equalsIgnoreCase("1")) {
-<<<<<<< HEAD
-			List<Person> all = p.getAll();
-			System.out.println("--- All Users ---");
-			System.out.printf("%-15s %-15s %-15s %-15s %-15s %-15s%n", "User Name", "First Name", "Last Name", "Job ID", "User Age", "Salary");
-			for(Person p : all) {
-				System.out.printf("%-15s %-15s %-15s %-15s %-15s %,-15d%n", p.getId(), p.getFirstName(), p.getLastName(), p.getJobId(), p.getAge(), p.getSalary());
-=======
 			List<Person> all = pdao.getAll();
 			if (all.isEmpty()) {
 				System.out.println("No Records Found");
@@ -102,25 +96,21 @@ public class Driver {
 			} else {
 				System.out.println("Invalid input");
 				userMenu();
->>>>>>> dec2c68f2211e69789d0eb6c426050d60ec41d09
 			}
-			
 		} else if (input.equalsIgnoreCase("2")) {
-			jobMenu();
+			editUser();
 		} else if (input.equalsIgnoreCase("3")) {
-			WelcomeScreen();
+			searchUserColumns();
+		} else if (input.equalsIgnoreCase("4")) {
+			insertUser();
+		} else if (input.equalsIgnoreCase("5")) {
+			welcomeScreen();
 		} else {
-			System.out.println("Invalid command");
+			System.out.println("Invalid input");
 			userMenu();
 		}
 	}
 	
-<<<<<<< HEAD
-	private static void editUser() {
-		
-	}
-	
-=======
 	// done
 	private static void insertUser() {
 		
@@ -486,24 +476,20 @@ public class Driver {
 	}
 
 	// done
->>>>>>> dec2c68f2211e69789d0eb6c426050d60ec41d09
 	private static void jobMenu() {
 		System.out.println("--- Job Menu ---");
 		System.out.println("Enter the number of your selection:");
-		System.out.println("1. Search All Job Records");
-		System.out.println("2. Edit Job Records");
-		System.out.println("3. Return to the Welcome Screen");
+		System.out.println("1. Display All Job Records");
+		System.out.println("2. Select Job by ID#");
+		System.out.println("3. Search Jobs by Columns");
+		System.out.println("4. Insert New Job Record");
+		System.out.println("5. Return to the Welcome Screen");
 
-		String input = s.next();
+		String input = scan.next();
 		input = input.trim();
-		s.nextLine();
+		scan.nextLine();
 
 		if (input.equalsIgnoreCase("1")) {
-<<<<<<< HEAD
-			//findUser();
-		} else if (input.equalsIgnoreCase("2")) {
-			jobMenu();
-=======
 			List<Job> all = jdao.getAll();
 			if (all.isEmpty()) {
 				System.out.println("No Records Found");
@@ -511,10 +497,10 @@ public class Driver {
 			}
 			System.out.println("--- All Job Records ---");
 			System.out.println("---------------------|----------------------|----------------------");
-			System.out.printf("%-20s | %-20s | %-20s", "Job ID", "Name", "Description");
+			System.out.printf("%-20s | %-20s | %-20s%n", "Job ID", "Name", "Description");
 			System.out.println("---------------------|----------------------|----------------------");
 			for (Job job : all) {
-				System.out.printf("%-20s | %-20s | %-20s", job.getId(), job.getJobName(), job.getJobDescription());
+				System.out.printf("%-20s | %-20s | %-20s%n", job.getId(), job.getJobName(), job.getJobDescription());
 			}
 			System.out.println("---------------------|----------------------|----------------------");
 			System.out.println();
@@ -539,31 +525,18 @@ public class Driver {
 			}
 		} else if (input.equalsIgnoreCase("2")) {
 			editJob();
->>>>>>> dec2c68f2211e69789d0eb6c426050d60ec41d09
 		} else if (input.equalsIgnoreCase("3")) {
-			WelcomeScreen();
+			searchJobColumns();
+		} else if (input.equalsIgnoreCase("4")) {
+			insertJob();
+		} else if (input.equalsIgnoreCase("5")) {
+			welcomeScreen();
 		} else {
-			System.out.println("Invalid command");
-			userMenu();
+			System.out.println("Invalid input");
+			jobMenu();
 		}
 	}
 	
-<<<<<<< HEAD
-	public static void searchUser() {
-		System.out.println("Do you want to ");
-	}
-	
-	private static void insert() {
-		// TODO
-	}
-	
-	private static void delete() {
-		// TODO
-	}
-	
-	private static void update() {
-		// TODO
-=======
 	private static void searchJobColumns() {
 		
 		System.out.println("Enter the number of your selection:");
@@ -589,9 +562,9 @@ public class Driver {
 			for (Job job : all) {
 				System.out.println("--- Records Where Name is " + input + " ---");
 				System.out.println("---------------------|----------------------|----------------------");
-				System.out.printf("%-20s | %-20s | %-20s", "Job ID", "Name", "Description");
+				System.out.printf("%-20s | %-20s | %-20s%n", "Job ID", "Name", "Description");
 				System.out.println("---------------------|----------------------|----------------------");
-				System.out.printf("%-20s | %-20s | %-20s", job.getId(), job.getJobName(), job.getJobDescription());
+				System.out.printf("%-20s | %-20s | %-20s%n", job.getId(), job.getJobName(), job.getJobDescription());
 			}
 			System.out.println("---------------------|----------------------|----------------------");
 			System.out.println();
@@ -679,9 +652,9 @@ public class Driver {
 
 			System.out.println("--- Current Job Record ---");
 			System.out.println("---------------------|----------------------|----------------------");
-			System.out.printf("%-20s | %-20s | %-20s", "Job ID", "Name", "Description");
+			System.out.printf("%-20s | %-20s | %-20s%n", "Job ID", "Name", "Description");
 			System.out.println("---------------------|----------------------|----------------------");
-			System.out.printf("%-20s | %-20s | %-20s", job.getId(), job.getJobName(), job.getJobDescription());
+			System.out.printf("%-20s | %-20s | %-20s%n", job.getId(), job.getJobName(), job.getJobDescription());
 			System.out.println("---------------------|----------------------|----------------------");
 			System.out.println();
 			System.out.println("Enter the number of your selection:");
@@ -734,6 +707,6 @@ public class Driver {
 			System.out.println("Job not found");
 			editJob();
 		}
->>>>>>> dec2c68f2211e69789d0eb6c426050d60ec41d09
 	}
+
 }
