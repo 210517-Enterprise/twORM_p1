@@ -23,6 +23,7 @@ public class Driver {
 //		Job one = new Job("Assassin", "Killing People");
 //		jdao.insertJob(one);
 		welcomeScreen();
+		scan.close();
 	}
 
 	private static void welcomeScreen() {
@@ -42,7 +43,7 @@ public class Driver {
 			jobMenu();
 		} else if (input.equalsIgnoreCase("3")) {
 			System.out.println("Goodbye");
-			scan.close();
+			
 		} else {
 			System.out.println("Invalid input");
 			welcomeScreen();
@@ -142,7 +143,7 @@ public class Driver {
 			per.setJobId(Integer.parseInt(input));
 		} catch (NumberFormatException e) {
 			System.out.println("Invalid input");
-			editUser(per);
+			insertUser();
 		}
 		
 		try {
@@ -168,8 +169,36 @@ public class Driver {
 		}
 		
 		pdao.insertPerson(per);
-		editUser(per);
 		
+		System.out.println("--- Current User Record ---");
+		System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
+		System.out.printf("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
+		System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
+		System.out.printf("%-20s | %-20s | %-20s | %-20s | %-20s | %,-20d%n", per.getId(), per.getFirstName(), per.getLastName(), per.getJobId(), per.getAge(), per.getSalary());
+		System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
+		System.out.println();
+		System.out.println("Enter the number of your selection:");
+		System.out.println("1. Edit Current User Record");
+		System.out.println("2. Insert another User Record");
+		System.out.println("3. Return to the User Menu");
+		System.out.println("4. Return to the Welcome Screen");
+
+		input = scan.next();
+		input = input.trim();
+		scan.nextLine();
+
+		if (input.equalsIgnoreCase("1")) {
+			editUser(per);
+		} else if (input.equalsIgnoreCase("2")) {
+			insertUser();
+		} else if (input.equalsIgnoreCase("3")) {
+			userMenu();
+		} else if (input.equalsIgnoreCase("4")) {
+			welcomeScreen();
+		} else {
+			System.out.println("Invalid input");
+			userMenu();
+		}
 	}
 
 	// done
@@ -402,6 +431,7 @@ public class Driver {
 				input = input.trim();
 				scan.nextLine();
 				per.setFirstName(input);
+				pdao.updatePerson(per);
 				editUser(per);
 			} else if (input.equalsIgnoreCase("2")) {
 				System.out.println("Enter the new Last Name:");
@@ -409,6 +439,7 @@ public class Driver {
 				input = input.trim();
 				scan.nextLine();
 				per.setLastName(input);
+				pdao.updatePerson(per);
 				editUser(per);
 			} else if (input.equalsIgnoreCase("3")) {
 				try {
@@ -417,6 +448,7 @@ public class Driver {
 					input = input.trim();
 					scan.nextLine();
 					per.setJobId(Integer.parseInt(input));
+					pdao.updatePerson(per);
 					editUser(per);
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid input");
@@ -429,6 +461,7 @@ public class Driver {
 					input = input.trim();
 					scan.nextLine();
 					per.setAge(Integer.parseInt(input));
+					pdao.updatePerson(per);
 					editUser(per);
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid input");
@@ -441,17 +474,18 @@ public class Driver {
 					input = input.trim();
 					scan.nextLine();
 					per.setSalary(Integer.parseInt(input));
+					pdao.updatePerson(per);
 					editUser(per);
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid input");
 					editUser(per);
 				}
 			} else if (input.equalsIgnoreCase("6")) {
-				System.out.println("Enter the \'delete\' to confirm:");
+				System.out.println("Enter DELETE to confirm:");
 				input = scan.nextLine();
 				input = input.trim();
 				scan.nextLine();
-				if(input.equals("delete")) {
+				if(input.equalsIgnoreCase("DELETE")) {
 					if(pdao.deletePerson(per)) {
 						System.out.println("User Deleted");
 					} else {
@@ -477,6 +511,7 @@ public class Driver {
 
 	// done
 	private static void jobMenu() {
+		System.out.println();
 		System.out.println("--- Job Menu ---");
 		System.out.println("Enter the number of your selection:");
 		System.out.println("1. Display All Job Records");
@@ -571,9 +606,8 @@ public class Driver {
 			editJob();
 		} else if (input.equalsIgnoreCase("2")) {
 			System.out.println("Enter the Description to Search for");
-			input = scan.next();
+			input = scan.nextLine();
 			input = input.trim();
-			scan.nextLine();
 
 			List<Job> all = jdao.getJobByColumn("description", input);
 			if (all.isEmpty()) {
@@ -605,21 +639,47 @@ public class Driver {
 		Job job = new Job();
 		
 		System.out.println("Enter the Job Name:");
-		String input = scan.nextLine();
+		String input = scan.next();
 		input = input.trim();
 		scan.nextLine();
 		job.setJobName(input);
-		editJob(job);
 	
 		System.out.println("Enter the Job Description:");
 		input = scan.nextLine();
 		input = input.trim();
-		scan.nextLine();
 		job.setJobDescription(input);
-		editJob(job);
-	
+		
 		jdao.insertJob(job);
-		editJob(job);
+	
+		System.out.println("--- Current Job Record ---");
+		System.out.println("---------------------|----------------------|----------------------");
+		System.out.printf("%-20s | %-20s | %-20s%n", "Job ID", "Name", "Description");
+		System.out.println("---------------------|----------------------|----------------------");
+		System.out.printf("%-20s | %-20s | %-20s%n", job.getId(), job.getJobName(), job.getJobDescription());
+		System.out.println("---------------------|----------------------|----------------------");
+		System.out.println();
+		System.out.println("Enter the number of your selection:");
+		System.out.println("1. Edit Current Job Record");
+		System.out.println("2. Insert another Job Record");
+		System.out.println("3. Return to the Job Menu");
+		System.out.println("4. Return to the Welcome Screen");
+
+		input = scan.next();
+		input = input.trim();
+		scan.nextLine();
+
+		if (input.equalsIgnoreCase("1")) {
+			editJob(job);
+		} else if (input.equalsIgnoreCase("2")) {
+			insertJob();
+		} else if (input.equalsIgnoreCase("3")) {
+			jobMenu();
+		} else if (input.equalsIgnoreCase("4")) {
+			welcomeScreen();
+		} else {
+			System.out.println("Invalid input");
+			jobMenu();
+		}
 	}
 
 	// done
@@ -638,7 +698,6 @@ public class Driver {
 				Job u = jdao.getJobPK(Integer.parseInt(input));
 				editJob(u);
 			} catch (NumberFormatException e) {
-				System.out.println("Invalid input");
 				editJob();
 			}
 		}
@@ -669,24 +728,25 @@ public class Driver {
 
 			if (input.equalsIgnoreCase("1")) {
 				System.out.println("Enter the new Name:");
-				input = scan.nextLine();
+				input = scan.next();
 				input = input.trim();
 				scan.nextLine();
 				job.setJobName(input);
+				jdao.updateJob(job);
 				editJob(job);
 			} else if (input.equalsIgnoreCase("2")) {
 				System.out.println("Enter the new Description:");
 				input = scan.nextLine();
 				input = input.trim();
-				scan.nextLine();
 				job.setJobDescription(input);
+				jdao.updateJob(job);
 				editJob(job);
 			} else if (input.equalsIgnoreCase("3")) {
-				System.out.println("Enter the \'delete\' to confirm:");
-				input = scan.nextLine();
+				System.out.println("Enter DELETE to confirm:");
+				input = scan.next();
 				input = input.trim();
 				scan.nextLine();
-				if(input.equals("delete")) {
+				if(input.equalsIgnoreCase("DELETE")) {
 					if(jdao.deleteJob(job)) {
 						System.out.println("Job Deleted");
 					} else {
