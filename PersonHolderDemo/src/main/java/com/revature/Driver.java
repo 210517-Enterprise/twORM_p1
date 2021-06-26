@@ -497,7 +497,6 @@ public class Driver {
 					userMenu();
 				}
 			} else if (input.equalsIgnoreCase("7")) {
-				pdao.updatePerson(per);
 				userMenu();
 			} else {
 				System.out.println("Invalid input");
