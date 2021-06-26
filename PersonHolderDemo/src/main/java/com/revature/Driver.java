@@ -20,8 +20,8 @@ public class Driver {
 //		Person billy = new Person("BillyBoy", "William", "Boulevard", 3, 24, 10_000);
 //        Person jilly = new Person("Jillster", "Jillian", "Applewood", 4, 45, 35_000);
 //        pdao.insertPerson(billy, jilly);
-		Job one = new Job("Assassin", "Killing People");
-		jdao.insertJob(one);
+//		Job one = new Job("Assassin", "Killing People");
+//		jdao.insertJob(one);
 		welcomeScreen();
 	}
 
@@ -69,6 +69,7 @@ public class Driver {
 				System.out.println("No Records Found");
 				userMenu();
 			}
+			System.out.println("--- All User Records ---");
 			System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
 			System.out.printf("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
 			System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
@@ -203,7 +204,7 @@ public class Driver {
 				searchUserColumns();
 
 			} else {
-
+				System.out.println("--- Records Where the First Name is " + input + " ---");
 				System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
 				System.out.printf("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
 				System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
@@ -231,7 +232,7 @@ public class Driver {
 				searchUserColumns();
 
 			} else {
-
+				System.out.println("--- Records Where the Last Name is " + input + " ---");
 				System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
 				System.out.printf("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
 				System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
@@ -265,7 +266,7 @@ public class Driver {
 				searchUserColumns();
 
 			} else {
-
+				System.out.println("--- Records Where the Job ID is " + input + " ---");
 				System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
 				System.out.printf("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
 				System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
@@ -299,7 +300,7 @@ public class Driver {
 				searchUserColumns();
 
 			} else {
-
+				System.out.println("--- Records Where the User Age is " + input + " ---");
 				System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
 				System.out.printf("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
 				System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
@@ -333,7 +334,7 @@ public class Driver {
 				searchUserColumns();
 
 			} else {
-
+				System.out.println("--- Records Where Salary is $" + input + " ---");
 				System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
 				System.out.printf("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
 				System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
@@ -375,7 +376,7 @@ public class Driver {
 
 		if (per != null) {
 
-			System.out.println("--- Current User Record ---");
+			System.out.println("--- Selected User Record ---");
 			System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
 			System.out.printf("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
 			System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
@@ -457,6 +458,7 @@ public class Driver {
 		}
 	}
 
+	// done
 	private static void jobMenu() {
 		System.out.println("--- Job Menu ---");
 		System.out.println("Enter the number of your selection:");
@@ -476,6 +478,7 @@ public class Driver {
 				System.out.println("No Records Found");
 				jobMenu();
 			}
+			System.out.println("--- All Job Records ---");
 			System.out.println("---------------------|----------------------|----------------------");
 			System.out.printf("%-20s | %-20s | %-20s", "Job ID", "Name", "Description");
 			System.out.println("---------------------|----------------------|----------------------");
@@ -504,7 +507,7 @@ public class Driver {
 				jobMenu();
 			}
 		} else if (input.equalsIgnoreCase("2")) {
-			selectJob();
+			editJob();
 		} else if (input.equalsIgnoreCase("3")) {
 			searchJobColumns();
 		} else if (input.equalsIgnoreCase("4")) {
@@ -517,23 +520,37 @@ public class Driver {
 		}
 	}
 	
-	private static void selectJob() {
-		// TODO Auto-generated method stub
-
-	}
 	private static void searchJobColumns() {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	private static void insertJob() {
-		// TODO Auto-generated method stub
 		
+		Job job = new Job();
+		
+		System.out.println("Enter the Job Name:");
+		String input = scan.nextLine();
+		input = input.trim();
+		scan.nextLine();
+		job.setJobName(input);
+		editJob(job);
+	
+		System.out.println("Enter the Job Description:");
+		input = scan.nextLine();
+		input = input.trim();
+		scan.nextLine();
+		job.setJobDescription(input);
+		editJob(job);
+	
+		jdao.insertJob(job);
+		editJob(job);
 	}
+
 	// done
 	private static void editJob() {
 		
-		System.out.println("Enter the Username of the Record to edit or 0 to return to the User Menu");
+		System.out.println("Enter the Job ID of the Record to edit or 0 to return to the User Menu");
 
 		String input = scan.next();
 		input = input.trim();
@@ -558,7 +575,7 @@ public class Driver {
 
 		if (job != null) {
 
-			System.out.println("--- Current Job Record ---");
+			System.out.println("--- Selected Job Record ---");
 			System.out.println("---------------------|----------------------|----------------------");
 			System.out.printf("%-20s | %-20s | %-20s", "Job ID", "Name", "Description");
 			System.out.println("---------------------|----------------------|----------------------");

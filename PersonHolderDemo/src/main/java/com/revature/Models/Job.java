@@ -1,10 +1,11 @@
 package com.revature.Models;
 
 import com.revature.annotations.Column;
+import com.revature.annotations.Entity;
 import com.revature.annotations.Getter;
 import com.revature.annotations.PrimaryKey;
 import com.revature.annotations.Setter;
-
+@Entity(name = "job")
 public class Job {
 
 	@PrimaryKey(name="id", isSerial=true)
