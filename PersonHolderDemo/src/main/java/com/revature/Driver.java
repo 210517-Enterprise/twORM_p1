@@ -376,7 +376,7 @@ public class Driver {
 
 		if (per != null) {
 
-			System.out.println("--- Selected User Record ---");
+			System.out.println("--- Current User Record ---");
 			System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
 			System.out.printf("%-20s | %-20s | %-20s | %-20s | %-20s | %-20s%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
 			System.out.println("---------------------|----------------------|----------------------|----------------------|----------------------|----------------------");
@@ -389,7 +389,8 @@ public class Driver {
 			System.out.println("3. Edit Job ID");
 			System.out.println("4. Edit User Age");
 			System.out.println("5. Edit Salary");
-			System.out.println("6. Return to the User Menu");
+			System.out.println("6. Delete User Record");
+			System.out.println("7. Return to the User Menu");
 
 			String input = scan.next();
 			input = input.trim();
@@ -446,6 +447,22 @@ public class Driver {
 					editUser(per);
 				}
 			} else if (input.equalsIgnoreCase("6")) {
+				System.out.println("Enter the \'delete\' to confirm:");
+				input = scan.nextLine();
+				input = input.trim();
+				scan.nextLine();
+				if(input.equals("delete")) {
+					if(pdao.deletePerson(per)) {
+						System.out.println("User Deleted");
+					} else {
+						System.out.println("Deletion failed");
+					}
+					userMenu();
+				} else {
+					System.out.println("Deletion canceled");
+					userMenu();
+				}
+			} else if (input.equalsIgnoreCase("7")) {
 				pdao.updatePerson(per);
 				userMenu();
 			} else {
@@ -633,7 +650,7 @@ public class Driver {
 
 		if (job != null) {
 
-			System.out.println("--- Selected Job Record ---");
+			System.out.println("--- Current Job Record ---");
 			System.out.println("---------------------|----------------------|----------------------");
 			System.out.printf("%-20s | %-20s | %-20s%n", "Job ID", "Name", "Description");
 			System.out.println("---------------------|----------------------|----------------------");
@@ -643,7 +660,8 @@ public class Driver {
 			System.out.println("Enter the number of your selection:");
 			System.out.println("1. Edit Job Name");
 			System.out.println("2. Edit Job Description");
-			System.out.println("3. Return to the Job Menu");
+			System.out.println("3. Delete Job Record");
+			System.out.println("4. Return to the Job Menu");
 
 			String input = scan.next();
 			input = input.trim();
@@ -664,7 +682,22 @@ public class Driver {
 				job.setJobDescription(input);
 				editJob(job);
 			} else if (input.equalsIgnoreCase("3")) {
-				jdao.updateJob(job);
+				System.out.println("Enter the \'delete\' to confirm:");
+				input = scan.nextLine();
+				input = input.trim();
+				scan.nextLine();
+				if(input.equals("delete")) {
+					if(jdao.deleteJob(job)) {
+						System.out.println("Job Deleted");
+					} else {
+						System.out.println("Deletion failed");
+					}
+					jobMenu();
+				} else {
+					System.out.println("Deletion canceled");
+					jobMenu();
+				}
+			} else if (input.equalsIgnoreCase("4")) {
 				jobMenu();
 			} else {
 				System.out.println("Invalid input");
