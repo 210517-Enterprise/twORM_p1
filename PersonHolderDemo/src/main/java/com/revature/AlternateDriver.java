@@ -72,9 +72,10 @@ public class AlternateDriver {
 		System.out.println("3. Search Users by Column");
 		System.out.println("4. Search Users by Multiple Columns");
 		System.out.println("5. Insert New User Record");
-		System.out.println("6. Return to the Welcome Screen");
+		System.out.println("6. Delete User Record");
+		System.out.println("7. Return to the Welcome Screen");
 		
-		int input = inputService.getInt(6);
+		int input = inputService.getInt(7);
 		
 		switch (input) {
 		case 1:
@@ -92,7 +93,10 @@ public class AlternateDriver {
 		case 5:
 			insertUser();
 			break;
-		case 6: 
+		case 6:
+			deleteUser();
+			break;
+		case 7: 
 			welcomeScreen();
 		}
 	}
@@ -126,9 +130,10 @@ public class AlternateDriver {
 		System.out.println("2. Select Job by ID#");
 		System.out.println("3. Search Jobs by Column");
 		System.out.println("4. Insert New Job Record");
-		System.out.println("5. Return to the Welcome Screen");
+		System.out.println("5. Delete a Job Record");
+		System.out.println("6. Return to the Welcome Screen");
 		
-		int input = inputService.getInt(5);
+		int input = inputService.getInt(6);
 		
 		switch (input) {
 		case 1:
@@ -144,6 +149,9 @@ public class AlternateDriver {
 			insertJob();
 			break;
 		case 5:
+			deleteJob();
+			break;
+		case 6:
 			welcomeScreen();
 		}
 	}
@@ -730,6 +738,27 @@ public class AlternateDriver {
 		return job;
 	}
 	
+	private static void deleteUser() {
+		System.out.println("Enter the username for the user to be deleted: ");
+		String username = inputService.getString(50);
+		Person per = pdao.getPersonPK(username);
+		if (per != null) {
+			pdao.deletePerson(per);
+		} else {
+			System.out.println("Sorry, no user with that username.");
+		}
+		userMenu();
+	}
 	
+	private static void deleteJob() {
+		System.out.println("Enter the ID number for the job to be deleted: ");
+		int id = inputService.getInt(5);
+		Job job = jdao.getJobPK(id);
+		if (job !=null) {
+			jdao.deleteJob(job);
+		} else {
+			System.out.println("Sorry, no job with that ID number.");
+		}
+	}
 	
 }
