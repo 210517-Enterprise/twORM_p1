@@ -3,6 +3,7 @@ package com.revature.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import com.revature.Models.Person;
 import com.revature.twORM.TwORM;
@@ -71,7 +72,11 @@ public class PersonDAO {
 	}
 	
 	public Person getPersonPK(String username) {
-		return (Person) t.getByPK(Person.class, username).get();
+		try {
+			return (Person) t.getByPK(Person.class, username).get();
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 	
 	public List<Person> getAll() {
