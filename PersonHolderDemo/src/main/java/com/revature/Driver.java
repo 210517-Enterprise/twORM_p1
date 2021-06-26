@@ -521,10 +521,68 @@ public class Driver {
 	}
 	
 	private static void searchJobColumns() {
-		// TODO Auto-generated method stub
+		
+		System.out.println("Enter the number of your selection:");
+		System.out.println("1. Search by Name");
+		System.out.println("2. Search by Description");
+		System.out.println("3. Return to the Job Menu");
+		
+		String input = scan.next();
+		input = input.trim();
+		scan.nextLine();
+		
+		if (input.equalsIgnoreCase("1")) {
+			System.out.println("Enter the Name to Search for");
+			input = scan.next();
+			input = input.trim();
+			scan.nextLine();
+			
+			List<Job> all = jdao.getJobByColumn("job_name", input);
+			if (all.isEmpty()) {
+				System.out.println("No Records Found");
+				jobMenu();
+			}
+			for (Job job : all) {
+				System.out.println("--- Records Where Name is " + input + " ---");
+				System.out.println("---------------------|----------------------|----------------------");
+				System.out.printf("%-20s | %-20s | %-20s", "Job ID", "Name", "Description");
+				System.out.println("---------------------|----------------------|----------------------");
+				System.out.printf("%-20s | %-20s | %-20s", job.getId(), job.getJobName(), job.getJobDescription());
+			}
+			System.out.println("---------------------|----------------------|----------------------");
+			System.out.println();
+			editJob();
+		} else if (input.equalsIgnoreCase("2")) {
+			System.out.println("Enter the Description to Search for");
+			input = scan.next();
+			input = input.trim();
+			scan.nextLine();
+
+			List<Job> all = jdao.getJobByColumn("description", input);
+			if (all.isEmpty()) {
+				System.out.println("No Records Found");
+				jobMenu();
+			}
+			for (Job job : all) {
+				System.out.println("--- Records Where Description is " + input + " ---");
+				System.out.println("---------------------|----------------------|----------------------");
+				System.out.printf("%-20s | %-20s | %-20s", "Job ID", "Name", "Description");
+				System.out.println("---------------------|----------------------|----------------------");
+				System.out.printf("%-20s | %-20s | %-20s", job.getId(), job.getJobName(), job.getJobDescription());
+			}
+			System.out.println("---------------------|----------------------|----------------------");
+			System.out.println();
+			editJob();
+		} else if (input.equalsIgnoreCase("3")) {
+			jobMenu();
+		} else {
+			System.out.println("Invalid input");
+			searchJobColumns();
+		}
 		
 	}
 	
+	// done
 	private static void insertJob() {
 		
 		Job job = new Job();
