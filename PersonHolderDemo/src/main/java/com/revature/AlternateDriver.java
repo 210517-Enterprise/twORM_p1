@@ -12,34 +12,42 @@ import com.revature.dao.PersonDAO;
 import com.revature.service.inputService;
 
 public class AlternateDriver {
+	
 	static Scanner scan = new Scanner(System.in);
 	static JobDAO jdao = new JobDAO();
 	static PersonDAO pdao = new PersonDAO();
-	
-	
 	
 	public static void main(String[] args) {
 		Job j1 = new Job("Cooker", "Makes the Drugs");
 		Job j2 = new Job("Dealer", "Sells the Drugs");
 		Job j3 = new Job("Launderer", "Cleans the Money");
-		Job j4 = new Job("Lawyer", "No jail time");
+		Job j4 = new Job("Lawyer", "Cleans the Messes");
+		
 		Job[] initJobs = {j1, j2, j3, j4};
 		
-		Person p1 = new Person("TheChemist", "Walter", "White", 1, 50, 38500);
-		Person p2 = new Person("TheJunkie", "Gus", "Fring", 2, 63, 27200);
-		Person p3 = new Person("Wifey", "Skylar", "White", 3, 48, 32000);
-		Person p4 = new Person("Scumbag", "Saul", "Goodman", 4, 49, 125420);
-		Person[] initPersons = {p1, p2, p3, p4};
+		Person p1 = new Person("TheChemist", "Walter", "White", 1, 50, 37000);
+		Person p2 = new Person("Chicken", "Gus", "Fring", 2, 49, 65400);
+		Person p3 = new Person("Wifey", "Skylar", "White", 3, 45, 32000);
+		Person p4 = new Person("Scumbag", "Saul", "Goodman", 4, 49, 55500);
+		Person p5 = new Person("Vegan", "Gale", "Boetticher", 1, 31, 25000);
+		Person p6 = new Person("Baddabing", "Vinnie", "Baggadonuts", 2, 45, 25000);
+		Person p7 = new Person("Jimmy", "James", "McGill", 4, 49, 55500);
+		Person p8 = new Person("Bruce", "Jesse", "Pinkman", 2, 27, 25000);
+		
+		Person[] initPersons = {p1, p2, p3, p4, p5, p6, p7, p8};
 		
 		jdao.insertJob(initJobs);
 		pdao.insertPerson(initPersons);
 		
 		welcomeScreen();
+		
 	}
 	
 	
 	private static void welcomeScreen() {
-		System.out.println("--- Welcome to the Database ---");
+		System.out.println("|-------------------------------|");
+		System.out.println("|    Welcome to the Gus\'s DB    |");
+		System.out.println("|-------------------------------|");
 		System.out.println("Enter the number of your selection:");
 		System.out.println("1. Search and Edit User Records");
 		System.out.println("2. Search and Edit Job Records");
@@ -55,6 +63,8 @@ public class AlternateDriver {
 				jobMenu();
 				break;
 			case 3:
+				System.out.println("Goodbye!");
+				scan.close();
 				System.exit(0);
 			default:
 				System.out.println("Invalid input detected");
@@ -65,7 +75,9 @@ public class AlternateDriver {
 	
 	
 	private static void userMenu() {
-		System.out.println("--- User Menu ---");
+		System.out.println("|-------------------------------|");
+		System.out.println("|           User Menu           |");
+		System.out.println("|-------------------------------|");
 		System.out.println("Enter the number of your selection:");
 		System.out.println("1. Display All User Records");
 		System.out.println("2. Select User by Username");
@@ -123,8 +135,9 @@ public class AlternateDriver {
 	
 	
 	private static void jobMenu() {
-		System.out.println();
-		System.out.println("--- Job Menu ---");
+		System.out.println("|-------------------------------|");
+		System.out.println("|           Job  Menu           |");
+		System.out.println("|-------------------------------|");
 		System.out.println("Enter the number of your selection:");
 		System.out.println("1. Display All Job Records");
 		System.out.println("2. Select Job by ID#");
@@ -185,13 +198,13 @@ public class AlternateDriver {
 			System.out.println("No Records Found");
 			userMenu();
 		}
-		System.out.println("--- All User Records ---");
+		System.out.println("|-- All User Records--|");
 		System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
-		System.out.printf("|%-20s | %-20s | %-20s | %-20s | %-20s | %-20s | %-20s|%n", "Username", "First Name", "Last Name", "Job ", "Job Description", "User Age", "Salary in USD");
+		System.out.printf("| %-20s| %-21s| %-21s| %-21s| %-21s| %-21s| %-21s|%n", "Username", "First Name", "Last Name", "Job ", "Job Description", "User Age", "Salary in USD");
 		System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
 		for (Person per : all) {
 			Job j = jdao.getJobPK(per.getJobId());
-			System.out.printf("|%-20s | %-20s | %-20s | %-20s | %-20s | %-20d | %,-20d |%n", per.getId(), per.getFirstName(), per.getLastName(), j.getJobName(), j.getJobDescription(), per.getAge(), per.getSalary());
+			System.out.printf("| %-20s| %-21s| %-21s| %-21s| %-21s| %-21d| %,-21d|%n", per.getId(), per.getFirstName(), per.getLastName(), j.getJobName(), j.getJobDescription(), per.getAge(), per.getSalary());
 		}
 		System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
 		System.out.println();
@@ -206,12 +219,12 @@ public class AlternateDriver {
 			System.out.println("No records found.");
 			jobMenu();
 		}
-		System.out.println("--- All Job Records ---");
+		System.out.println("|-- All Job Records --|");
 		System.out.println("|---------------------|----------------------|----------------------|");
-		System.out.printf("|%-20s | %-20s | %-20s |%n", "Job ID", "Name", "Description");
+		System.out.printf("| %-20s| %-21s| %-21s|%n", "Job ID", "Name", "Description");
 		System.out.println("|---------------------|----------------------|----------------------|");
 		for (Job job : jobs) {
-			System.out.printf("|%-20s | %-20s | %-20s |%n", job.getId(), job.getJobName(), job.getJobDescription());
+			System.out.printf("| %-20s| %-21s| %-21s|%n", job.getId(), job.getJobName(), job.getJobDescription());
 		}
 		System.out.println("|---------------------|----------------------|----------------------|");
 		System.out.println();
@@ -222,7 +235,7 @@ public class AlternateDriver {
 	
 	private static void searchUserName() {
 		System.out.println();
-		System.out.println("--- Search by Username ---");
+		System.out.println("|--- Search by Username ---|");
 		System.out.println("Enter the username to search for: ");
 		String input = inputService.getString(50);
 		
@@ -233,11 +246,11 @@ public class AlternateDriver {
 		}
 		Job j = jdao.getJobPK(per.getJobId());
 		
-		System.out.println("--- User Record ---");
+		System.out.println("|---  User Record  ---|");
 		System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
-		System.out.printf("|%-20s | %-20s | %-20s | %-20s | %-20s | %-20s | %-20s |%n", "Username", "First Name", "Last Name", "Job ", "Job Description", "User Age", "Salary in USD");
+		System.out.printf("| %-20s| %-21s| %-21s| %-21s| %-21s| %-21s| %-21s|%n", "Username", "First Name", "Last Name", "Job ", "Job Description", "User Age", "Salary in USD");
 		System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
-		System.out.printf("|%-20s | %-20s | %-20s | %-20s | %-20s | %-20d | %,-20d |%n", per.getId(), per.getFirstName(), per.getLastName(), j.getJobName(), j.getJobDescription(), per.getAge(), per.getSalary());
+		System.out.printf("| %-20s| %-21s| %-21s| %-21s| %-21s| %-21d| %,-21d|%n", per.getId(), per.getFirstName(), per.getLastName(), j.getJobName(), j.getJobDescription(), per.getAge(), per.getSalary());
 		System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
 		System.out.println();
 		
@@ -262,7 +275,7 @@ public class AlternateDriver {
 	
 	private static void searchJobId() {
 		System.out.println();
-		System.out.println("--- Search by Job ID ---");
+		System.out.println("|--- Search by Job ID ---|");
 		System.out.println("Enter the id to search for: ");
 		int input = inputService.getInt(5);
 		
@@ -272,11 +285,11 @@ public class AlternateDriver {
 			jobMenu();
 		}
 		
-		System.out.println("--- Job Record ---");
+		System.out.println("|---  Job  Record  ---|");
 		System.out.println("|---------------------|----------------------|----------------------|");
-		System.out.printf("|%-20s | %-20s | %-20s |%n", "Job ID", "Name", "Description");
+		System.out.printf("| %-20s| %-21s| %-21s|%n", "Job ID", "Name", "Description");
 		System.out.println("|---------------------|----------------------|----------------------|");
-		System.out.printf("|%-20s | %-20s | %-20s |%n", job.getId(), job.getJobName(), job.getJobDescription());
+		System.out.printf("| %-20s| %-21s| %-21s|%n", job.getId(), job.getJobName(), job.getJobDescription());
 		System.out.println("|---------------------|----------------------|----------------------|");
 		System.out.println();
 		System.out.println("Enter the number of your selection:");
@@ -347,11 +360,11 @@ public class AlternateDriver {
 	private static Person editUser(Person per) {
 		
 		while (true) {
-			System.out.println("--- Current User Record ---");
+			System.out.println("|--- Current  User ---|");
 			System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
-			System.out.printf("|%-20s | %-20s | %-20s | %-20s | %-20s | %-20s |%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
+			System.out.printf("| %-20s| %-21s| %-21s| %-21s| %-21s| %-21s|%n", "Username", "First Name", "Last Name", "Job ID", "User Age", "Salary in USD");
 			System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
-			System.out.printf("|%-20s | %-20s | %-20s | %-20s | %-20s | %,-20d |%n", per.getId(), per.getFirstName(), per.getLastName(), per.getJobId(), per.getAge(), per.getSalary());
+			System.out.printf("| %-20s| %-21s| %-21s| %-21s| %-21d| %,-21d|%n", per.getId(), per.getFirstName(), per.getLastName(), per.getJobId(), per.getAge(), per.getSalary());
 			System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
 			System.out.println();
 			System.out.println("Enter the number of your selection:");
@@ -400,11 +413,11 @@ public class AlternateDriver {
 	
 	private static Job editJob(Job job) {
 		while(true) {
-			System.out.println("--- Current Job Record ---");
+			System.out.println("|---  Current Job  ---|");
 			System.out.println("|---------------------|----------------------|----------------------|");
-			System.out.printf("|%-20s | %-20s | %-20s |%n", "Job ID", "Name", "Description");
+			System.out.printf("| %-20s| %-21s| %-21s|%n", "Job ID", "Name", "Description");
 			System.out.println("|---------------------|----------------------|----------------------|");
-			System.out.printf("|%-20s | %-20s | %-20s |%n", job.getId(), job.getJobName(), job.getJobDescription());
+			System.out.printf("| %-20s| %-21s| %-21s|%n", job.getId(), job.getJobName(), job.getJobDescription());
 			System.out.println("|---------------------|----------------------|----------------------|");
 			System.out.println();
 			System.out.println("Enter the number of your selection:");
@@ -455,25 +468,25 @@ public class AlternateDriver {
 			break;
 		case 2:
 			column += "last name";
-			System.out.println("Enter the " + column + "to search for: ");
+			System.out.println("Enter the " + column + " to search for: ");
 			value = inputService.getString(50);
 			persons = pdao.getPersonByColumn("last_name", value);
 			break;
 		case 3:
 			column += "job id";
-			System.out.println("Enter the " + column + "to search for: ");
+			System.out.println("Enter the " + column + " to search for: ");
 			value = inputService.getInt(5);
 			persons = pdao.getPersonByColumn("job_id", value);
 			break;
 		case 4:
 			column += "age";
-			System.out.println("Enter the " + column + "to search for: ");
+			System.out.println("Enter the " + column + " to search for: ");
 			value = inputService.getInt(125);
 			persons = pdao.getPersonByColumn("user_age", value);
 			break;
 		case 5:
 			column += "salary";
-			System.out.println("Enter the " + column + "to search for: ");
+			System.out.println("Enter the " + column + " to search for: ");
 			value = inputService.getInt(Integer.MAX_VALUE);
 			persons = pdao.getPersonByColumn("salary", value);
 			break;
@@ -488,14 +501,14 @@ public class AlternateDriver {
 			System.out.println("Sorry no records were found.");
 			userMenu();
 		} else {
-			System.out.println("--- Records Where the " + column + " is " + value + " ---");
+			System.out.println("|--- Records Where the " + column + " is " + value + " ---|");
 			
 			System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
-			System.out.printf("|%-20s | %-20s | %-20s | %-20s | %-20s | %-20s | %-20s |%n", "Username", "First Name", "Last Name", "Job ", "Job Description", "User Age", "Salary in USD");
+			System.out.printf("| %-20s| %-21s| %-21s| %-21s| %-21s| %-21s| %-21s|%n", "Username", "First Name", "Last Name", "Job ", "Job Description", "User Age", "Salary in USD");
 			System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
 			for (Person per : persons) {
 				Job j = jdao.getJobPK(per.getJobId());
-				System.out.printf("|%-20s | %-20s | %-20s | %-20s | %-20s | %-20d | %,-20d |%n", per.getId(), per.getFirstName(), per.getLastName(), j.getJobName(), j.getJobDescription(), per.getAge(), per.getSalary());
+				System.out.printf("| %-20s| %-21s| %-21s| %-21s| %-21s| %-21d| %,-21d|%n", per.getId(), per.getFirstName(), per.getLastName(), j.getJobName(), j.getJobDescription(), per.getAge(), per.getSalary());
 			}
 			System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
 			System.out.println();
@@ -601,14 +614,14 @@ public class AlternateDriver {
 			System.out.println("Sorry no records were found.");
 			userMenu();
 		} else {
-			System.out.println("--- Records Matching the Search Parameters ---");
+			System.out.println("|-- Records Matching the Search Parameters --|");
 			
 			System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
-			System.out.printf("|%-20s | %-20s | %-20s | %-20s | %-20s | %-20s | %-20s |%n", "Username", "First Name", "Last Name", "Job ", "Job Description", "User Age", "Salary in USD");
+			System.out.printf("| %-20s| %-21s| %-21s| %-21s| %-21s| %-21s| %-21s|%n", "Username", "First Name", "Last Name", "Job ", "Job Description", "User Age", "Salary in USD");
 			System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
 			for (Person per : persons) {
 				Job j = jdao.getJobPK(per.getJobId());
-				System.out.printf("|%-20s | %-20s | %-20s | %-20s | %-20s | %-20d | %,-20d |%n", per.getId(), per.getFirstName(), per.getLastName(), j.getJobName(), j.getJobDescription(), per.getAge(), per.getSalary());
+				System.out.printf("| %-20s| %-21s| %-21s| %-21s| %-21s| %-21d| %,-21d|%n", per.getId(), per.getFirstName(), per.getLastName(), j.getJobName(), j.getJobDescription(), per.getAge(), per.getSalary());
 			}
 			System.out.println("|---------------------|----------------------|----------------------|----------------------|----------------------|----------------------|----------------------|");
 			System.out.println();
@@ -645,12 +658,12 @@ public class AlternateDriver {
 			jobMenu();
 		}
 		
-		System.out.println("--- Records Where the " + column + " is " + value + " ---");
+		System.out.println("|--- Records Where the " + column + " is " + value + " ---|");
 		System.out.println("|---------------------|----------------------|----------------------|");
-		System.out.printf("|%-20s | %-20s | %-20s |%n", "Job ID", "Name", "Description");
+		System.out.printf("| %-20s| %-21s| %-21s|%n", "Job ID", "Name", "Description");
 		System.out.println("|---------------------|----------------------|----------------------|");
 		for (Job job : jobs) {
-			System.out.printf("|%-20s | %-20s | %-20s |%n", job.getId(), job.getJobName(), job.getJobDescription());
+			System.out.printf("| %-20s| %-21s| %-21s|%n", job.getId(), job.getJobName(), job.getJobDescription());
 		}
 		System.out.println("|---------------------|----------------------|----------------------|");
 		System.out.println();
@@ -744,6 +757,7 @@ public class AlternateDriver {
 		Person per = pdao.getPersonPK(username);
 		if (per != null) {
 			pdao.deletePerson(per);
+			System.out.println("User " + username + " deleted");
 		} else {
 			System.out.println("Sorry, no user with that username.");
 		}
@@ -756,9 +770,11 @@ public class AlternateDriver {
 		Job job = jdao.getJobPK(id);
 		if (job !=null) {
 			jdao.deleteJob(job);
+			System.out.println(job.getJobName() + " job deleted");
 		} else {
 			System.out.println("Sorry, no job with that ID number.");
 		}
+		jobMenu();
 	}
 	
 }
